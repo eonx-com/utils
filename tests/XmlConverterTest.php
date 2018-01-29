@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Tests\App\Helpers;
+namespace Tests\EoneoPay\Utils;
 
 use EoneoPay\Utils\Exceptions\InvalidXmlException;
 use EoneoPay\Utils\Exceptions\InvalidXmlTagException;

@@ -8,6 +8,8 @@ use EoneoPay\Utils\XmlConverter;
 
 /**
  * @covers \EoneoPay\Utils\Repository
+ *
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class RepositoryTest extends TestCase
 {

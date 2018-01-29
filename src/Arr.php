@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace EoneoPay\Utils;
 
-class Arr
+use EoneoPay\Utils\Interfaces\ArrInterface;
+
+class Arr implements ArrInterface
 {
     /**
      * Flatten an array into dot notation
@@ -77,7 +79,7 @@ class Arr
             $destinationKey = \is_numeric($destinationKey) ? $sourceKey : $destinationKey;
 
             // Only add if source contains sourceKey
-            if (array_key_exists($sourceKey, $source)) {
+            if (\array_key_exists($sourceKey, $source)) {
                 $this->set($destination, $destinationKey, $source[$sourceKey]);
             }
         }
@@ -102,7 +104,7 @@ class Arr
             $unflattened[] = $this->unflatten($mergeable);
         }
 
-        return array_merge_recursive(...$unflattened);
+        return \array_merge_recursive(...$unflattened);
     }
 
     /**
@@ -122,7 +124,7 @@ class Arr
             $flattened[] = $this->flatten($replaceable);
         }
 
-        return $this->unflatten(array_replace(...$flattened));
+        return $this->unflatten(\array_replace(...$flattened));
     }
 
     /**
