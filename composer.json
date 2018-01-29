@@ -15,7 +15,11 @@
   },
   "autoload": {
     "psr-4": {
-      "EoneoPay\\Utils\\": "src/",
+      "EoneoPay\\Utils\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
       "Tests\\EoneoPay\\Utils\\": "tests/"
     }
   },

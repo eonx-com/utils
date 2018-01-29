@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EoneoPay\Utils\Bridge\Lumen\Providers;
 
+use GlobIterator;
 use Illuminate\Support\ServiceProvider;
 
 class ConfigurationServiceProvider extends ServiceProvider
@@ -15,6 +16,13 @@ class ConfigurationServiceProvider extends ServiceProvider
     private const CONFIG_FOLDER_NAME = 'config';
 
     /**
+     * The config file pattern.
+     *
+     * @var string
+     */
+    private const CONFIG_FILE_PATTERN = '*.php';
+
+    /**
      * Register all the application config files.
      *
      * @return void
@@ -23,15 +31,14 @@ class ConfigurationServiceProvider extends ServiceProvider
     {
         $configPath = \sprintf('%s/%s', $this->app->basePath(), self::CONFIG_FOLDER_NAME);
 
-        if (\is_dir($configPath)) {
-            foreach (\scandir($configPath, SCANDIR_SORT_NONE) as $configFile) {
-                // Skip if not php file
-                if (!\preg_match('#[a-zA-Z0-9_-]+.php#i', $configFile)) {
-                    continue;
-                }
+        if (!\is_dir($configPath)) {
+            return;
+        }
 
-                $this->app->configure(\basename($configFile));
-            }
+        $globIterator = new GlobIterator(\sprintf('%s/%s', $configPath, self::CONFIG_FILE_PATTERN));
+
+        foreach ($globIterator as $configFile) {
+            $this->app->configure($configFile->getBasename());
         }
     }
 }
