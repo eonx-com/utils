@@ -38,6 +38,7 @@ class ConfigurationServiceProvider extends ServiceProvider
         $globIterator = new GlobIterator(\sprintf('%s/%s', $configPath, self::CONFIG_FILE_PATTERN));
 
         foreach ($globIterator as $configFile) {
+            /** @noinspection PhpUndefinedMethodInspection Method exists in \Laravel\Lumen\Application */
             $this->app->configure($configFile->getBasename());
         }
     }

@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace EoneoPay\Utils\Exceptions;
 
-use DomainException;
+use LogicException;
 
-class InvalidXmlTagException extends DomainException
+class AnnotationCacheException extends LogicException
 {
     //
 }

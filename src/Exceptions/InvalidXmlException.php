@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace EoneoPay\Utils\Exceptions;
 
-use Exception;
+use InvalidArgumentException;
 
-class InvalidXmlException extends Exception
+class InvalidXmlException extends InvalidArgumentException
 {
     //
 }

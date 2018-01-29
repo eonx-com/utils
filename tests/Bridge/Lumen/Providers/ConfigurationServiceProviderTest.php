@@ -34,6 +34,7 @@ class ConfigurationServiceProviderTest extends TestCase
 
         $app->shouldNotReceive('configure')->once()->with('no-config.txt');
 
+        /** @var \Illuminate\Contracts\Foundation\Application $app */
         $serviceProvider = new ConfigurationServiceProvider($app);
         $serviceProvider->register();
 
