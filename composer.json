@@ -22,9 +22,9 @@
     "psr-4": { "Tests\\EoneoPay\\Utils\\": "tests/" }
   },
   "suggest": {
-    "doctrine/annotations": "To use the annotation reader",
-    "indigophp/doctrine-annotation-autoload": "To autoload custom doctrine annotations",
-    "illuminate/support": "To use the configuration service provider in Lumen"
+    "doctrine/annotations": "Required to use the annotation reader",
+    "indigophp/doctrine-annotation-autoload": "Recommended to autoload custom doctrine annotations",
+    "illuminate/support": "Required to use the configuration service provider in Lumen"
   },
   "minimum-stability": "stable",
   "config": {

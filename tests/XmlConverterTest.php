@@ -5,7 +5,6 @@ namespace Tests\EoneoPay\Utils;
 use EoneoPay\Utils\Exceptions\InvalidXmlException;
 use EoneoPay\Utils\Exceptions\InvalidXmlTagException;
 use EoneoPay\Utils\XmlConverter;
-use Tests\EoneoPay\Utils\TestCase;
 
 /**
  * @covers \EoneoPay\Utils\XmlConverter
@@ -13,58 +12,99 @@ use Tests\EoneoPay\Utils\TestCase;
 class XmlConverterTest extends TestCase
 {
     /**
-     * Array of test data to create an XML from
+     * Array of test data to create an XML from, without attributes
      *
      * @var array
      */
-    private $array = [
-        '@attributes' => [
-            'action' => '1'
-        ],
+    private static $array = [
         'customers' => [
             [
-                '@attributes' => [
-                    'id' => '1234'
-                ],
                 'name' => 'John Smith',
                 'card' => '4242424242424242'
             ],
             [
-                '@attributes' => [
-                    'id' => '7890'
-                ],
                 'name' => 'Jane Burns',
                 'card' => '5353535353535353',
-                'notes' => [
-                    '@cdata' => 'Test note ><'
-                ]
+                'notes' => 'Test note ><'
             ],
             [
-                '@attributes' => [
-                    'id' => '4353'
-                ],
                 'name' => 'Bob Martin',
-                'card' => [
-                    '@value' => '4111111111111111'
-                ],
+                'card' => '4111111111111111',
                 'disabled' => true
             ]
-        ]
+        ],
+        '@rootNode' => 'Message'
     ];
 
     /**
-     * The expected XML response
+     * Array of test data to create an XML from, with attributes
+     *
+     * @var array
+     */
+    private static $attributeArray = [
+        'customers' => [
+            [
+                'name' => [
+                    '@value' => 'John Smith'
+                ],
+                'card' => [
+                    '@value' => '4242424242424242'
+                ],
+                '@attributes' => [
+                    'id' => '1234'
+                ]
+            ],
+            [
+                'name' => [
+                    '@value' => 'Jane Burns',
+                    '@attributes' => [
+                        'version' => '2'
+                    ]
+                ],
+                'card' => [
+                    '@value' => '5353535353535353'
+                ],
+                'notes' => [
+                    '@value' => 'Test note ><'
+                ],
+                '@attributes' => [
+                    'id' => '7890'
+                ]
+            ],
+            [
+                'name' => [
+                    '@value' => 'Bob Martin'
+                ],
+                'card' => [
+                    '@value' => '4111111111111111'
+                ],
+                'disabled' => [
+                    '@value' => true
+                ],
+                '@attributes' => [
+                    'id' => '4353'
+                ]
+            ]
+        ],
+        '@attributes' => [
+            'action' => '1'
+        ],
+        '@rootNode' => 'Message'
+    ];
+
+    /**
+     * The expected XML response with attributes
      *
      * @var string
      */
-    private $xml = '<?xml version="1.0" encoding="UTF-8"?>
+    private static $attributeXml = '<?xml version="1.0" encoding="UTF-8"?>
 <Message action="1">
   <customers id="1234">
     <name>John Smith</name>
     <card>4242424242424242</card>
   </customers>
   <customers id="7890">
-    <name>Jane Burns</name>
+    <name version="2">Jane Burns</name>
     <card>5353535353535353</card>
     <notes><![CDATA[Test note ><]]></notes>
   </customers>
@@ -77,16 +117,28 @@ class XmlConverterTest extends TestCase
 '; // The trailing line break here is important
 
     /**
-     * Test converting an xml to array
+     * The expected XML response without attributes
      *
-     * @return void
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidXmlTagException
+     * @var string
      */
-    public function testArrayToXmlConversion(): void
-    {
-        self::assertSame((new XmlConverter())->arrayToXml($this->array, 'Message'), $this->xml);
-    }
+    private static $xml = '<?xml version="1.0" encoding="UTF-8"?>
+<Message>
+  <customers>
+    <name>John Smith</name>
+    <card>4242424242424242</card>
+  </customers>
+  <customers>
+    <name>Jane Burns</name>
+    <card>5353535353535353</card>
+    <notes><![CDATA[Test note ><]]></notes>
+  </customers>
+  <customers>
+    <name>Bob Martin</name>
+    <card>4111111111111111</card>
+    <disabled>true</disabled>
+  </customers>
+</Message>
+'; // The trailing line break here is important
 
     /**
      * Test empty xml tags/self closed tags are preserved when converting xml to array
@@ -99,7 +151,7 @@ class XmlConverterTest extends TestCase
     {
         $xml = '<?xml version="1.0" encoding="UTF-8"?><Message><customers/></Message>';
 
-        self::assertSame(['customers' => ''], (new XmlConverter())->xmlToArray($xml));
+        self::assertSame(['customers' => '', '@rootNode' => 'Message'], (new XmlConverter())->xmlToArray($xml));
     }
 
     /**
@@ -114,25 +166,34 @@ class XmlConverterTest extends TestCase
         $this->expectException(InvalidXmlException::class);
 
         // This should throw exception as XML can not be an empty string
-        (new XmlConverter())->xmlToArray('');
+        (new XmlConverter())->xmlToArray('<@attribute>');
     }
 
     /**
-     * Test converting XML to an array
+     * Test converting XML to an array with attributes
      *
      * @return void
      *
      * @throws \EoneoPay\Utils\Exceptions\InvalidXmlException
      */
-    public function testXmlToArrayConversion(): void
+    public function testXmlToArrayConversionWithAttributes(): void
     {
-        // Rendered arrays don't contain @value or @cdata tags and all values are strings, so updated expectation
-        $array = $this->array;
-        $array['customers'][1]['notes'] = 'Test note ><';
-        $array['customers'][2]['card'] = '4111111111111111';
-        $array['customers'][2]['disabled'] = 'true';
+        self::assertSame(
+            self::$attributeArray,
+            (new XmlConverter())->xmlToArray(self::$attributeXml, XmlConverter::XML_INCLUDE_ATTRIBUTES)
+        );
+    }
 
-        self::assertSame($array, (new XmlConverter())->xmlToArray($this->xml));
+    /**
+     * Test converting XML to an array without attributes
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidXmlException
+     */
+    public function testXmlToArrayConversionWithoutAttributes(): void
+    {
+        self::assertSame(self::$array, (new XmlConverter())->xmlToArray(self::$xml));
     }
 
     /**
@@ -146,11 +207,8 @@ class XmlConverterTest extends TestCase
     {
         $this->expectException(InvalidXmlTagException::class);
 
-        $array = $this->array;
-        $array['customers'][1]['@attributes']['@invalid'] = '';
-
         // This should return null as @invalid is not XML compliant
-        (new XmlConverter())->arrayToXml($array);
+        (new XmlConverter())->arrayToXml(['customers' => ['@attributes' => ['@invalid' => '']]]);
     }
 
     /**
@@ -164,10 +222,37 @@ class XmlConverterTest extends TestCase
     {
         $this->expectException(InvalidXmlTagException::class);
 
-        $array = $this->array;
-        $array['customers'][1]['@invalid'] = '';
-
         // This should return null as @invalid is not XML compliant
-        (new XmlConverter())->arrayToXml($array);
+        (new XmlConverter())->arrayToXml(['customers' => ['@invalid' => '']]);
+    }
+
+    /**
+     * Test converting an array without attributes to xml
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidXmlTagException
+     */
+    public function testarrayToXmlConversion(): void
+    {
+        self::assertSame(
+            self::$xml,
+            (new XmlConverter())->arrayToXml(self::$array, 'Message')
+        );
+    }
+
+    /**
+     * Test converting an array with attributes to xml
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidXmlTagException
+     */
+    public function testattributeArrayToXmlConversion(): void
+    {
+        self::assertSame(
+            self::$attributeXml,
+            (new XmlConverter())->arrayToXml(self::$attributeArray, 'Message')
+        );
     }
 }

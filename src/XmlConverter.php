@@ -5,6 +5,7 @@ namespace EoneoPay\Utils;
 
 use DOMDocument;
 use DOMElement;
+use DOMNode;
 use EoneoPay\Utils\Exceptions\InvalidXmlException;
 use EoneoPay\Utils\Exceptions\InvalidXmlTagException;
 use EoneoPay\Utils\Interfaces\XmlConverterInterface;
@@ -17,6 +18,14 @@ use EoneoPay\Utils\Interfaces\XmlConverterInterface;
  */
 class XmlConverter implements XmlConverterInterface
 {
+    /**
+     * XML parsing constants
+     *
+     * @const int
+     */
+    public const XML_IGNORE_ATTRIBUTES = 0;
+    public const XML_INCLUDE_ATTRIBUTES = 1;
+
     /**
      * XML DOMDocument
      *
@@ -39,7 +48,10 @@ class XmlConverter implements XmlConverterInterface
         $this->xml = new DOMDocument('1.0', 'UTF-8');
         $this->xml->formatOutput = true;
 
-        $this->xml->appendChild($this->createXmlNode($rootNode ?? 'data', $array));
+        // Determine root node
+        $rootNode = $rootNode ?? $array['@rootNode'] ?? 'data';
+
+        $this->xml->appendChild($this->createXmlElement($rootNode, $array));
 
         return $this->xml->saveXML();
     }
@@ -48,30 +60,28 @@ class XmlConverter implements XmlConverterInterface
      * Convert xml to an array with attributes
      *
      * @param string $xml The xml to convert
+     * @param int|null $options Additional xml parsing options
      *
      * @return array
      *
      * @throws \EoneoPay\Utils\Exceptions\InvalidXmlException If the XML is invalid and can't be loaded
      */
-    public function xmlToArray(string $xml): array
+    public function xmlToArray(string $xml, ?int $options = null): array
     {
-        // Load xml without escaping CDATA
-        $element = \simplexml_load_string($xml, 'SimpleXMLElement', \LIBXML_NOCDATA);
+        // Prevent errors on xml load
+        \libxml_use_internal_errors(true);
 
-        // If xml failed to load, return null
-        if ($element === false) {
+        // Load XML
+        $document = new DOMDocument();
+        $parsed = $document->loadXML($xml);
+
+        // Test xml validity
+        if ($parsed === false) {
             throw new InvalidXmlException('XML can not be converted: invalid or contains invalid tag');
         }
 
-        // Encode and decode to convert to array
-        $array = \json_decode(\json_encode($element), true);
-
-        // The encode/decode works mostly however self closing tags are converted to empty
-        // arrays so they need to be recursively converted into strings
-        $array = $this->convertEmptyArraysToString($array);
-
-        // Force an array to be returned
-        return \is_array($array) ? $array : [];
+        // Convert node to array
+        return $this->documentToArray($document, $options);
     }
 
     /**
@@ -88,7 +98,7 @@ class XmlConverter implements XmlConverterInterface
     private function appendXmlAttribute(DOMElement $node, string $name, $value): DOMElement
     {
         // Add value and return
-        $node->appendChild($this->createXmlNode($name, $value));
+        $node->appendChild($this->createXmlElement($name, $value));
 
         return $node;
     }
@@ -107,39 +117,10 @@ class XmlConverter implements XmlConverterInterface
     private function appendXmlAttributeArray(DOMElement $node, string $name, array $values): DOMElement
     {
         foreach ($values as $value) {
-            $node->appendChild($this->createXmlNode($name, $value));
+            $node->appendChild($this->createXmlElement($name, $value));
         }
 
         return $node;
-    }
-
-    /**
-     * Recursively convert empty arrays to strings
-     *
-     * @param array $array The array to convert
-     * @param string|null $replacement The string to replace empty arrays with
-     *
-     * @return array
-     */
-    private function convertEmptyArraysToString(array $array, ?string $replacement = null): array
-    {
-        foreach ($array as $key => $value) {
-            // Ignore non-arrays
-            if (!\is_array($value)) {
-                continue;
-            }
-
-            // If value is an empty array, replace
-            if (\is_array($value) && \count($value) === 0) {
-                $array[$key] = $replacement ?? '';
-                continue;
-            }
-
-            // Recurse
-            $array[$key] = $this->convertEmptyArraysToString($value, $replacement ?? '');
-        }
-
-        return $array;
     }
 
     /**
@@ -152,7 +133,7 @@ class XmlConverter implements XmlConverterInterface
      *
      * @throws \EoneoPay\Utils\Exceptions\InvalidXmlTagException Inherited, if xml contains an invalid tag
      */
-    private function createXmlNode(string $name, $value): DOMElement
+    private function createXmlElement(string $name, $value): DOMElement
     {
         // If value is an array, attempt to process attributes and values
         if (\is_array($value)) {
@@ -161,9 +142,107 @@ class XmlConverter implements XmlConverterInterface
 
         // If node isn't an array, add it directly
         $node = $this->xml->createElement($name);
-        $node->appendChild($this->xml->createTextNode($this->xToString($value)));
+        $node->appendChild($this->createXmlNode($value));
 
         return $node;
+    }
+
+    /**
+     * Create the correct xml correct for a value
+     *
+     * @param mixed $value The value to create a child from
+     *
+     * @return \DOMNode
+     */
+    private function createXmlNode($value): DOMNode
+    {
+        $value = $this->xToString($value);
+
+        // If value contains characters that need to be escaped use CDATA
+        return \strpbrk($value, '\'"<>&') ? $this->xml->createCDATASection($value) : $this->xml->createTextNode($value);
+    }
+
+    /**
+     * Recursively convert a DOMDocument to array
+     *
+     * @param \DOMDocument $document The document to convert
+     * @param int|null $options Additional xml parsing options
+     *
+     * @return array
+     */
+    private function documentToArray(DOMDocument $document, ?int $options = null): array
+    {
+        // Get document element
+        $element = $document->documentElement;
+
+        // If no options are provided, assume ignore attributes
+        $options = $options ?? self::XML_IGNORE_ATTRIBUTES;
+
+        $array = ['element' => $this->domElementToArray($element)];
+
+        // The DOMElement array will come back with @value and @attributes tags as well as every
+        // element contained within it's own array, post process the array to flatten single value
+        // elements and alter based on options
+        $array = $this->postProcessDomElementArray($array, $options);
+
+        // Preserve root tag
+        $array['element']['@rootNode'] = $element->tagName;
+
+        return $array['element'];
+    }
+
+    /**
+     * Recursively convert a DOMElement to an array
+     *
+     * @param \DOMElement $element The element to convert
+     *
+     * @return array
+     */
+    private function domElementToArray(DOMElement $element): array
+    {
+        $array = [];
+
+        /** @var \DOMElement $childElement */
+        foreach ($element->childNodes as $childElement) {
+            // Determine array key
+            $key = $childElement->tagName ?? '@value';
+
+            // Convert node based on type
+            switch ($childElement->nodeType) {
+                // For plain text, return string
+                case XML_CDATA_SECTION_NODE:
+                case XML_TEXT_NODE:
+                    if (trim($childElement->textContent) !== '') {
+                        $array[$key] = $this->stringToX(trim($childElement->textContent));
+                    }
+                    break;
+
+                case XML_ELEMENT_NODE:
+                    // Convert element to array recursively
+                    $array[$key][] = $this->domElementToArray($childElement);
+                    break;
+            }
+        }
+
+        // If there are no child nodes because the element is empty or self-closing, add empty string
+        if (\count($element->childNodes) === 0) {
+            $array['@value'] = '';
+        }
+
+        // If attributes exist, add to array
+        if ($element->attributes->length) {
+            $array['@attributes'] = [];
+
+            /**
+             * @var string $name
+             * @var \DOMAttr $attribute
+             */
+            foreach ($element->attributes as $name => $attribute) {
+                $array['@attributes'][$name] = $this->stringToX($attribute->value);
+            }
+        }
+
+        return $array;
     }
 
     /**
@@ -178,6 +257,38 @@ class XmlConverter implements XmlConverterInterface
         $pattern = '/^[a-z_]+[a-z0-9\:\-\.\_]*[^:]*$/i';
 
         return \preg_match($pattern, $name, $matches) && \reset($matches) === $name;
+    }
+
+    /**
+     * Post-process a converted DOMNode array and flatten based on options
+     *
+     * @param array $array The array to process
+     * @param int $options Additional xml parsing options
+     *
+     * @return array
+     */
+    private function postProcessDomElementArray(array $array, int $options): array
+    {
+        foreach ($array as $key => $value) {
+            // Skip non-array values
+            if (!\is_array($value)) {
+                continue;
+            }
+
+            // If value only contains 1 item, flatten
+            $value = \count($value) === 1 && array_key_exists(0, $value) ? $value[0] : $value;
+
+            // If attributes are ignored, process value remove @attributes and further flatten @values tags
+            if ($options === self::XML_IGNORE_ATTRIBUTES) {
+                unset($value['@attributes']);
+                $value = \count($value) === 1 ? $value['@value'] ?? $value : $value;
+            }
+
+            // If value is still an array, recurse
+            $array[$key] = \is_array($value) ? $this->postProcessDomElementArray($value, $options) : $value;
+        }
+
+        return $array;
     }
 
     /**
@@ -219,6 +330,9 @@ class XmlConverter implements XmlConverterInterface
         // Create node
         $node = $this->xml->createElement($name);
 
+        // Ignore root node
+        unset($values['@rootNode']);
+
         // Process attributes
         if (isset($values['@attributes']) && \is_array($values['@attributes'])) {
             $this->processNodeAttributes($node, $name, $values['@attributes']);
@@ -229,23 +343,12 @@ class XmlConverter implements XmlConverterInterface
 
         // Set values directly
         if (isset($values['@value'])) {
-            $node->appendChild($this->xml->createTextNode($this->xToString($values['@value'])));
+            $node->appendChild($this->createXmlNode($values['@value']));
 
             // Remove value from array
             unset($values['@value']);
 
             // If there was a value, there is no recursion
-            return $node;
-        }
-
-        // Set cname directly
-        if (isset($values['@cdata'])) {
-            $node->appendChild($this->xml->createCDATASection($this->xToString($values['@cdata'])));
-
-            // Remove cdata from array
-            unset($values['@cdata']);
-
-            // If there was cdata, there is no recursion
             return $node;
         }
 
@@ -284,5 +387,23 @@ class XmlConverter implements XmlConverterInterface
 
         // Cast to string
         return (string)$value;
+    }
+
+    /**
+     * Convert boolean strings to boolean
+     *
+     * @param string $value The value to convert
+     *
+     * @return bool|string
+     */
+    private function stringToX(string $value)
+    {
+        // Convert booleans to boolean type
+        if (\in_array(\mb_strtolower($value), ['true', 'false'], true)) {
+            return \mb_strtolower($value) === 'true';
+        }
+
+        // Leave as is
+        return $value;
     }
 }
