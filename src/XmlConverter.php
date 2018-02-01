@@ -71,6 +71,11 @@ class XmlConverter implements XmlConverterInterface
         // Prevent errors on xml load
         \libxml_use_internal_errors(true);
 
+        // Test xml empty
+        if ('' === $xml) {
+            throw new InvalidXmlException('XML can not be converted: empty string given');
+        }
+
         // Load XML
         $document = new DOMDocument();
         $parsed = $document->loadXML($xml);

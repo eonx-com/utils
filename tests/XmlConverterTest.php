@@ -141,6 +141,21 @@ class XmlConverterTest extends TestCase
 '; // The trailing line break here is important
 
     /**
+     * Test empty xml return a null
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidXmlException
+     */
+    public function testEmptyXmlGivenException(): void
+    {
+        $this->expectException(InvalidXmlException::class);
+
+        // This should throw exception as XML can not be an empty string
+        (new XmlConverter())->xmlToArray('');
+    }
+
+    /**
      * Test empty xml tags/self closed tags are preserved when converting xml to array
      *
      * @return void
@@ -165,7 +180,7 @@ class XmlConverterTest extends TestCase
     {
         $this->expectException(InvalidXmlException::class);
 
-        // This should throw exception as XML can not be an empty string
+        // This should throw exception as XML is invalid
         (new XmlConverter())->xmlToArray('<@attribute>');
     }
 
