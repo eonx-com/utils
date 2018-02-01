@@ -289,6 +289,9 @@ class XmlConverter implements XmlConverterInterface
                 $value = \count($value) === 1 ? $value['@value'] ?? $value : $value;
             }
 
+            // If value is an empty array, convert to empty string
+            $value = \is_array($value) && \count($value) === 0 ? '' : $value;
+
             // If value is still an array, recurse
             $array[$key] = \is_array($value) ? $this->postProcessDomElementArray($value, $options) : $value;
         }
