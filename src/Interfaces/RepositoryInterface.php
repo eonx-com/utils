@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EoneoPay\Utils\Interfaces;
 
-interface RepositoryInterface
+interface RepositoryInterface extends SerializableInterface
 {
     /**
      * Remove all data from the repository

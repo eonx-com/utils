@@ -5,9 +5,8 @@ namespace EoneoPay\Utils;
 
 use EoneoPay\Utils\Exceptions\InvalidXmlTagException;
 use EoneoPay\Utils\Interfaces\RepositoryInterface;
-use EoneoPay\Utils\Interfaces\SerializableInterface;
 
-class Repository implements SerializableInterface, RepositoryInterface
+class Repository implements RepositoryInterface
 {
     /**
      * The repository data
