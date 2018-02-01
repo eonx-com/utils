@@ -58,27 +58,4 @@ interface RepositoryInterface
      * @return void
      */
     public function set(string $key, $value): void;
-
-    /**
-     * Get the contents of the repository as an array
-     *
-     * @return array
-     */
-    public function toArray(): array;
-
-    /**
-     * Generate json from the repository
-     *
-     * @return string
-     */
-    public function toJson(): string;
-
-    /**
-     * Generate XML string from the repository
-     *
-     * @param string|null $rootNode The name of the root node
-     *
-     * @return string|null
-     */
-    public function toXml(?string $rootNode = null): ?string;
 }

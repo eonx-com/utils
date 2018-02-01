@@ -5,9 +5,9 @@ namespace EoneoPay\Utils;
 
 use EoneoPay\Utils\Exceptions\InvalidXmlTagException;
 use EoneoPay\Utils\Interfaces\RepositoryInterface;
-use JsonSerializable;
+use EoneoPay\Utils\Interfaces\SerializableInterface;
 
-class Repository implements JsonSerializable, RepositoryInterface
+class Repository implements SerializableInterface, RepositoryInterface
 {
     /**
      * The repository data
