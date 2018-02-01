@@ -164,9 +164,25 @@ class XmlConverterTest extends TestCase
      */
     public function testEmptyXmlTagsArePreservedWhenConvertingToArray(): void
     {
-        $xml = '<?xml version="1.0" encoding="UTF-8"?><Message><customers/></Message>';
+        $xml = '<?xml version="1.0" encoding="UTF-8"?><Message><customers/><empty></empty></Message>';
+        $expected = ['customers' => '', 'empty' => '', '@rootNode' => 'Message'];
 
-        self::assertSame(['customers' => '', '@rootNode' => 'Message'], (new XmlConverter())->xmlToArray($xml));
+        self::assertSame($expected, (new XmlConverter())->xmlToArray($xml));
+    }
+
+    /**
+     * Test empty xml tags/self closed tags are preserved when converting xml to array with attributes
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidXmlException
+     */
+    public function testEmptyXmlTagsArePreservedWhenConvertingToArrayWithAttributes(): void
+    {
+        $xml = '<?xml version="1.0" encoding="UTF-8"?><Message><customers/><empty></empty></Message>';
+        $expected = ['customers' => ['@value' => ''], 'empty' => ['@value' => ''], '@rootNode' => 'Message'];
+
+        self::assertSame($expected, (new XmlConverter())->xmlToArray($xml, XmlConverter::XML_INCLUDE_ATTRIBUTES));
     }
 
     /**

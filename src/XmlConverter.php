@@ -71,8 +71,8 @@ class XmlConverter implements XmlConverterInterface
         // Prevent errors on xml load
         \libxml_use_internal_errors(true);
 
-        // Test xml empty
-        if ('' === $xml) {
+        // Test if xml empty, DOMDocument will throw an exception which can't be internalised
+        if ($xml === '') {
             throw new InvalidXmlException('XML can not be converted: empty string given');
         }
 
@@ -180,15 +180,12 @@ class XmlConverter implements XmlConverterInterface
         // Get document element
         $element = $document->documentElement;
 
-        // If no options are provided, assume ignore attributes
-        $options = $options ?? self::XML_IGNORE_ATTRIBUTES;
-
         $array = ['element' => $this->domElementToArray($element)];
 
         // The DOMElement array will come back with @value and @attributes tags as well as every
         // element contained within it's own array, post process the array to flatten single value
         // elements and alter based on options
-        $array = $this->postProcessDomElementArray($array, $options);
+        $array = $this->postProcessDomElementArray($array, $options ?? self::XML_IGNORE_ATTRIBUTES);
 
         // Preserve root tag
         $array['element']['@rootNode'] = $element->tagName;
@@ -209,28 +206,25 @@ class XmlConverter implements XmlConverterInterface
 
         /** @var \DOMElement $childElement */
         foreach ($element->childNodes as $childElement) {
-            // Determine array key
-            $key = $childElement->tagName ?? '@value';
-
             // Convert node based on type
             switch ($childElement->nodeType) {
                 // For plain text, return string
                 case XML_CDATA_SECTION_NODE:
                 case XML_TEXT_NODE:
                     if (trim($childElement->textContent) !== '') {
-                        $array[$key] = $this->stringToX(trim($childElement->textContent));
+                        $array['@value'] = $this->stringToX(trim($childElement->textContent));
                     }
                     break;
 
                 case XML_ELEMENT_NODE:
                     // Convert element to array recursively
-                    $array[$key][] = $this->domElementToArray($childElement);
+                    $array[$childElement->tagName][] = $this->domElementToArray($childElement);
                     break;
             }
         }
 
         // If there are no child nodes because the element is empty or self-closing, add empty string
-        if (\count($element->childNodes) === 0) {
+        if ($element->childNodes->length === 0) {
             $array['@value'] = '';
         }
 
@@ -288,9 +282,6 @@ class XmlConverter implements XmlConverterInterface
                 unset($value['@attributes']);
                 $value = \count($value) === 1 ? $value['@value'] ?? $value : $value;
             }
-
-            // If value is an empty array, convert to empty string
-            $value = \is_array($value) && \count($value) === 0 ? '' : $value;
 
             // If value is still an array, recurse
             $array[$key] = \is_array($value) ? $this->postProcessDomElementArray($value, $options) : $value;
