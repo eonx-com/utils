@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace EoneoPay\Utils\Exceptions;
 
-use EoneoPay\Utils\Interfaces\BaseExceptionInterface;
-
 class InvalidXmlTagException extends RuntimeException
 {
     /**
@@ -14,7 +12,7 @@ class InvalidXmlTagException extends RuntimeException
      */
     public function getErrorCode(): int
     {
-        return BaseExceptionInterface::DEFAULT_ERROR_CODE_RUNTIME;
+        return self::DEFAULT_ERROR_CODE_RUNTIME;
     }
 
     /**
@@ -24,6 +22,6 @@ class InvalidXmlTagException extends RuntimeException
      */
     public function getErrorSubCode(): int
     {
-        return BaseExceptionInterface::DEFAULT_ERROR_SUB_CODE;
+        return self::DEFAULT_ERROR_SUB_CODE;
     }
 }
