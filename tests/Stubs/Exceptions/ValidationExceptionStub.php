@@ -1,9 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace EoneoPay\Utils\Exceptions;
+namespace Tests\EoneoPay\Utils\Stubs\Exceptions;
 
-class InvalidXmlException extends RuntimeException
+use EoneoPay\Utils\Exceptions\ValidationException;
+
+class ValidationExceptionStub extends ValidationException
 {
     /**
      * Get Error code.
@@ -12,7 +14,7 @@ class InvalidXmlException extends RuntimeException
      */
     public function getErrorCode(): int
     {
-        return 1100;
+        return 1000;
     }
 
     /**
