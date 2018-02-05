@@ -39,7 +39,7 @@ class ConfigurationServiceProvider extends ServiceProvider
 
         foreach ($globIterator as $configFile) {
             /** @noinspection PhpUndefinedMethodInspection Method exists in \Laravel\Lumen\Application */
-            $this->app->configure($configFile->getBasename());
+            $this->app->configure(\str_replace('.php', '', $configFile->getBasename()));
         }
     }
 }

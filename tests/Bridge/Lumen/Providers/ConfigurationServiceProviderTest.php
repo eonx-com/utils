@@ -34,7 +34,7 @@ class ConfigurationServiceProviderTest extends TestCase
         foreach (static::$configFiles as $configFile) {
             $app->shouldReceive('configure')
                 ->once()
-                ->with(\basename(\sprintf('%s.php', $configFile)))
+                ->with(\basename($configFile))
                 ->andReturnSelf();
         }
 
@@ -57,6 +57,9 @@ class ConfigurationServiceProviderTest extends TestCase
         $app = Mockery::mock(Application::class);
         $app->shouldReceive('basePath')->once()->withNoArgs()->andReturn(null);
 
-        self::assertNull((new ConfigurationServiceProvider($app))->register());
+        /** @var Application $app */
+        (new ConfigurationServiceProvider($app))->register();
+
+        self::assertTrue(true);
     }
 }
