@@ -7,7 +7,6 @@ use EoneoPay\Utils\Interfaces\GeneratorInterface;
 
 class Generator implements GeneratorInterface
 {
-    /** @noinspection PhpDocMissingThrowsInspection Exceptions will only be thrown if can't find entropy generator */
     /**
      * Generate a random string
      *
@@ -17,20 +16,18 @@ class Generator implements GeneratorInterface
      */
     public function randomString(?int $length = null): string
     {
-        // Generate a string of random bytes
-        /** @noinspection PhpUnhandledExceptionInspection Only thrown if can't find entropy generator */
-        $string = \bin2hex(\random_bytes(1024));
+        // Character set without ambiguous characters i, l, o, s, 0, 1, 5
+        $characters = \str_split('2346789abcdefghjkmnpqrtuvwxyzABCDEFGHJKMNPQRTUVWXYZ');
 
-        // Remove any ambiguous characters
-        $string = \preg_replace('/[ilos015]/i', '', $string);
-
-        // The length of the string to return
+        // Ensure a length exists
         $length = $length ?? 16;
 
-        // Get a random start position
-        /** @noinspection PhpUnhandledExceptionInspection Only thrown if can't find entropy generator */
-        $start = \random_int(0, \strlen($string) - $length - 1);
+        // Generate an array of random characters up to length
+        $random = [];
+        for ($loop = 0; $loop < $length; $loop++) {
+            $random[] = $characters[\array_rand($characters)];
+        }
 
-        return \substr($string, $start, $length);
+        return \implode('', $random);
     }
 }
