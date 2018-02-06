@@ -21,7 +21,16 @@ class GeneratorTest extends TestCase
     {
         $generator = new Generator();
 
-        self::assertNotSame($generator->randomString(), $generator->randomString());
+        $generated = [];
+
+        // Run 500 times and make sure strings are always different
+        for ($loop = 0; $loop < 500; $loop++) {
+            $string = $generator->randomString();
+
+            self::assertArrayNotHasKey($string, $generated);
+
+            $generated[$string] = 1;
+        }
     }
 
     /**
@@ -35,9 +44,9 @@ class GeneratorTest extends TestCase
     {
         $generator = new Generator();
 
-        // Run 100 times to ensure characters are removed
-        for ($loop = 0; $loop < 100; $loop++) {
-            self::assertNotRegExp('/[ilos015]/i', $generator->randomString());
+        // Run 500 times to ensure characters are removed
+        for ($loop = 0; $loop < 500; $loop++) {
+            self::assertNotRegExp('/[015ilos]/i', $generator->randomString());
         }
     }
 }
