@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace EoneoPay\Utils;
 
-class Generator
+use EoneoPay\Utils\Interfaces\GeneratorInterface;
+
+class Generator implements GeneratorInterface
 {
     /**
      * Generate a random string
