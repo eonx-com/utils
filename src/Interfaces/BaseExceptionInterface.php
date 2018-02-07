@@ -20,11 +20,25 @@ interface BaseExceptionInterface
     public const DEFAULT_ERROR_CODE_RUNTIME = 1100;
 
     /**
+     * Default error code for not found.
+     *
+     * @var int
+     */
+    public const DEFAULT_ERROR_CODE_NOT_FOUND = 1200;
+
+    /**
      * Default error sub-code.
      *
      * @var int
      */
     public const DEFAULT_ERROR_SUB_CODE = 0;
+
+    /**
+     * Default status code for not found.
+     *
+     * @var int
+     */
+    public const DEFAULT_STATUS_CODE_NOT_FOUND = 404;
 
     /**
      * Default status code for validation.
