@@ -1,7 +1,7 @@
 {
   "name": "eoneopay/utils",
   "description": "Utility and helper classes",
-  "keywords": ["utilities", "helpers"],
+  "keywords": ["eoneopay", "utilities", "helpers"],
   "license": "MIT",
   "type": "library",
   "require": {
@@ -16,10 +16,14 @@
     "phpunit/phpunit": "~6.0"
   },
   "autoload": {
-    "psr-4": { "EoneoPay\\Utils\\": "src/" }
+    "psr-4": {
+      "EoneoPay\\Utils\\": "src/"
+    }
   },
   "autoload-dev": {
-    "psr-4": { "Tests\\EoneoPay\\Utils\\": "tests/" }
+    "psr-4": {
+      "Tests\\EoneoPay\\Utils\\": "tests/"
+    }
   },
   "suggest": {
     "doctrine/annotations": "Required to use the annotation reader",
