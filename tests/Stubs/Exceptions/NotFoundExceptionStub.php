@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Tests\EoneoPay\Utils\Stubs\Exceptions;
 
-use EoneoPay\Utils\Exceptions\ValidationException;
+use EoneoPay\Utils\Exceptions\NotFoundException;
 
-class ValidationExceptionStub extends ValidationException
+class NotFoundExceptionStub extends NotFoundException
 {
     /**
      * Get Error code.
@@ -14,7 +14,7 @@ class ValidationExceptionStub extends ValidationException
      */
     public function getErrorCode(): int
     {
-        return self::DEFAULT_ERROR_CODE_VALIDATION;
+        return self::DEFAULT_ERROR_CODE_NOT_FOUND;
     }
 
     /**
