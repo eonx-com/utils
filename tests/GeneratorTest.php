@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Utils;
 
 use EoneoPay\Utils\Generator;
+use Tests\EoneoPay\Utils\Stubs\GeneratorStub;
 
 /**
  * @covers \EoneoPay\Utils\Generator
@@ -11,13 +12,11 @@ use EoneoPay\Utils\Generator;
 class GeneratorTest extends TestCase
 {
     /**
-     * Test random string generation
+     * Test true random string generation
      *
      * @return void
-     *
-     * @throws \Exception Inherited, if entropy can't be gathered
      */
-    public function testRandomStringGeneration(): void
+    public function testTrueRandomStringGeneration(): void
     {
         $generator = new Generator();
 
@@ -34,19 +33,20 @@ class GeneratorTest extends TestCase
     }
 
     /**
-     * Ensure random strings do no contain any ambiguous characters
+     * Test string generation falls back correctly if an exception is thrown by the true generation function
      *
      * @return void
      *
-     * @throws \Exception Inherited, if entropy can't be gathered
+     * @throws \Exception Makes generateTrueRandomString emulate not enough entropy
      */
-    public function testRandomStringsDoNotContainAmbiguousCharacters(): void
+    public function testPseudoRandomStringGeneration(): void
     {
-        $generator = new Generator();
+        $generator = new GeneratorStub();
 
-        // Run 500 times to ensure characters are removed
-        for ($loop = 0; $loop < 500; $loop++) {
-            self::assertNotRegExp('/[015ilos]/i', $generator->randomString());
-        }
+        /** @var \EoneoPay\Utils\Generator $generator */
+        $string = $generator->randomString();
+
+        self::assertSame(16, \mb_strlen($string));
+        self::assertRegExp('/[\da-f]{16}/', $string);
     }
 }
