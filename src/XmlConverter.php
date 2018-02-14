@@ -187,6 +187,11 @@ class XmlConverter implements XmlConverterInterface
         // elements and alter based on options
         $array = $this->postProcessDomElementArray($array, $options ?? self::XML_IGNORE_ATTRIBUTES);
 
+        // Avoid ErrorException for illegal string offset when only one empty node is provided
+        if (!\is_array($array['element'])) {
+            $array['element'] = [];
+        }
+
         // Preserve root tag
         $array['element']['@rootNode'] = $element->tagName;
 

@@ -141,6 +141,19 @@ class XmlConverterTest extends TestCase
 '; // The trailing line break here is important
 
     /**
+     * Test empty data node is converted as array with only root node.
+     *
+     * @return void
+     */
+    public function testEmptyDataXmlStillConvertedAsArray(): void
+    {
+        $xml = '<?xml version="1.0" encoding="UTF-8"?><data/>';
+        $expected = ['@rootNode' => 'data'];
+
+        self::assertSame($expected, (new XmlConverter())->xmlToArray($xml));
+    }
+
+    /**
      * Test empty xml return a null
      *
      * @return void
