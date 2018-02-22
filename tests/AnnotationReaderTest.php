@@ -5,8 +5,9 @@ namespace Tests\EoneoPay\Utils;
 
 use EoneoPay\Utils\AnnotationReader;
 use Tests\EoneoPay\Utils\Stubs\AnnotationReader\AnnotationReaderParentStub;
-use Tests\EoneoPay\Utils\Stubs\AnnotationReader\Annotations\TestAnnotationStub;
 use Tests\EoneoPay\Utils\Stubs\AnnotationReader\AnnotationReaderStub;
+use Tests\EoneoPay\Utils\Stubs\AnnotationReader\Annotations\TestAnnotationStub;
+use Tests\EoneoPay\Utils\Stubs\AnnotationReader\Annotations\TestMultipleAnnotationsStub;
 use Tests\EoneoPay\Utils\Stubs\AnnotationReader\Annotations\UnusedAnnotationStub;
 
 /**
@@ -55,6 +56,36 @@ class AnnotationReaderTest extends TestCase
         self::assertArrayHasKey('parent', $annotations);
         self::assertArrayHasKey('trait', $annotations);
         self::assertArrayHasKey('parentTrait', $annotations);
+        self::assertArrayNotHasKey('noAnnotation', $annotations);
+    }
+
+    /**
+     * Ensure multiple annotations can be read recursively through parents and traits
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
+     * @throws \ReflectionException
+     */
+    public function testMultipleAnnotationsCanBeReadRecursivelyFromClass(): void
+    {
+        $annotations = (new AnnotationReader())->getClassPropertyAnnotations(
+            AnnotationReaderStub::class,
+            [TestAnnotationStub::class, TestMultipleAnnotationsStub::class]
+        );
+
+        $tests = [
+            'baseProperty' => 2,
+            'parent' => 4,
+            'trait' => 2,
+            'parentTrait' => 3
+        ];
+
+        foreach ($tests as $key => $count) {
+            self::assertArrayHasKey($key, $annotations);
+            self::assertCount($count, $annotations[$key]);
+        }
+
         self::assertArrayNotHasKey('noAnnotation', $annotations);
     }
 

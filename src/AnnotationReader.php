@@ -32,7 +32,7 @@ class AnnotationReader extends BaseAnnotationReader
     }
 
     /**
-     * Get values for a specific annotation within a class recursively
+     * Get values for a specific annotation within a class recursively as [<property> => <annotation>]
      *
      * @param string $class
      * @param string $annotation
@@ -56,6 +56,40 @@ class AnnotationReader extends BaseAnnotationReader
         }
 
         return $annotations;
+    }
+
+    /**
+     * Get values for annotations within a class recursively as [<property> => [<annotation>, <annotation>, ...]]
+     *
+     * @param string $class
+     * @param array $annotations
+     *
+     * @return array
+     *
+     * @throws \ReflectionException Inherited, if class or property does not exist
+     */
+    public function getClassPropertyAnnotations(string $class, array $annotations): array
+    {
+        $results = [];
+
+        foreach ($this->getClassPropertiesRecursive($class) as $property) {
+            $reflector = new ReflectionProperty($property->class, $property->name);
+
+            foreach ($annotations as $annotation) {
+                $value = $this->getPropertyAnnotation($reflector, $annotation);
+
+                // Only keep annotation if it has a value
+                if ($value) {
+                    if (!isset($results[$property->name])) {
+                        $results[$property->name] = [];
+                    }
+
+                    $results[$property->name][] = $value;
+                }
+            }
+        }
+
+        return $results;
     }
 
     /**
