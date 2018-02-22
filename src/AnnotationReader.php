@@ -73,7 +73,7 @@ class AnnotationReader extends BaseAnnotationReader
 
         $classes = \array_merge(
             $this->getClassTraitsRecursive($baseClass),
-            class_parents($baseClass),
+            \class_parents($baseClass),
             [$baseClass => $baseClass]
         );
 
@@ -81,7 +81,7 @@ class AnnotationReader extends BaseAnnotationReader
             $properties[] = (new ReflectionClass($class))->getProperties();
         }
 
-        return array_merge(...$properties);
+        return \array_merge(...$properties);
     }
 
     /**
