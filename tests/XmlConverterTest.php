@@ -144,6 +144,8 @@ class XmlConverterTest extends TestCase
      * Test empty data node is converted as array with only root node.
      *
      * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidXmlException
      */
     public function testEmptyDataXmlStillConvertedAsArray(): void
     {
