@@ -201,6 +201,20 @@ class XmlConverterTest extends TestCase
     }
 
     /**
+     * Test invalid rootNode tag throw exception.
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidXmlTagException
+     */
+    public function testInvalidRootNodeException(): void
+    {
+        $this->expectException(InvalidXmlTagException::class);
+
+        (new XmlConverter())->arrayToXml([], '|invalid');
+    }
+
+    /**
      * Test invalid xml return a null
      *
      * @return void

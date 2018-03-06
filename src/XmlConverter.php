@@ -51,6 +51,10 @@ class XmlConverter implements XmlConverterInterface
         // Determine root node
         $rootNode = $rootNode ?? $array['@rootNode'] ?? 'data';
 
+        if (!$this->isValidXmlTag($rootNode)) {
+            throw new InvalidXmlTagException(\sprintf('RootNode %s is not a valid xml tag', $rootNode));
+        }
+
         $this->xml->appendChild($this->createXmlElement($rootNode, $array));
 
         return $this->xml->saveXML();
