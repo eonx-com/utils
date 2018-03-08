@@ -9,10 +9,24 @@ use Tests\EoneoPay\Utils\TestCase;
 class ValidationExceptionTest extends TestCase
 {
     /**
+     * Exception should return given errors array via getErrors().
+     *
+     * @return void
+     */
+    public function testGetErrorsReturnRightArray(): void
+    {
+        $errors = ['error1' => 'error1'];
+        $exception = new ValidationExceptionStub(null, null, null, $errors);
+
+        self::assertEquals($errors, $exception->getErrors());
+    }
+
+    /**
      * Exception should return valid codes.
      */
     public function testGettersFromBaseExceptionInterface(): void
     {
-        $this->processExceptionCodesTest(new ValidationExceptionStub(), 1000, 0, 400);
+        $exception = new ValidationExceptionStub(null, null, null, []);
+        $this->processExceptionCodesTest($exception, 1000, 0, 400);
     }
 }

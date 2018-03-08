@@ -25,7 +25,7 @@ abstract class ValidationException extends BaseException
      * @param \Throwable|null $previous
      * @param array $errors
      */
-    public function __construct(string $message = null, int $code = null, Throwable $previous = null, array $errors)
+    public function __construct(?string $message = null, ?int $code = null, ?Throwable $previous = null, array $errors)
     {
         parent::__construct($message ?? '', $code ?? 0, $previous);
 
