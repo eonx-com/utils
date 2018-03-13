@@ -6,6 +6,15 @@ namespace EoneoPay\Utils\Interfaces;
 interface StrInterface
 {
     /**
+     * Convert a string to camel case.
+     *
+     * @param string $value
+     *
+     * @return string
+     */
+    public function camel(string $value): string;
+
+    /**
      * Convert a string to snake case.
      *
      * @param string $value
@@ -16,7 +25,7 @@ interface StrInterface
     public function snake(string $value, ?string $delimiter = null): string;
 
     /**
-     * Convert a value to studly caps case.
+     * Convert a string to studly caps case.
      *
      * @param string $value
      *

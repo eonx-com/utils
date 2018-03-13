@@ -8,6 +8,18 @@ use EoneoPay\Utils\Interfaces\StrInterface;
 class Str implements StrInterface
 {
     /**
+     * Convert a string to camel case.
+     *
+     * @param string $value
+     *
+     * @return string
+     */
+    public function camel(string $value): string
+    {
+        return \lcfirst($this->studly($value));
+    }
+
+    /**
      * Convert a string to snake case.
      *
      * @param string $value
