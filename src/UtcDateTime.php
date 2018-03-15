@@ -5,16 +5,28 @@ namespace EoneoPay\Utils;
 
 use DateTime;
 use DateTimeZone;
-
+use EoneoPay\Utils\Exceptions\InvalidDateTimeStringException;
 use EoneoPay\Utils\Interfaces\UtcDateTimeInterface;
+use Exception;
 
 class UtcDateTime implements UtcDateTimeInterface
 {
     private $datetime;
 
+    /**
+     * Create a utc datetime object from string and throw exception if invalid datetime string provided.
+     *
+     * @param string $datetime
+     *
+     * @throws InvalidDateTimeStringException
+     */
     public function __construct(string $datetime)
     {
-        $this->datetime = new DateTime($datetime);
+        try {
+            $this->datetime = (new DateTime($datetime, new DateTimeZone('UTC')))->setTimezone(new DateTimeZone('UTC'));
+        } catch (Exception $exception) {
+            throw new InvalidDateTimeStringException('The date/time provided is invalid');
+        }
     }
 
     /**
