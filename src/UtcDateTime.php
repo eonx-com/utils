@@ -44,7 +44,7 @@ class UtcDateTime implements UtcDateTimeInterface
      *
      * @return DateTime
      */
-    public function getObject(): \DateTime
+    public function getObject(): DateTime
     {
         return $this->datetime;
     }
