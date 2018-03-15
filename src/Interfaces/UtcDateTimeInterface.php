@@ -8,7 +8,7 @@ interface UtcDateTimeInterface
     /**
      * Get zulu datetime format.
      *
-     * @return \DateTime
+     * @return string
      */
     public function getZulu(): string;
 
