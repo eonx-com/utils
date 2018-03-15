@@ -15,7 +15,6 @@ class UtcDateTime implements UtcDateTimeInterface
     public function __construct(string $datetime)
     {
         $this->datetime = new DateTime($datetime);
-        $this->datetime->format('Y-m-d H:i:s');
     }
 
     /**
