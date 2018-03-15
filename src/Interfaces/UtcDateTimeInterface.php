@@ -6,9 +6,9 @@ namespace EoneoPay\Utils\Interfaces;
 interface UtcDateTimeInterface
 {
     /**
-     * Create UTC DateTime object from datetime string.
+     * Get zulu datetime format.
      *
      * @return \DateTime
      */
-    public function createFromString(string $datetime): \DateTime;
+    public function getZulu(): string;
 }

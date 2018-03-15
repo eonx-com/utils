@@ -3,19 +3,29 @@ declare(strict_types=1);
 
 namespace EoneoPay\Utils;
 
+use DateTime;
+use DateTimeZone;
+
 use EoneoPay\Utils\Interfaces\UtcDateTimeInterface;
 
 class UtcDateTime implements UtcDateTimeInterface
 {
+    private $datetime;
+
+    public function __construct(string $datetime)
+    {
+        $this->datetime = new DateTime($datetime, new DateTimeZone('UTC'));
+    }
+
     /**
-     * Create UTC DateTime object from datetime string which has format "Y-m-d\TH:i:s\Z".
+     * Set the zulu format for the datetime object.
      *
      * @param string $datetime
      *
      * @return \DateTime
      */
-    public function createFromString(string $datetime): \DateTime
+    public function getZulu(): string
     {
-        return \DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $datetime, new \DateTimeZone('UTC'));
+        return $this->dateTime->format('Y-m-d\TH:i:s\Z');
     }
 }
