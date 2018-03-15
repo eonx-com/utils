@@ -16,6 +16,7 @@ class UtcDateTime implements UtcDateTimeInterface
     {
         $this->datetime = new DateTime($datetime);
         $this->datetime->setTimezone(new DateTimeZone('UTC'));
+        $this->datetime->format('Y-m-d H:i:s');
     }
 
     /**
@@ -27,6 +28,16 @@ class UtcDateTime implements UtcDateTimeInterface
      */
     public function getZulu(): string
     {
-        return $this->dateTime->format('Y-m-d\TH:i:s\Z');
+        return $this->datetime->format('Y-m-d\TH:i:s\Z');
+    }
+
+    /**
+     * Get the datetime object.
+     *
+     * @return DateTime
+     */
+    public function getObject()
+    {
+        return $this->datetime;
     }
 }

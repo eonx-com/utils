@@ -11,4 +11,11 @@ interface UtcDateTimeInterface
      * @return \DateTime
      */
     public function getZulu(): string;
+
+    /**
+     * Get the datetime object.
+     *
+     * @return \DateTime
+     */
+    public function getObject(): \DateTime ;
 }
