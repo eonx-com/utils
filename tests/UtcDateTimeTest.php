@@ -8,7 +8,6 @@ use EoneoPay\Utils\UtcDateTime;
 
 class UtcDateTimeTest extends TestCase
 {
-
     /**
      * Test zulu format datetime string generation
      *
