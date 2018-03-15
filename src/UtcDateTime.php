@@ -40,16 +40,6 @@ class UtcDateTime implements UtcDateTimeInterface
     }
 
     /**
-     * Set the zulu format for the datetime object.
-     *
-     * @return string
-     */
-    public function getZulu(): string
-    {
-        return $this->datetime->format('Y-m-d\TH:i:s\Z');
-    }
-
-    /**
      * Get the datetime object.
      *
      * @return \DateTime
@@ -57,5 +47,15 @@ class UtcDateTime implements UtcDateTimeInterface
     public function getObject(): DateTime
     {
         return $this->datetime;
+    }
+
+    /**
+     * Set the zulu format for the datetime object.
+     *
+     * @return string
+     */
+    public function getZulu(): string
+    {
+        return $this->datetime->format('Y-m-d\TH:i:s\Z');
     }
 }
