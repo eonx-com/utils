@@ -18,15 +18,4 @@ class UtcDateTimeTest extends TestCase
         $utcDateTime = new UtcDateTime('2018-03-20 00:00:00');
         self::assertEquals('2018-03-20T00:00:00Z', $utcDateTime->getZulu());
     }
-
-    /**
-     * Test UTC timezone
-     *
-     * @return void
-     */
-    public function testTimeZone(): void
-    {
-        $utcDateTime = new UtcDateTime('2018-03-20 00:00:00');
-        self::assertEquals('UTC', $utcDateTime->getTimezone()->getName());
-    }
 }

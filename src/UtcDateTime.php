@@ -15,16 +15,13 @@ class UtcDateTime implements UtcDateTimeInterface
     public function __construct(string $datetime)
     {
         $this->datetime = new DateTime($datetime);
-        $this->datetime->setTimezone(new DateTimeZone('UTC'));
         $this->datetime->format('Y-m-d H:i:s');
     }
 
     /**
      * Set the zulu format for the datetime object.
      *
-     * @param string $datetime
-     *
-     * @return \DateTime
+     * @return string
      */
     public function getZulu(): string
     {
@@ -36,7 +33,7 @@ class UtcDateTime implements UtcDateTimeInterface
      *
      * @return DateTime
      */
-    public function getObject()
+    public function getObject(): \DateTime
     {
         return $this->datetime;
     }
