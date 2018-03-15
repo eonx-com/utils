@@ -11,21 +11,31 @@ use Exception;
 
 class UtcDateTime implements UtcDateTimeInterface
 {
+    /**
+     * Instantiated DateTime instance
+     *
+     * @var \DateTime
+     */
     private $datetime;
 
     /**
      * Create a utc datetime object from string and throw exception if invalid datetime string provided.
      *
-     * @param string $datetime
+     * @param string $timestamp A timestamp parseable by strtotime
      *
-     * @throws InvalidDateTimeStringException
+     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
      */
-    public function __construct(string $datetime)
+    public function __construct(string $timestamp)
     {
         try {
-            $this->datetime = (new DateTime($datetime, new DateTimeZone('UTC')))->setTimezone(new DateTimeZone('UTC'));
+            $datetime = new DateTime($timestamp);
+
+            // Force UTC timezone for time regardless of passed timezone without adjusting time, this works around
+            // the limitation in the constructor where the timezone is ignored if a timestamp or offset is specified
+            $this->datetime = (new DateTime($datetime->format('Y-m-d H:i:s'), new DateTimeZone('UTC')))
+                ->setTimezone(new DateTimeZone('UTC'));
         } catch (Exception $exception) {
-            throw new InvalidDateTimeStringException('The date/time provided is invalid');
+            throw new InvalidDateTimeStringException('The date/time provided is invalid', null, $exception);
         }
     }
 
@@ -42,7 +52,7 @@ class UtcDateTime implements UtcDateTimeInterface
     /**
      * Get the datetime object.
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getObject(): DateTime
     {
