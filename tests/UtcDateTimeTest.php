@@ -69,6 +69,8 @@ class UtcDateTimeTest extends TestCase
     /**
      * Test zulu format datetime string generation
      *
+     * @return void
+     *
      * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
      */
     public function testGetZulu(): void
