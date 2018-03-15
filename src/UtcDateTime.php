@@ -14,7 +14,8 @@ class UtcDateTime implements UtcDateTimeInterface
 
     public function __construct(string $datetime)
     {
-        $this->datetime = new DateTime($datetime, new DateTimeZone('UTC'));
+        $this->datetime = new DateTime($datetime);
+        $this->datetime->setTimezone(new DateTimeZone('UTC'));
     }
 
     /**
