@@ -21,12 +21,16 @@ class UtcDateTime implements UtcDateTimeInterface
     /**
      * Create a utc datetime object from string and throw exception if invalid datetime string provided.
      *
-     * @param string $timestamp A timestamp parseable by strtotime
+     * @param string|null $timestamp A timestamp parseable by strtotime
      *
      * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
      */
-    public function __construct(string $timestamp)
+    public function __construct(?string $timestamp = null)
     {
+        if (!$timestamp) {
+            throw new InvalidDateTimeStringException('The datetime parameter should not be null', null);
+        }
+
         try {
             $datetime = new DateTime($timestamp);
 
@@ -35,7 +39,7 @@ class UtcDateTime implements UtcDateTimeInterface
             $this->datetime = (new DateTime($datetime->format('Y-m-d H:i:s'), new DateTimeZone('UTC')))
                 ->setTimezone(new DateTimeZone('UTC'));
         } catch (Exception $exception) {
-            throw new InvalidDateTimeStringException('The date/time provided is invalid', null, $exception);
+            throw new InvalidDateTimeStringException('The datetime parameter is invalid', null, $exception);
         }
     }
 

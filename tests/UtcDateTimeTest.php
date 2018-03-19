@@ -11,15 +11,31 @@ use EoneoPay\Utils\UtcDateTime;
 class UtcDateTimeTest extends TestCase
 {
     /**
+     * Test null datetime string passed to constructor.
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
+     *
+     * @return void
+     */
+    public function testConstructorExceptionWithEmptyParameter(): void
+    {
+        $this->expectException(InvalidDateTimeStringException::class);
+        $this->expectExceptionMessage('The datetime parameter should not be null');
+
+        new UtcDateTime();
+    }
+
+    /**
      * Test invalid datetime string passed to constructor.
      *
      * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
      *
      * @return void
      */
-    public function testConstructorException(): void
+    public function testConstructorExceptionWithInvalidString(): void
     {
         $this->expectException(InvalidDateTimeStringException::class);
+        $this->expectExceptionMessage('The datetime parameter is invalid');
 
         new UtcDateTime('abcd123');
     }
