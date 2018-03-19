@@ -19,10 +19,10 @@ class UtcDateTimeTest extends TestCase
      */
     public function testConstructorExceptionWithEmptyParameter(): void
     {
-        $this->expectException(InvalidDateTimeStringException::class);
-        $this->expectExceptionMessage('The datetime parameter should not be null');
-
-        new UtcDateTime();
+        $utcDatetime = (new UtcDateTime())->getObject();
+        $expected = (new DateTime())->format('Y-m-d H:i');
+        self::assertSame('UTC', $utcDatetime->getTimezone()->getName());
+        self::assertSame($expected, $utcDatetime->format('Y-m-d H:i'));
     }
 
     /**

@@ -25,12 +25,8 @@ class UtcDateTime implements UtcDateTimeInterface
      *
      * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
      */
-    public function __construct(?string $timestamp = null)
+    public function __construct(string $timestamp = 'now')
     {
-        if (!$timestamp) {
-            throw new InvalidDateTimeStringException('The datetime parameter should not be null', null);
-        }
-
         try {
             $datetime = new DateTime($timestamp);
 
