@@ -8,6 +8,8 @@ use EoneoPay\Utils\XmlConverter;
 
 /**
  * @covers \EoneoPay\Utils\XmlConverter
+ *
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods) All test methods must be public
  */
 class XmlConverterTest extends TestCase
 {

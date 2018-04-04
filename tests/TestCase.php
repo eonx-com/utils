@@ -5,6 +5,9 @@ namespace Tests\EoneoPay\Utils;
 
 use EoneoPay\Utils\Interfaces\BaseExceptionInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.NumberOfChildren) Every test ultimately extends this class
+ */
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
     /**
