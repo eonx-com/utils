@@ -6,7 +6,7 @@
     "utilities",
     "helpers"
   ],
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "type": "library",
   "require": {
     "php": ">=7.1"
