@@ -1,4 +1,6 @@
 parameters:
     ignoreErrors:
-        - '#PHPDoc tag @param for parameter \$\w+ with type array<array> is not subtype of native type array<int, array>#'
         - '#Call to an undefined method Illuminate\\Contracts\\Foundation\\Application::configure().#'
+        - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
+        - '#Parameter \#1 \$app of class EoneoPay\\Utils\\Bridge\\Lumen\\Providers\\ConfigurationServiceProvider constructor expects Illuminate\\Contracts\\Foundation\\Application, Mockery\\MockInterface given.#'
+        - '#PHPDoc tag @param for parameter \$\w+ with type array<array> is not subtype of native type array<int, array>#'

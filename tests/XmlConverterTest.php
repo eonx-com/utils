@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace Tests\EoneoPay\Utils;
 
@@ -8,6 +9,8 @@ use EoneoPay\Utils\XmlConverter;
 
 /**
  * @covers \EoneoPay\Utils\XmlConverter
+ *
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods) All test methods must be public
  */
 class XmlConverterTest extends TestCase
 {
