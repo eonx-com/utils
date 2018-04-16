@@ -28,22 +28,22 @@ interface ArrInterface
      * Get a value from an array or return the default value
      *
      * @param array $array The array to search in
-     * @param string $key The key to search for, can use dot notation
+     * @param mixed $key The key to search for, can use dot notation
      * @param mixed $default The value to return if the key isn't found
      *
      * @return mixed
      */
-    public function get(array $array, string $key, $default = null);
+    public function get(array $array, $key, $default = null);
 
     /**
      * Determine if the repository has a specific key
      *
      * @param array $array The array to search in
-     * @param string $key The key to search for, can use dot notation
+     * @param mixed $key The key to search for, can use dot notation
      *
      * @return bool
      */
-    public function has(array $array, string $key): bool;
+    public function has(array $array, $key): bool;
 
     /**
      * Copy keys from source to destination if the key exists in the source
@@ -65,6 +65,16 @@ interface ArrInterface
      * @return array
      */
     public function merge(array $array, array ...$arrays): array;
+
+    /**
+     * Remove one or many array items from a given array using "dot" notation
+     *
+     * @param array $array The array to unset keys from
+     * @param array|string $keys The keys to unset
+     *
+     * @return void
+     */
+    public function remove(&$array, $keys): void;
 
     /**
      * Recursively replace values from two or more arrays together allowing dot notation
@@ -91,12 +101,12 @@ interface ArrInterface
      * Set a value on an array using dot notation
      *
      * @param array $array The array to set the value on
-     * @param string $key The key to set the value for
+     * @param mixed $key The key to set the value for
      * @param mixed $value The value to set
      *
      * @return void
      */
-    public function set(array &$array, string $key, $value): void;
+    public function set(array &$array, $key, $value): void;
 
     /**
      * Recursively sort an array by key

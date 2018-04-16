@@ -66,12 +66,12 @@ class Arr implements ArrInterface
      * Get a value from an array or return the default value
      *
      * @param array $array The array to search in
-     * @param string $key The key to search for, can use dot notation
+     * @param mixed $key The key to search for, can use dot notation
      * @param mixed $default The value to return if the key isn't found
      *
      * @return mixed
      */
-    public function get(array $array, string $key, $default = null)
+    public function get(array $array, $key, $default = null)
     {
         $flattened = $this->flatten($array);
 
@@ -82,11 +82,11 @@ class Arr implements ArrInterface
      * Determine if the repository has a specific key
      *
      * @param array $array The array to search in
-     * @param string $key The key to search for, can use dot notation
+     * @param mixed $key The key to search for, can use dot notation
      *
      * @return bool
      */
-    public function has(array $array, string $key): bool
+    public function has(array $array, $key): bool
     {
         return \array_key_exists($key, $this->flatten($array));
     }
@@ -137,6 +137,59 @@ class Arr implements ArrInterface
     }
 
     /**
+     * Remove one or many array items from a given array using "dot" notation
+     *
+     * @param array $array The array to unset keys from
+     * @param mixed $keys The keys to unset
+     *
+     * @return void
+     */
+    public function remove(&$array, $keys): void
+    {
+        $original = &$array;
+
+        // Force keys to be an array
+        $keys = (array)$keys;
+
+        // If there are no keys there is nothing to do
+        if (0 === \count($keys)) {
+            return;
+        }
+
+        // Remove each key based on dot notation
+        foreach ($keys as $key) {
+            // If the exact key exists in the top-level, remove it
+            if (\array_key_exists($key, $array)) {
+                unset($array[$key]);
+
+                continue;
+            }
+
+            // Convert dot key to array
+            $parts = explode('.', $key);
+
+            // Reset array before each pass
+            $array = &$original;
+
+            // Process each level until the final value is found to unset
+            while (\count($parts) > 1) {
+                $part = \array_shift($parts);
+
+                // Skip invalid parts
+                if (!isset($array[$part]) || !\is_array($array[$part])) {
+                    continue 2;
+                }
+
+                // Shift array down level
+                $array = &$array[$part];
+            }
+
+            // Remove final part
+            unset($array[\array_shift($parts)]);
+        }
+    }
+
+    /**
      * Recursively replace values from two or more arrays together allowing dot notation
      *
      * @param array $array The array to replace the additional array values into
@@ -172,6 +225,11 @@ class Arr implements ArrInterface
 
         // Loop through array and compare values with the same cleansing as the search term
         foreach ($array as $value) {
+            // If value isn't a string, skip
+            if (!\is_string($value)) {
+                continue;
+            }
+
             if ($clean === \mb_strtolower(\preg_replace('/[^\da-zA-Z]/', '', $value))) {
                 return $value;
             }
@@ -185,14 +243,14 @@ class Arr implements ArrInterface
      * Set a value on an array using dot notation
      *
      * @param array $array The array to set the value on
-     * @param string $key The key to set the value for
+     * @param mixed $key The key to set the value for
      * @param mixed $value The value to set
      *
      * @return void
      */
-    public function set(array &$array, string $key, $value): void
+    public function set(array &$array, $key, $value): void
     {
-        $keys = \explode('.', $key);
+        $keys = \explode('.', (string)$key);
 
         // Iterate through key parts to find the position to set the value
         while (\count($keys) > 1) {

@@ -6,22 +6,21 @@ namespace EoneoPay\Utils;
 use ArrayAccess;
 use ArrayIterator;
 use Countable;
-use EoneoPay\Utils\Exceptions\InvalidXmlException;
+use EoneoPay\Utils\Exceptions\InvalidXmlTagException;
 use EoneoPay\Utils\Interfaces\CollectionInterface;
 use EoneoPay\Utils\Interfaces\SerializableInterface;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
 use IteratorAggregate;
 use JsonSerializable;
 use Traversable;
 
 /**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity) Collection is massive and requires all functionality
  * @SuppressWarnings(PHPMD.TooManyPublicMethods) Collection requires many public methods to work
  */
 class Collection implements ArrayAccess, CollectionInterface, Countable, IteratorAggregate
 {
     /**
-     * Items in this series
+     * Items in this collection
      *
      * @var array
      */
@@ -30,9 +29,9 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
     /**
      * Create a new collection
      *
-     * @param array $items The items to set to the collection
+     * @param mixed $items The items to set to the collection
      */
-    public function __construct(array $items = null)
+    public function __construct($items = null)
     {
         // If no items are passed, skip
         if (null === $items) {
@@ -46,7 +45,7 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
     }
 
     /**
-     * Convert series to string
+     * Convert collection to string
      *
      * @return string
      */
@@ -60,7 +59,7 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
      *
      * @param mixed $item The item to add to the collection
      *
-     * @return \EoneoPay\Utils\Collection
+     * @return static
      */
     public function add($item): self
     {
@@ -73,7 +72,7 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
     /**
      * Clear all items from a collection
      *
-     * @return \EoneoPay\Utils\Collection
+     * @return static
      */
     public function clear(): self
     {
@@ -84,84 +83,51 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
     }
 
     /**
-     * Collapse the collection of items into a single array.
+     * Collapse the collection of items into a single array
      *
      * @return static
      */
     public function collapse(): self
     {
-        return new static((new Arr())->collapse($this->items));
-    }
+        // Replace contents with collapsed array
+        $this->replace((new Arr())->collapse($this->toArray()));
 
-    /**
-     * Get the number of items in this series
-     *
-     * @return int The number of items in this series
-     */
-    public function count(): int
-    {
-        return \count($this->items);
-    }
-
-    /**
-     * Delete an item from a collection
-     *
-     * @param mixed $item The item to delete
-     *
-     * @return static
-     */
-    public function delete($item): self
-    {
-        // Find item to delete
-        /** @var int $index */
-        foreach ($this->items as $index => $value) {
-            // Skip items which don't match
-            if ($item !== $value) {
-                continue;
-            }
-
-            // Remove matching item
-            $this->offsetUnset($index);
-        }
-
-        // Make chainable
         return $this;
     }
 
     /**
-     * Get the first item in this series
+     * Get the number of items in the collection
      *
-     * @return mixed The first item
+     * @return int
      */
-    public function & first()
+    public function count(): int
     {
-        $keys = \array_keys($this->items);
-
-        return $this->items[\reset($keys)];
+        return \count($this->getItems());
     }
 
     /**
-     * Map a collection and flatten the result by a single level
+     * Get the first item in the collection
      *
-     * @param callable $callback A callback to process against the items
-     *
-     * @return static
+     * @return mixed The first item
      */
-    public function flatMap(callable $callback): self
+    public function first()
     {
-        return $this->map($callback)->collapse();
+        $keys = \array_keys($this->getItems());
+
+        return (new Arr())->get($this->getItems(), \reset($keys));
     }
 
     /**
      * Get item by key
      *
      * @param mixed $key The item to get
+     * @param mixed $default The value to return if key isn't found
      *
      * @return mixed
      */
-    public function & get($key)
+    public function get($key, $default = null)
     {
-        return $this->items[$key] ?? null;
+        return $this->offsetGet($key) ?? $default;
     }
 
     /**
@@ -181,11 +147,36 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
      */
     public function getIterator(): ArrayIterator
     {
-        return new ArrayIterator($this->items);
+        return new ArrayIterator($this->getItems());
     }
 
     /**
-     * Get repository contents to be json serialized
+     * Determine if the collection has a specific key
+     *
+     * @param string $key The key to search for, can use dot notation
+     *
+     * @return bool
+     */
+    public function has(string $key): bool
+    {
+        return $this->offsetExists($key);
+    }
+
+    /**
+     * Copy keys from one collection to this collection if keys exist in both
+     *
+     * @param \EoneoPay\Utils\Interfaces\SerializableInterface $source The source to check for the key in
+     * @param array $keys The destination/source key pairs to process
+     *
+     * @return void
+     */
+    public function intersect(SerializableInterface $source, array $keys): void
+    {
+        $this->replace((new Arr())->intersect($this->toArray(), $source->toArray(), $keys));
+    }
+
+    /**
+     * Get collection contents to pass to json_encode
      *
      * @return array
      */
@@ -195,15 +186,15 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
     }
 
     /**
-     * Get the last item in this series
+     * Get the last item in the collection
      *
      * @return mixed
      */
-    public function & last()
+    public function last()
     {
-        $keys = \array_keys($this->items);
+        $keys = \array_keys($this->getItems());
 
-        return $this->items[\end($keys)];
+        return (new Arr())->get($this->getItems(), \end($keys));
     }
 
     /**
@@ -215,11 +206,33 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
      */
     public function map(callable $callback): self
     {
-        $keys = \array_keys($this->items);
+        $keys = \array_keys($this->toArray());
+        $items = \array_map($callback, $this->toArray(), $keys);
 
-        $items = \array_map($callback, $this->items, $keys);
+        // Replace collection contents
+        $this->replace(\array_combine($keys, $items));
 
-        return new static(\array_combine($keys, $items));
+        return $this;
+    }
+
+    /**
+     * Recursively merge an array into the collection
+     *
+     * @param array $data The data to merge into the collection
+     *
+     * @return void
+     */
+    public function merge(array $data): void
+    {
+        // Convert arrays to collections
+        foreach ($data as &$value) {
+            $value = \is_array($value) ? new static($value) : $value;
+        }
+
+        // Unset reference
+        unset($value);
+
+        $this->replace((new Arr())->merge($this->toArray(), $data));
     }
 
     /**
@@ -229,21 +242,21 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
      *
      * @return mixed
      */
-    public function & nth(int $nth)
+    public function nth(int $nth)
     {
         // Determine nth item, 1 = first item, 2 = second item and so on
         $nth = $nth > 0 ? $nth - 1 : -1;
 
         // Loop through items and return
         $counter = 0;
-        foreach ($this->items as $index => $item) {
+        foreach (\array_keys($this->getItems()) as $index) {
             // Keep incrementing counter until correct value is reached
             if ($counter !== $nth) {
                 ++$counter;
                 continue;
             }
 
-            return $this->items[$index];
+            return (new Arr())->get($this->getItems(), $index);
         }
 
         // Item not found
@@ -253,13 +266,13 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
     /**
      * Determine if an item exists at an offset
      *
-     * @param int $key The key to check
+     * @param mixed $key The key to check
      *
      * @return bool
      */
     public function offsetExists($key): bool
     {
-        return \array_key_exists($key, $this->items);
+        return (new Arr())->has($this->toArray(), $key);
     }
 
     /**
@@ -271,29 +284,27 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
      */
     public function offsetGet($key)
     {
-        return $this->items[$key];
+        $value = (new Arr())->get($this->toArray(), $key);
+
+        // Convert array values to collection
+        return \is_array($value) ? new static($value) : $value;
     }
 
     /**
      * Set the item at a given offset
      *
-     * @param int|null $key The key to set
+     * @param int|string|null $key The key to set
      * @param mixed $value The value to set
      *
      * @return void
      */
     public function offsetSet($key, $value): void
     {
-        // If item isn't an array make it one
-        if (\is_scalar($value)) {
-            $value = [$value];
-        }
+        $item = \is_array($value) ? new static($value) : $value;
 
-        $item = \is_array($value) ? new Repository($value) : $value;
-
+        // Add by key if one is specified
         if (null !== $key) {
-            // Add by key
-            $this->items[$key] = $item;
+            (new Arr())->set($this->items, $key, $item);
 
             return;
         }
@@ -305,16 +316,70 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
     /**
      * Unset the item at a given offset
      *
-     * @param int $key The key to unset
+     * @param array|string $key The key(s) to unset
      *
      * @return void
      */
     public function offsetUnset($key): void
     {
-        unset($this->items[$key]);
+        (new Arr())->remove($this->items, $key);
+    }
 
-        // Reset keys
-        $this->items = \array_values($this->items);
+    /**
+     * Remove an item from a collection
+     *
+     * @param mixed $item The item to remove
+     *
+     * @return static
+     */
+    public function remove($item): self
+    {
+        // Find item in collection
+        $flattened = (new Arr())->flatten($this->getItems());
+
+        foreach ($flattened as $index => $value) {
+            // Skip items which don't match
+            if ($item !== $value) {
+                continue;
+            }
+
+            // Remove matching item
+            $this->offsetUnset($index);
+        }
+
+        // Make chainable
+        return $this;
+    }
+
+    /**
+     * Recursively replace an array's values into the collection
+     *
+     * @param array $data The data to replace in the collection
+     *
+     * @return void
+     */
+    public function replace(array $data): void
+    {
+        // Remove collection contents
+        $this->clear();
+
+        // Update contents
+        foreach ($data as $key => $value) {
+            $this->offsetSet($key, $value);
+        }
+    }
+
+    /**
+     * Set a value to the colelction
+     *
+     * @param string $key The key to set to the collection, can use dot notation
+     * @param mixed $value The value to set for this key
+     *
+     * @return void
+     */
+    public function set(string $key, $value): void
+    {
+        $this->offsetSet($key, $value);
     }
 
     /**
@@ -347,17 +412,19 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
     }
 
     /**
-     * Generate XML string from the repository
+     * Generate XML string from the collection
      *
      * @param string|null $rootNode The name of the root node
      *
      * @return string|null
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidXmlException Collections can't be converted to XML
      */
     public function toXml(?string $rootNode = null): ?string
     {
-        throw new InvalidXmlException('Collections are not compatible with xml schema therefore can\'t be converted');
+        try {
+            return (new XmlConverter())->arrayToXml($this->toArray(), $rootNode);
+        } /** @noinspection BadExceptionsProcessingInspection */ catch (InvalidXmlTagException $exception) {
+            return null;
+        }
     }
 
     /**
@@ -373,12 +440,12 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
             return $items;
         }
 
-        if ($items instanceof Arrayable) {
+        if ($items instanceof SerializableInterface) {
             return $items->toArray();
         }
 
-        if ($items instanceof Jsonable) {
-            return \json_decode($items->toJson(), true);
+        if (\is_string($items) && $this->isJson($items)) {
+            return \json_decode($items, true);
         }
 
         if ($items instanceof JsonSerializable) {
@@ -390,5 +457,19 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
         }
 
         return (array)$items;
+    }
+
+    /**
+     * Determine if a string is json
+     *
+     * @param string $string The string to check
+     *
+     * @return bool
+     */
+    private function isJson(string $string): bool
+    {
+        \json_decode($string);
+
+        return \json_last_error() === JSON_ERROR_NONE;
     }
 }

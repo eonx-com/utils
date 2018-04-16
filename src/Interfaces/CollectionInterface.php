@@ -3,16 +3,14 @@ declare(strict_types=1);
 
 namespace EoneoPay\Utils\Interfaces;
 
-use ArrayIterator;
-
 interface CollectionInterface extends SerializableInterface
 {
     /**
-     * Convert series to string
+     * Convert collection to string
      *
      * @return string
      */
-    public function __toString(): string;
+    public function __toString();
 
     /**
      * Add an item to the collection
@@ -31,52 +29,28 @@ interface CollectionInterface extends SerializableInterface
     public function clear();
 
     /**
-     * Collapse the collection of items into a single array.
+     * Collapse the collection of items into a single array
      *
      * @return static
      */
     public function collapse();
 
     /**
-     * Get the number of items in this series
-     *
-     * @return int The number of items in this series
-     */
-    public function count(): int;
-
-    /**
-     * Delete an item from a collection
-     *
-     * @param mixed $item The item to delete
-     *
-     * @return static
-     */
-    public function delete($item);
-
-    /**
-     * Get the first item in this series
+     * Get the first item in the collection
      *
      * @return mixed The first item
      */
-    public function & first();
-
-    /**
-     * Map a collection and flatten the result by a single level
-     *
-     * @param callable $callback A callback to process against the items
-     *
-     * @return static
-     */
-    public function flatMap(callable $callback);
+    public function first();
 
     /**
      * Get item by key
      *
      * @param mixed $key The item to get
+     * @param mixed $default The value to return if key isn't found
      *
      * @return mixed
      */
-    public function & get($key);
+    public function get($key, $default = null);
 
     /**
      * Get the items from the collection
@@ -86,25 +60,30 @@ interface CollectionInterface extends SerializableInterface
     public function getItems(): array;
 
     /**
-     * Get iterator for collection
+     * Determine if the collection has a specific key
      *
-     * @return \ArrayIterator
+     * @param string $key The key to search for, can use dot notation
+     *
+     * @return bool
      */
-    public function getIterator(): ArrayIterator;
+    public function has(string $key): bool;
 
     /**
-     * Get repository contents to be json serialized
+     * Copy keys from one collection to this collection if keys exist in both
      *
-     * @return array
+     * @param \EoneoPay\Utils\Interfaces\SerializableInterface $source The source to check for the key in
+     * @param array $keys The destination/source key pairs to process
+     *
+     * @return void
      */
-    public function jsonSerialize(): array;
+    public function intersect(SerializableInterface $source, array $keys): void;
 
     /**
-     * Get the last item in this series
+     * Get the last item in the collection
      *
      * @return mixed
      */
-    public function & last();
+    public function last();
 
     /**
      * Run a map over each of the items
@@ -116,11 +95,48 @@ interface CollectionInterface extends SerializableInterface
     public function map(callable $callback);
 
     /**
+     * Recursively merge an array into the collection
+     *
+     * @param array $data The data to merge into the collection
+     *
+     * @return void
+     */
+    public function merge(array $data): void;
+
+    /**
      * Get nth item from the items
      *
      * @param int $nth The item to get
      *
      * @return mixed
      */
-    public function & nth(int $nth);
+    public function nth(int $nth);
+
+    /**
+     * Remove an item from a collection
+     *
+     * @param mixed $item The item to remove
+     *
+     * @return static
+     */
+    public function remove($item);
+
+    /**
+     * Recursively replace an array's values into the collection
+     *
+     * @param array $data The data to replace in the collection
+     *
+     * @return void
+     */
+    public function replace(array $data): void;
+
+    /**
+     * Set a value to the colelction
+     *
+     * @param string $key The key to set to the collection, can use dot notation
+     * @param mixed $value The value to set for this key
+     *
+     * @return void
+     */
+    public function set(string $key, $value): void;
 }
