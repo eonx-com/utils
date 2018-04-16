@@ -80,7 +80,7 @@ class RepositoryTest extends TestCase
      */
     public function testGetWithDotNotationRetrievesValue(): void
     {
-        self::assertSame($this->array['a']['b'], $this->repository->get('a.b'));
+        self::assertSame($this->array['a']['b'], $this->repository->get('a.b')->toArray());
     }
 
     /**
@@ -154,7 +154,7 @@ class RepositoryTest extends TestCase
         $array = ['a' => '15', 'z' => '9'];
         $this->repository->replace($array);
 
-        self::assertSame(\array_replace_recursive($this->array, $array), $this->repository->toArray());
+        self::assertSame($array, $this->repository->toArray());
     }
 
     /**

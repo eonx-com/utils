@@ -76,7 +76,7 @@ class XmlConverter implements XmlConverterInterface
         \libxml_use_internal_errors(true);
 
         // Test if xml empty, DOMDocument will throw an exception which can't be internalised
-        if ($xml === '') {
+        if ('' === $xml) {
             throw new InvalidXmlException('XML can not be converted: empty string given');
         }
 
@@ -85,7 +85,7 @@ class XmlConverter implements XmlConverterInterface
         $parsed = $document->loadXML($xml);
 
         // Test xml validity
-        if ($parsed === false) {
+        if (false === $parsed) {
             throw new InvalidXmlException('XML can not be converted: invalid or contains invalid tag');
         }
 
@@ -220,7 +220,7 @@ class XmlConverter implements XmlConverterInterface
                 // For plain text, return string
                 case XML_CDATA_SECTION_NODE:
                 case XML_TEXT_NODE:
-                    if (trim($childElement->textContent) !== '') {
+                    if ('' !== trim($childElement->textContent)) {
                         $array['@value'] = $this->stringToX(trim($childElement->textContent));
                     }
                     break;
@@ -233,7 +233,7 @@ class XmlConverter implements XmlConverterInterface
         }
 
         // If there are no child nodes because the element is empty or self-closing, add empty string
-        if ($element->childNodes->length === 0) {
+        if (0 === $element->childNodes->length) {
             $array['@value'] = '';
         }
 
@@ -287,7 +287,7 @@ class XmlConverter implements XmlConverterInterface
             $value = \count($value) === 1 && array_key_exists(0, $value) ? $value[0] : $value;
 
             // If attributes are ignored, process value remove @attributes and further flatten @values tags
-            if ($options === self::XML_IGNORE_ATTRIBUTES) {
+            if (self::XML_IGNORE_ATTRIBUTES === $options) {
                 unset($value['@attributes']);
                 $value = \count($value) === 1 ? $value['@value'] ?? $value : $value;
             }

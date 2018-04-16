@@ -40,4 +40,17 @@ class SearchTest extends TestCase
         self::assertSame($array[1], $arr->search($array, 'UserId'));
         self::assertSame($array[2], $arr->search($array, 'parameter_two'));
     }
+
+    /**
+     * Test search ignores non-strings
+     *
+     * @return void
+     */
+    public function testSearchIgnoresNonStringValues(): void
+    {
+        $arr = new Arr();
+        $array = [['invalid'], true, 'test'];
+
+        self::assertSame($array[2], $arr->search($array, 'test'));
+    }
 }
