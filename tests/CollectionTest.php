@@ -4,13 +4,11 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Utils;
 
 use EoneoPay\Utils\Collection;
-use EoneoPay\Utils\Exceptions\InvalidCollectionException;
 use EoneoPay\Utils\Exceptions\InvalidXmlException;
 use EoneoPay\Utils\Repository;
 
 /**
  * @covers \EoneoPay\Utils\Collection
- * @covers \EoneoPay\Utils\Exceptions\InvalidCollectionException
  *
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
@@ -27,8 +25,6 @@ class CollectionTest extends TestCase
      * Test adding an item to a collection
      *
      * @return void
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidCollectionException If array is invalid
      */
     public function testAddToCollection(): void
     {
@@ -39,18 +35,12 @@ class CollectionTest extends TestCase
         // Add an item
         $collection->add(3);
         self::assertCount(3, $collection);
-
-        // Add an invalid item
-        $this->expectException(InvalidCollectionException::class);
-        $collection->add(null);
     }
 
     /**
      * Test array access
      *
      * @return void
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidCollectionException If array is invalid
      */
     public function testArrayAccessInterface(): void
     {
@@ -77,8 +67,6 @@ class CollectionTest extends TestCase
      * Test clearing a collection
      *
      * @return void
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidCollectionException If array is invalid
      */
     public function testClearCollection(): void
     {
@@ -93,8 +81,6 @@ class CollectionTest extends TestCase
      * Test creating a collection from data
      *
      * @return void
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidCollectionException If array is invalid
      */
     public function testCreateCollection(): void
     {
@@ -109,50 +95,17 @@ class CollectionTest extends TestCase
     }
 
     /**
-     * Test creating an invalid collection
-     *
-     * @return void
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidCollectionException If array is invalid
-     */
-    public function testCreateInvalidCollection(): void
-    {
-        // Create collection with invalid data, collections only accept non-associative arrays
-        $this->expectException(InvalidCollectionException::class);
-        new Collection(['id' => 1]);
-    }
-
-    /**
      * Test deleting items from the collection
      *
      * @return void
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidCollectionException If array is invalid
      */
     public function testDeleteItem(): void
     {
         $collection = new Collection(self::$data);
 
         self::assertCount(2, $collection);
-        $itemToDelete = $collection->getNth(1);
+        $itemToDelete = $collection->nth(1);
         $collection->delete($itemToDelete);
-        self::assertCount(1, $collection);
-        self::assertSame([\end(self::$data)], $collection->toArray());
-    }
-
-    /**
-     * Test deleting items from the collection using index
-     *
-     * @return void
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidCollectionException If array is invalid
-     */
-    public function testDeleteNthItem(): void
-    {
-        $collection = new Collection(self::$data);
-
-        self::assertCount(2, $collection);
-        $collection->deleteNth(1);
         self::assertCount(1, $collection);
         self::assertSame([\end(self::$data)], $collection->toArray());
     }
@@ -161,23 +114,19 @@ class CollectionTest extends TestCase
      * Test getting the first and last items
      *
      * @return void
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidCollectionException If array is invalid
      */
     public function testFirstLast(): void
     {
         $collection = new Collection(self::$data);
 
-        self::assertSame($collection->getNth(1), $collection->first());
-        self::assertSame($collection->getNth(2), $collection->last());
+        self::assertSame($collection->nth(1), $collection->first());
+        self::assertSame($collection->nth(2), $collection->last());
     }
 
     /**
      * Test getting original item array
      *
      * @return void
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidCollectionException If array is invalid
      */
     public function testGetOriginalItems(): void
     {
@@ -193,40 +142,16 @@ class CollectionTest extends TestCase
     }
 
     /**
-     * Test invalid collection exception
-     *
-     * @return void
-     */
-    public function testInvalidCollectionException(): void
-    {
-        // Create an invalid collection and test result
-        try {
-            new Collection(['id' => 1]);
-        } catch (InvalidCollectionException $exception) {
-            self::assertSame($exception::DEFAULT_ERROR_CODE_RUNTIME, $exception->getErrorCode());
-            self::assertSame($exception::DEFAULT_ERROR_SUB_CODE, $exception->getErrorSubCode());
-
-            // Return here so following test doesn't fail
-            return;
-        }
-
-        // If exception wasn't thrown, fail
-        self::assertTrue(false);
-    }
-
-    /**
      * Test using the iterator to iterate over collection
      *
      * @return void
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidCollectionException If array is invalid
      */
     public function testIterator(): void
     {
         $collection = new Collection(self::$data);
 
         foreach ($collection as $index => $item) {
-            self::assertSame($collection->getNth($index + 1), $item);
+            self::assertSame($collection->nth($index + 1), $item);
         }
     }
 
@@ -235,7 +160,6 @@ class CollectionTest extends TestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidCollectionException If array is invalid
      * @throws \EoneoPay\Utils\Exceptions\InvalidXmlException Collections can't be converted to XML
      */
     public function testSerialisation(): void

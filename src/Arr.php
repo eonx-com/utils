@@ -4,9 +4,38 @@ declare(strict_types=1);
 namespace EoneoPay\Utils;
 
 use EoneoPay\Utils\Interfaces\ArrInterface;
+use EoneoPay\Utils\Interfaces\SerializableInterface;
 
 class Arr implements ArrInterface
 {
+    /**
+     * Collapse an array of arrays into a single array
+     *
+     * @param array $array The array to collapse
+     *
+     * @return array
+     */
+    public function collapse($array): array
+    {
+        $results = [];
+
+        foreach ($array as $values) {
+            // De-serialise serialisables
+            if ($values instanceof SerializableInterface) {
+                $values = $values->toArray();
+            }
+
+            // If item is not an array, skip
+            if (!\is_array($values)) {
+                continue;
+            }
+
+            $results[] = $values;
+        }
+
+        return \array_merge(...$results);
+    }
+
     /**
      * Flatten an array into dot notation
      *

@@ -19,18 +19,23 @@ interface CollectionInterface extends SerializableInterface
      *
      * @param mixed $item The item to add to the collection
      *
-     * @return mixed The original collection object
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidCollectionException If the item isn't valid
+     * @return static
      */
     public function add($item);
 
     /**
      * Clear all items from a collection
      *
-     * @return mixed The original collection object
+     * @return static
      */
     public function clear();
+
+    /**
+     * Collapse the collection of items into a single array.
+     *
+     * @return static
+     */
+    public function collapse();
 
     /**
      * Get the number of items in this series
@@ -44,18 +49,9 @@ interface CollectionInterface extends SerializableInterface
      *
      * @param mixed $item The item to delete
      *
-     * @return mixed The original collection object
+     * @return static
      */
     public function delete($item);
-
-    /**
-     * Delete an item from the collection
-     *
-     * @param int $nth The item to delete
-     *
-     * @return mixed The original collection object
-     */
-    public function deleteNth(int $nth);
 
     /**
      * Get the first item in this series
@@ -63,6 +59,24 @@ interface CollectionInterface extends SerializableInterface
      * @return mixed The first item
      */
     public function & first();
+
+    /**
+     * Map a collection and flatten the result by a single level
+     *
+     * @param callable $callback A callback to process against the items
+     *
+     * @return static
+     */
+    public function flatMap(callable $callback);
+
+    /**
+     * Get item by key
+     *
+     * @param mixed $key The item to get
+     *
+     * @return mixed
+     */
+    public function & get($key);
 
     /**
      * Get the items from the collection
@@ -79,13 +93,11 @@ interface CollectionInterface extends SerializableInterface
     public function getIterator(): ArrayIterator;
 
     /**
-     * Get nth item from the items
+     * Get repository contents to be json serialized
      *
-     * @param int $nth The item to get
-     *
-     * @return mixed
+     * @return array
      */
-    public function & getNth(int $nth);
+    public function jsonSerialize(): array;
 
     /**
      * Get the last item in this series
@@ -95,9 +107,20 @@ interface CollectionInterface extends SerializableInterface
     public function & last();
 
     /**
-     * Return collection items as an array
+     * Run a map over each of the items
      *
-     * @return array
+     * @param callable $callback A callback to process against the items
+     *
+     * @return static
      */
-    public function toArray(): array;
+    public function map(callable $callback);
+
+    /**
+     * Get nth item from the items
+     *
+     * @param int $nth The item to get
+     *
+     * @return mixed
+     */
+    public function & nth(int $nth);
 }

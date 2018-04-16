@@ -6,6 +6,15 @@ namespace EoneoPay\Utils\Interfaces;
 interface ArrInterface
 {
     /**
+     * Collapse an array of arrays into a single array
+     *
+     * @param array $array The array to collapse
+     *
+     * @return array
+     */
+    public function collapse($array): array;
+
+    /**
      * Flatten an array into dot notation
      *
      * @param array $array The array to flatten

@@ -6,11 +6,14 @@ namespace EoneoPay\Utils;
 use ArrayAccess;
 use ArrayIterator;
 use Countable;
-use EoneoPay\Utils\Exceptions\InvalidCollectionException;
 use EoneoPay\Utils\Exceptions\InvalidXmlException;
 use EoneoPay\Utils\Interfaces\CollectionInterface;
 use EoneoPay\Utils\Interfaces\SerializableInterface;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
 use IteratorAggregate;
+use JsonSerializable;
+use Traversable;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyPublicMethods) Collection requires many public methods to work
@@ -28,8 +31,6 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
      * Create a new collection
      *
      * @param array $items The items to set to the collection
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidCollectionException If the collection is invalid
      */
     public function __construct(array $items = null)
     {
@@ -39,14 +40,8 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
         }
 
         // Loop through items
-        foreach ($items as $key => $item) {
-            // If key is not numeric, this isn't a collection
-            if (!\is_numeric($key)) {
-                throw new InvalidCollectionException('Collections can only be used for non-associative arrays');
-            }
-
-            // If item is an array, convert to repository
-            $this->add($item);
+        foreach ($this->getArrayableItems($items) as $key => $item) {
+            $this->offsetSet($key, $item);
         }
     }
 
@@ -66,8 +61,6 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
      * @param mixed $item The item to add to the collection
      *
      * @return \EoneoPay\Utils\Collection
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidCollectionException If the item isn't valid
      */
     public function add($item): self
     {
@@ -91,6 +84,16 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
     }
 
     /**
+     * Collapse the collection of items into a single array.
+     *
+     * @return static
+     */
+    public function collapse(): self
+    {
+        return new static((new Arr())->collapse($this->items));
+    }
+
+    /**
      * Get the number of items in this series
      *
      * @return int The number of items in this series
@@ -105,7 +108,7 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
      *
      * @param mixed $item The item to delete
      *
-     * @return \EoneoPay\Utils\Collection
+     * @return static
      */
     public function delete($item): self
     {
@@ -126,32 +129,6 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
     }
 
     /**
-     * Delete an item from the collection
-     *
-     * @param int $nth The item to delete
-     *
-     * @return \EoneoPay\Utils\Collection
-     */
-    public function deleteNth(int $nth): self
-    {
-        // Subtract 1 from nth to get the item to remove, set to -1 if $nth
-        // is invalid to prevent random removal
-        $nth = 0 < $nth ? $nth - 1 : -1;
-
-        // Only remove if $nth is zero or more and key exists
-        if (0 <= $nth && \array_key_exists($nth, $this->items)) {
-            $this->offsetUnset($nth);
-        }
-
-        // Make chainable
-        return $this;
-    }
-
-    /**
-     *
-     */
-
-    /**
      * Get the first item in this series
      *
      * @return mixed The first item
@@ -161,6 +138,30 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
         $keys = \array_keys($this->items);
 
         return $this->items[\reset($keys)];
+    }
+
+    /**
+     * Map a collection and flatten the result by a single level
+     *
+     * @param callable $callback A callback to process against the items
+     *
+     * @return static
+     */
+    public function flatMap(callable $callback): self
+    {
+        return $this->map($callback)->collapse();
+    }
+
+    /**
+     * Get item by key
+     *
+     * @param mixed $key The item to get
+     *
+     * @return mixed
+     */
+    public function & get($key)
+    {
+        return $this->items[$key] ?? null;
     }
 
     /**
@@ -184,24 +185,6 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
     }
 
     /**
-     * Get nth item from the items
-     *
-     * @param int $nth The item to get
-     *
-     * @return mixed
-     */
-    public function & getNth(int $nth)
-    {
-        // Determine nth item, 1 = first item, 2 = second item and so on
-        $nth = $nth > 0 ? $nth - 1 : -1;
-
-        // Return item or null if index doesn't exist
-        $item = $this->items[$nth] ?? null;
-
-        return $item;
-    }
-
-    /**
      * Get repository contents to be json serialized
      *
      * @return array
@@ -221,6 +204,50 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
         $keys = \array_keys($this->items);
 
         return $this->items[\end($keys)];
+    }
+
+    /**
+     * Run a map over each of the items
+     *
+     * @param callable $callback A callback to process against the items
+     *
+     * @return static
+     */
+    public function map(callable $callback): self
+    {
+        $keys = \array_keys($this->items);
+
+        $items = \array_map($callback, $this->items, $keys);
+
+        return new static(\array_combine($keys, $items));
+    }
+
+    /**
+     * Get nth item from the items
+     *
+     * @param int $nth The item to get
+     *
+     * @return mixed
+     */
+    public function & nth(int $nth)
+    {
+        // Determine nth item, 1 = first item, 2 = second item and so on
+        $nth = $nth > 0 ? $nth - 1 : -1;
+
+        // Loop through items and return
+        $counter = 0;
+        foreach ($this->items as $index => $item) {
+            // Keep incrementing counter until correct value is reached
+            if ($counter !== $nth) {
+                ++$counter;
+                continue;
+            }
+
+            return $this->items[$index];
+        }
+
+        // Item not found
+        return null;
     }
 
     /**
@@ -254,8 +281,6 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
      * @param mixed $value The value to set
      *
      * @return void
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidCollectionException If the item isn't valids
      */
     public function offsetSet($key, $value): void
     {
@@ -264,11 +289,7 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
             $value = [$value];
         }
 
-        if (!$value instanceof Repository && !\is_array($value)) {
-            throw new InvalidCollectionException('Collection items must be a repository or array');
-        }
-
-        $item = $value instanceof Repository ? $value : new Repository($value);
+        $item = \is_array($value) ? new Repository($value) : $value;
 
         if (null !== $key) {
             // Add by key
@@ -337,5 +358,37 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
     public function toXml(?string $rootNode = null): ?string
     {
         throw new InvalidXmlException('Collections are not compatible with xml schema therefore can\'t be converted');
+    }
+
+    /**
+     * Results array of items from an item
+     *
+     * @param mixed $items
+     *
+     * @return array
+     */
+    private function getArrayableItems($items): array
+    {
+        if (\is_array($items)) {
+            return $items;
+        }
+
+        if ($items instanceof Arrayable) {
+            return $items->toArray();
+        }
+
+        if ($items instanceof Jsonable) {
+            return \json_decode($items->toJson(), true);
+        }
+
+        if ($items instanceof JsonSerializable) {
+            return $items->jsonSerialize();
+        }
+
+        if ($items instanceof Traversable) {
+            return \iterator_to_array($items);
+        }
+
+        return (array)$items;
     }
 }
