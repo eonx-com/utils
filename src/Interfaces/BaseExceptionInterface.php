@@ -24,7 +24,7 @@ interface BaseExceptionInterface
      *
      * @var int
      */
-    public const DEFAULT_ERROR_CODE_NOT_FOUND = 1200;
+    public const DEFAULT_ERROR_CODE_NOT_FOUND = 1400;
 
     /**
      * Default error sub-code.
