@@ -3,10 +3,14 @@ declare(strict_types=1);
 
 namespace EoneoPay\Utils;
 
+use ArrayAccess;
+use ArrayIterator;
+use Countable;
 use EoneoPay\Utils\Exceptions\InvalidXmlTagException;
 use EoneoPay\Utils\Interfaces\RepositoryInterface;
+use IteratorAggregate;
 
-class Repository implements RepositoryInterface
+class Repository implements ArrayAccess, Countable, IteratorAggregate, RepositoryInterface
 {
     /**
      * The repository data
@@ -36,6 +40,16 @@ class Repository implements RepositoryInterface
     }
 
     /**
+     * Count the number of items in a repository
+     *
+     * @return int
+     */
+    public function count(): int
+    {
+        return \count($this->data);
+    }
+
+    /**
      * Get a value from the repository or return the default value
      *
      * @param string $key The key to search for, can use dot notation
@@ -46,6 +60,16 @@ class Repository implements RepositoryInterface
     public function get(string $key, $default = null)
     {
         return (new Arr())->get($this->data, $key, $default);
+    }
+
+    /**
+     * Get iterator for repository
+     *
+     * @return \ArrayIterator
+     */
+    public function getIterator(): ArrayIterator
+    {
+        return new ArrayIterator($this->data);
     }
 
     /**
@@ -93,6 +117,55 @@ class Repository implements RepositoryInterface
     public function merge(array $data): void
     {
         $this->data = (new Arr())->merge($this->data, $data);
+    }
+
+    /**
+     * Determine if an item exists at an offset
+     *
+     * @param string $key The key to check
+     *
+     * @return bool
+     */
+    public function offsetExists($key): bool
+    {
+        return $this->has($key);
+    }
+
+    /**
+     * Get an item at a given offset
+     *
+     * @param string $key The key to get
+     *
+     * @return mixed
+     */
+    public function offsetGet($key)
+    {
+        return $this->get($key);
+    }
+
+    /**
+     * Set the item at a given offset
+     *
+     * @param string $key The key to set
+     * @param mixed $value The value to set
+     *
+     * @return void
+     */
+    public function offsetSet($key, $value): void
+    {
+        $this->set($key, $value);
+    }
+
+    /**
+     * Unset the item at a given offset
+     *
+     * @param string $key The key to unset
+     *
+     * @return void
+     */
+    public function offsetUnset($key): void
+    {
+        unset($this->data[$key]);
     }
 
     /**

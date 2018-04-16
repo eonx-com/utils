@@ -47,17 +47,27 @@ class RepositoryTest extends TestCase
     }
 
     /**
-     * Test constructor populates repository
+     * Test array access
      *
      * @return void
      */
-    public function testConstructorPopulatesRepository(): void
+    public function testArrayAccessInterface(): void
     {
-        $repository = new Repository();
-        self::assertEmpty($repository->toArray());
-
         $repository = new Repository($this->array);
-        self::assertSame($this->array, $repository->toArray());
+
+        // Test offsetExists and offsetGet
+        self::assertArrayHasKey('a', $repository);
+        self::assertSame($this->array['a'], $repository['a']);
+
+        // offsetUnset
+        unset($repository['a']);
+        self::assertCount(1, $repository);
+
+        // offsetSet
+        $original = $repository['f'];
+        $repository['f'] = 'replaced value';
+        self::assertNotSame($original, $repository['f']);
+        self::assertSame('replaced value', $repository['f']);
     }
 
     /**
@@ -74,13 +84,29 @@ class RepositoryTest extends TestCase
     }
 
     /**
-     * Test values are able to be fetched from repository by dot notation
+     * Test constructor populates repository
      *
      * @return void
      */
-    public function testGetWithDotNotationRetrievesValue(): void
+    public function testConstructorPopulatesRepository(): void
     {
-        self::assertSame($this->array['a']['b'], $this->repository->get('a.b'));
+        $repository = new Repository();
+        self::assertEmpty($repository->toArray());
+
+        $repository = new Repository($this->array);
+        self::assertSame($this->array, $repository->toArray());
+    }
+
+    /**
+     * Test counting a repository
+     *
+     * @return void
+     */
+    public function testCountable(): void
+    {
+        $repository = new Repository($this->array);
+
+        self::assertCount(2, $repository);
     }
 
     /**
@@ -91,6 +117,16 @@ class RepositoryTest extends TestCase
     public function testGetWithDefaultValueReturnedIfKeyIsInvalid(): void
     {
         self::assertSame('default value', $this->repository->get('invalid.key', 'default value'));
+    }
+
+    /**
+     * Test values are able to be fetched from repository by dot notation
+     *
+     * @return void
+     */
+    public function testGetWithDotNotationRetrievesValue(): void
+    {
+        self::assertSame($this->array['a']['b'], $this->repository->get('a.b'));
     }
 
     /**
@@ -119,6 +155,20 @@ class RepositoryTest extends TestCase
         $this->repository->intersect($repository, ['a' => 'z']);
 
         self::assertSame($expected, $this->repository->toArray());
+    }
+
+    /**
+     * Test using the iterator to iterate over collection
+     *
+     * @return void
+     */
+    public function testIterator(): void
+    {
+        $repository = new Repository($this->array);
+
+        foreach ($repository as $index => $item) {
+            self::assertSame($repository->get($index), $item);
+        }
     }
 
     /**
@@ -190,18 +240,6 @@ class RepositoryTest extends TestCase
     }
 
     /**
-     * Test the to xml function returns the repository contents as xml
-     *
-     * @return void
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidXmlTagException
-     */
-    public function testToXmlReturnsRepositoryContentsAsXml(): void
-    {
-        self::assertSame((new XmlConverter())->arrayToXml($this->array), $this->repository->toXml());
-    }
-
-    /**
      * Test the to xml function returns null if the repository contains invalid xml
      *
      * @return void
@@ -211,5 +249,17 @@ class RepositoryTest extends TestCase
         $repository = new Repository(['@invalid' => true]);
 
         self::assertNull($repository->toXml());
+    }
+
+    /**
+     * Test the to xml function returns the repository contents as xml
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidXmlTagException
+     */
+    public function testToXmlReturnsRepositoryContentsAsXml(): void
+    {
+        self::assertSame((new XmlConverter())->arrayToXml($this->array), $this->repository->toXml());
     }
 }

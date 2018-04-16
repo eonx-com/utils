@@ -7,7 +7,6 @@ use EoneoPay\Utils\Collection;
 use EoneoPay\Utils\Exceptions\InvalidCollectionException;
 use EoneoPay\Utils\Exceptions\InvalidXmlException;
 use EoneoPay\Utils\Repository;
-use EoneoPay\Utils\XmlConverter;
 
 /**
  * @covers \EoneoPay\Utils\Collection
@@ -44,6 +43,34 @@ class CollectionTest extends TestCase
         // Add an invalid item
         $this->expectException(InvalidCollectionException::class);
         $collection->add(null);
+    }
+
+    /**
+     * Test array access
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidCollectionException If array is invalid
+     */
+    public function testArrayAccessInterface(): void
+    {
+        $collection = new Collection(self::$data);
+
+        // Test offsetExists and offsetGet
+        self::assertArrayHasKey(0, $collection);
+        /** @var \EoneoPay\Utils\Collection $collection [0] */
+        self::assertSame(\reset(self::$data), $collection[0]->toArray());
+
+        // offsetUnset
+        unset($collection[0]);
+        self::assertCount(1, $collection);
+
+        // offsetSet
+        $original = $collection[0];
+        $collection[0] = 'replaced value';
+        $first = $collection->first();
+        self::assertNotSame($original, $first->toArray());
+        self::assertSame(['replaced value'], $first->toArray());
     }
 
     /**

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EoneoPay\Utils;
 
+use ArrayAccess;
 use ArrayIterator;
 use Countable;
 use EoneoPay\Utils\Exceptions\InvalidCollectionException;
@@ -14,7 +15,7 @@ use IteratorAggregate;
 /**
  * @SuppressWarnings(PHPMD.TooManyPublicMethods) Collection requires many public methods to work
  */
-class Collection implements CollectionInterface, Countable, IteratorAggregate
+class Collection implements ArrayAccess, CollectionInterface, Countable, IteratorAggregate
 {
     /**
      * Items in this series
@@ -70,24 +71,11 @@ class Collection implements CollectionInterface, Countable, IteratorAggregate
      */
     public function add($item): self
     {
-        // If item isn't an array make it one
-        if (\is_scalar($item)) {
-            $item = [$item];
-        }
-
-        if (!$item instanceof Repository && !\is_array($item)) {
-            throw new InvalidCollectionException('Collection items must be a repository or array');
-        }
-
-        $this->items[] = $item instanceof Repository ? $item : new Repository($item);
+        $this->offsetSet(null, $item);
 
         // Make chainable
         return $this;
     }
-
-    /**
-     *
-     */
 
     /**
      * Clear all items from a collection
@@ -122,6 +110,7 @@ class Collection implements CollectionInterface, Countable, IteratorAggregate
     public function delete($item): self
     {
         // Find item to delete
+        /** @var int $index */
         foreach ($this->items as $index => $value) {
             // Skip items which don't match
             if ($item !== $value) {
@@ -129,11 +118,8 @@ class Collection implements CollectionInterface, Countable, IteratorAggregate
             }
 
             // Remove matching item
-            unset($this->items[$index]);
+            $this->offsetUnset($index);
         }
-
-        // Reset keys
-        $this->items = \array_values($this->items);
 
         // Make chainable
         return $this;
@@ -154,15 +140,16 @@ class Collection implements CollectionInterface, Countable, IteratorAggregate
 
         // Only remove if $nth is zero or more and key exists
         if (0 <= $nth && \array_key_exists($nth, $this->items)) {
-            unset($this->items[$nth]);
+            $this->offsetUnset($nth);
         }
-
-        // Reset keys
-        $this->items = \array_values($this->items);
 
         // Make chainable
         return $this;
     }
+
+    /**
+     *
+     */
 
     /**
      * Get the first item in this series
@@ -234,6 +221,79 @@ class Collection implements CollectionInterface, Countable, IteratorAggregate
         $keys = \array_keys($this->items);
 
         return $this->items[\end($keys)];
+    }
+
+    /**
+     * Determine if an item exists at an offset
+     *
+     * @param int $key The key to check
+     *
+     * @return bool
+     */
+    public function offsetExists($key): bool
+    {
+        return \array_key_exists($key, $this->items);
+    }
+
+    /**
+     * Get an item at a given offset
+     *
+     * @param int $key The key to get
+     *
+     * @return mixed
+     */
+    public function offsetGet($key)
+    {
+        return $this->items[$key];
+    }
+
+    /**
+     * Set the item at a given offset
+     *
+     * @param int $key The key to set
+     * @param mixed $value The value to set
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidCollectionException If the item isn't valids
+     */
+    public function offsetSet($key, $value): void
+    {
+        // If item isn't an array make it one
+        if (\is_scalar($value)) {
+            $value = [$value];
+        }
+
+        if (!$value instanceof Repository && !\is_array($value)) {
+            throw new InvalidCollectionException('Collection items must be a repository or array');
+        }
+
+        $item = $value instanceof Repository ? $value : new Repository($value);
+
+        if ($key !== null) {
+            // Add by key
+            $this->items[$key] = $item;
+
+            return;
+        }
+
+        // Add directly to array
+        $this->items[] = $item;
+    }
+
+    /**
+     * Unset the item at a given offset
+     *
+     * @param string $key The key to unset
+     *
+     * @return void
+     */
+    public function offsetUnset($key): void
+    {
+        unset($this->items[$key]);
+
+        // Reset keys
+        $this->items = \array_values($this->items);
     }
 
     /**
