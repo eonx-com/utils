@@ -7,11 +7,13 @@ use ArrayIterator;
 use Countable;
 use EoneoPay\Utils\Exceptions\InvalidCollectionException;
 use EoneoPay\Utils\Exceptions\InvalidXmlException;
-use EoneoPay\Utils\Exceptions\InvalidXmlTagException;
 use EoneoPay\Utils\Interfaces\CollectionInterface;
 use EoneoPay\Utils\Interfaces\SerializableInterface;
 use IteratorAggregate;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods) Collection requires many public methods to work
+ */
 class Collection implements CollectionInterface, Countable, IteratorAggregate
 {
     /**
