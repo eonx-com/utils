@@ -10,6 +10,9 @@ use EoneoPay\Utils\Exceptions\InvalidXmlTagException;
 use EoneoPay\Utils\Interfaces\RepositoryInterface;
 use IteratorAggregate;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods) Collection requires many public methods to work
+ */
 class Repository implements ArrayAccess, Countable, IteratorAggregate, RepositoryInterface
 {
     /**

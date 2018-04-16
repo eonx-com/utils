@@ -250,7 +250,7 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
     /**
      * Set the item at a given offset
      *
-     * @param int $key The key to set
+     * @param int|null $key The key to set
      * @param mixed $value The value to set
      *
      * @return void
@@ -270,7 +270,7 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
 
         $item = $value instanceof Repository ? $value : new Repository($value);
 
-        if ($key !== null) {
+        if (null !== $key) {
             // Add by key
             $this->items[$key] = $item;
 
@@ -284,7 +284,7 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
     /**
      * Unset the item at a given offset
      *
-     * @param string $key The key to unset
+     * @param int $key The key to unset
      *
      * @return void
      */
