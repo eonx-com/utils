@@ -6,10 +6,13 @@ namespace EoneoPay\Utils;
 use ArrayIterator;
 use Countable;
 use EoneoPay\Utils\Exceptions\InvalidCollectionException;
+use EoneoPay\Utils\Exceptions\InvalidXmlException;
+use EoneoPay\Utils\Exceptions\InvalidXmlTagException;
+use EoneoPay\Utils\Interfaces\CollectionInterface;
 use EoneoPay\Utils\Interfaces\SerializableInterface;
 use IteratorAggregate;
 
-class Collection implements Countable, IteratorAggregate
+class Collection implements CollectionInterface, Countable, IteratorAggregate
 {
     /**
      * Items in this series
@@ -51,7 +54,7 @@ class Collection implements Countable, IteratorAggregate
      */
     public function __toString(): string
     {
-        return \json_encode($this->toArray());
+        return $this->toJson();
     }
 
     /**
@@ -79,6 +82,10 @@ class Collection implements Countable, IteratorAggregate
         // Make chainable
         return $this;
     }
+
+    /**
+     *
+     */
 
     /**
      * Clear all items from a collection
@@ -206,6 +213,16 @@ class Collection implements Countable, IteratorAggregate
     }
 
     /**
+     * Get repository contents to be json serialized
+     *
+     * @return array
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
+
+    /**
      * Get the last item in this series
      *
      * @return mixed
@@ -234,5 +251,29 @@ class Collection implements Countable, IteratorAggregate
         }
 
         return $items;
+    }
+
+    /**
+     * Convert collection to json
+     *
+     * @return string
+     */
+    public function toJson(): string
+    {
+        return \json_encode($this->toArray());
+    }
+
+    /**
+     * Generate XML string from the repository
+     *
+     * @param string|null $rootNode The name of the root node
+     *
+     * @return string|null
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidXmlException Collections can't be converted to XML
+     */
+    public function toXml(?string $rootNode = null): ?string
+    {
+        throw new InvalidXmlException('Collections are not compatible with xml schema therefore can\'t be converted');
     }
 }

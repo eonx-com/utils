@@ -5,7 +5,9 @@ namespace Tests\EoneoPay\Utils;
 
 use EoneoPay\Utils\Collection;
 use EoneoPay\Utils\Exceptions\InvalidCollectionException;
+use EoneoPay\Utils\Exceptions\InvalidXmlException;
 use EoneoPay\Utils\Repository;
+use EoneoPay\Utils\XmlConverter;
 
 /**
  * @covers \EoneoPay\Utils\Collection
@@ -207,12 +209,18 @@ class CollectionTest extends TestCase
      * @return void
      *
      * @throws \EoneoPay\Utils\Exceptions\InvalidCollectionException If array is invalid
+     * @throws \EoneoPay\Utils\Exceptions\InvalidXmlException Collections can't be converted to XML
      */
     public function testSerialisation(): void
     {
         $collection = new Collection(self::$data);
 
         self::assertSame(self::$data, $collection->toArray());
+        self::assertSame(\json_encode(self::$data), $collection->toJson());
+        self::assertSame(\json_encode(self::$data), \json_encode($collection));
         self::assertSame(\json_encode(self::$data), (string)$collection);
+
+        $this->expectException(InvalidXmlException::class);
+        $collection->toXml();
     }
 }
