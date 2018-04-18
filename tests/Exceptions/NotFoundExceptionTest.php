@@ -13,6 +13,6 @@ class NotFoundExceptionTest extends TestCase
      */
     public function testGettersFromBaseExceptionInterface(): void
     {
-        $this->processExceptionCodesTest(new NotFoundExceptionStub(), 1200, 0, 404);
+        $this->processExceptionCodesTest(new NotFoundExceptionStub(), 1400, 0, 404);
     }
 }
