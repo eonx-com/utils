@@ -106,6 +106,20 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
     }
 
     /**
+     * Run a filter over each of the items
+     *
+     * @param callable $callback A callback to process against the items
+     *
+     * @return static
+     */
+    public function filter(callable $callback): self
+    {
+        $this->replace(\array_filter($this->toArray(), $callback, ARRAY_FILTER_USE_BOTH));
+
+        return $this;
+    }
+
+    /**
      * Get the first item in the collection
      *
      * @return mixed The first item
@@ -370,7 +384,7 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
     }
 
     /**
-     * Set a value to the colelction
+     * Set a value to the collection
      *
      * @param string $key The key to set to the collection, can use dot notation
      * @param mixed $value The value to set for this key

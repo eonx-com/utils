@@ -10,6 +10,8 @@ class NotFoundExceptionTest extends TestCase
 {
     /**
      * Exception should return valid codes.
+     *
+     * @return void
      */
     public function testGettersFromBaseExceptionInterface(): void
     {

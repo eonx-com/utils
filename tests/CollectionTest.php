@@ -166,6 +166,20 @@ class CollectionTest extends TestCase
     }
 
     /**
+     * Test filter returns expected filtered collection.
+     *
+     * @return void
+     */
+    public function testFilterReturnsExpectedFilteredCollection(): void
+    {
+        $collection = (new Collection(static::$associative))->filter(function ($value, $key) {
+            return 'a' !== $key && null !== $value;
+        });
+
+        self::assertSame(['f' => '4'], $collection->toArray());
+    }
+
+    /**
      * Test getting the first and last items
      *
      * @return void

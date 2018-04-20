@@ -36,6 +36,15 @@ interface CollectionInterface extends SerializableInterface
     public function collapse();
 
     /**
+     * Run a filter over each of the items
+     *
+     * @param callable $callback A callback to process against the items
+     *
+     * @return static
+     */
+    public function filter(callable $callback);
+
+    /**
      * Get the first item in the collection
      *
      * @return mixed The first item
@@ -131,7 +140,7 @@ interface CollectionInterface extends SerializableInterface
     public function replace(array $data): void;
 
     /**
-     * Set a value to the colelction
+     * Set a value to the collection
      *
      * @param string $key The key to set to the collection, can use dot notation
      * @param mixed $value The value to set for this key
