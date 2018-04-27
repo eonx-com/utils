@@ -34,7 +34,7 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
     public function __construct($items = null)
     {
         // If no items are passed, skip
-        if (null === $items) {
+        if ($items === null) {
             return;
         }
 
@@ -317,7 +317,7 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
         $item = \is_array($value) ? new static($value) : $value;
 
         // Add by key if one is specified
-        if (null !== $key) {
+        if ($key !== null) {
             (new Arr())->set($this->items, $key, $item);
 
             return;

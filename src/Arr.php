@@ -152,7 +152,7 @@ class Arr implements ArrInterface
         $keys = (array)$keys;
 
         // If there are no keys there is nothing to do
-        if (0 === \count($keys)) {
+        if (\count($keys) === 0) {
             return;
         }
 
