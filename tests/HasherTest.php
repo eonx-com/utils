@@ -60,20 +60,19 @@ class HasherTest extends TestCase
         $hasher = new Hasher();
 
         // Hash value without a cost specified
-        $hashedValueWithoutCost = $hasher->hash(self::$data);
-        self::assertNotFalse($hashedValueWithoutCost);
+        $hash = $hasher->hash(self::$data);
+        self::assertNotFalse($hash);
 
         // Ensure hashed value is based off the same original value
-        self::assertTrue($hasher->verify(self::$data, $hashedValueWithoutCost));
-        self::assertFalse($hasher->verify('incorrectValue', $hashedValueWithoutCost));
+        self::assertTrue($hasher->verify(self::$data, $hash));
+        self::assertFalse($hasher->verify('incorrectValue', $hash));
 
         // Hash value with specified cost
-        $hashedValueWithCost = $hasher->hash(self::$data, self::$cost);
-        self::assertNotFalse($hashedValueWithCost);
+        $hashWithCost = $hasher->hash(self::$data, self::$cost);
+        self::assertNotFalse($hashWithCost);
 
         // Ensure hashed value with higher cost is based off the same original value
-        self::assertTrue($hasher->verify(self::$data, $hashedValueWithCost));
-        self::assertFalse($hasher->verify('incorrectValue', $hashedValueWithCost));
-
+        self::assertTrue($hasher->verify(self::$data, $hashWithCost));
+        self::assertFalse($hasher->verify('incorrectValue', $hashWithCost));
     }
 }
