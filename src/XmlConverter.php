@@ -220,8 +220,8 @@ class XmlConverter implements XmlConverterInterface
                 // For plain text, return string
                 case XML_CDATA_SECTION_NODE:
                 case XML_TEXT_NODE:
-                    if (trim($childElement->textContent) !== '') {
-                        $array['@value'] = $this->stringToX(trim($childElement->textContent));
+                    if (\trim($childElement->textContent) !== '') {
+                        $array['@value'] = $this->stringToX(\trim($childElement->textContent));
                     }
                     break;
 
