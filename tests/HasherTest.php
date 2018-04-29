@@ -5,8 +5,6 @@ namespace Tests\EoneoPay\Utils;
 
 use EoneoPay\Utils\Hasher;
 
-//use Tests\EoneoPay\Utils\Stubs\HaherStub;
-
 /**
  * @covers \EoneoPay\Utils\Hasher
  */
