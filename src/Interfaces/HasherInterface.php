@@ -10,7 +10,15 @@ interface HasherInterface
      *
      * @var int
      */
-    public const ALGO = \PASSWORD_BCRYPT;
+    public const ALGORITHM = \PASSWORD_BCRYPT;
+
+    /**
+     * Default cost if none is supplied when hashing.
+     * This value is purposed for the blowfish algorithm
+     *
+     * @var int
+     */
+    public const DEFAULT_COST = 10;
 
     /**
      * Transform a string into a one-way hash

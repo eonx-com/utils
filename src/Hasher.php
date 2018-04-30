@@ -18,24 +18,17 @@ class Hasher implements HasherInterface
      */
     public function hash(string $string, ?int $cost = null): string
     {
-        $options = [];
-
-        // Only set cost if specified, otherwise algorithm default is used
-        if ($cost) {
-            $options['cost'] = $cost;
-        }
-
-        $hash = \password_hash($string, self::ALGO, $options);
+        $hash = \password_hash($string, self::ALGORITHM, ['cost' => $cost ?? self::DEFAULT_COST]);
 
         // False is mainly associated with *nix/system crypt library faults or poor configuration
-        if ($hash === false) {
-            // @codeCoverageIgnoreStart
-            // Ignored due to difficulty of replication without system or library corruption
-            throw new HashingFailedException('Value was not able to be hashed');
-            // @codeCoverageIgnoreEnd
+        if ($hash !== false) {
+            return $hash;
         }
 
-        return $hash;
+        // @codeCoverageIgnoreStart
+        // Ignored due to difficulty of replication without system or library corruption
+        throw new HashingFailedException('Value was not able to be hashed');
+        // @codeCoverageIgnoreEnd
     }
 
     /**

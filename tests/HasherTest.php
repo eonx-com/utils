@@ -10,7 +10,6 @@ use EoneoPay\Utils\Hasher;
  */
 class HasherTest extends TestCase
 {
-
     /**
      * Generic string used for hashing
      *
@@ -39,7 +38,7 @@ class HasherTest extends TestCase
         self::assertNotFalse($string);
 
         // Test with cost higher than algorithm default (10)
-        $string = $hasher->hash(self::$data, 12);
+        $string = $hasher->hash(self::$data, self::$cost);
         self::assertNotFalse($string);
 
         $hashInfo = password_get_info($string);
