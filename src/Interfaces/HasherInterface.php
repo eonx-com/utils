@@ -22,5 +22,13 @@ interface HasherInterface
      */
     public function hash(string $string, ?int $cost = null): string;
 
+    /**
+     * Compare provided string with a hash to see if the value is correct
+     *
+     * @param string $string
+     * @param string $hash
+     *
+     * @return bool
+     */
     public function verify(string $string, string $hash): bool;
 }
