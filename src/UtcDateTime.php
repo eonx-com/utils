@@ -56,6 +56,6 @@ class UtcDateTime implements UtcDateTimeInterface
      */
     public function getZulu(): string
     {
-        return $this->datetime->format('Y-m-d\TH:i:s\Z');
+        return $this->datetime->format(self::FORMAT_ZULU);
     }
 }
