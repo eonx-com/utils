@@ -10,7 +10,7 @@ interface CollectionInterface extends SerializableInterface
      *
      * @return string
      */
-    public function __toString();
+    public function __toString(): string;
 
     /**
      * Add an item to the collection
@@ -64,7 +64,7 @@ interface CollectionInterface extends SerializableInterface
     /**
      * Get the items from the collection
      *
-     * @return array
+     * @return mixed[]
      */
     public function getItems(): array;
 
@@ -81,7 +81,7 @@ interface CollectionInterface extends SerializableInterface
      * Copy keys from one collection to this collection if keys exist in both
      *
      * @param \EoneoPay\Utils\Interfaces\SerializableInterface $source The source to check for the key in
-     * @param array $keys The destination/source key pairs to process
+     * @param mixed[] $keys The destination/source key pairs to process
      *
      * @return void
      */
@@ -106,7 +106,7 @@ interface CollectionInterface extends SerializableInterface
     /**
      * Recursively merge an array into the collection
      *
-     * @param array $data The data to merge into the collection
+     * @param mixed[] $data The data to merge into the collection
      *
      * @return void
      */
@@ -133,7 +133,7 @@ interface CollectionInterface extends SerializableInterface
     /**
      * Recursively replace an array's values into the collection
      *
-     * @param array $data The data to replace in the collection
+     * @param mixed[] $data The data to replace in the collection
      *
      * @return void
      */

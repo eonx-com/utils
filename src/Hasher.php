@@ -9,8 +9,10 @@ use EoneoPay\Utils\Interfaces\HasherInterface;
 class Hasher implements HasherInterface
 {
     /**
+     * Hash a string using configured options
+     *
      * @param string $string
-     * @param null|integer $cost
+     * @param null|int $cost
      *
      * @return string
      *

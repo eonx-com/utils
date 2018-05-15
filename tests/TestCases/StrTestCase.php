@@ -12,7 +12,7 @@ abstract class StrTestCase extends TestCase
      * Process simple tests on Str.
      *
      * @param string $method
-     * @param array $tests
+     * @param mixed[] $tests
      *
      * @return void
      */

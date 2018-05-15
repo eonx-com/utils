@@ -13,7 +13,7 @@ abstract class ValidationException extends BaseException
     /**
      * Validation errors.
      *
-     * @var array
+     * @var mixed[]
      */
     private $errors;
 
@@ -23,7 +23,7 @@ abstract class ValidationException extends BaseException
      * @param string|null $message
      * @param int|null $code
      * @param \Throwable|null $previous
-     * @param array $errors
+     * @param mixed[] $errors
      */
     public function __construct(?string $message = null, ?int $code = null, ?Throwable $previous = null, array $errors)
     {
@@ -35,7 +35,7 @@ abstract class ValidationException extends BaseException
     /**
      * Get validation errors.
      *
-     * @return array
+     * @return mixed[]
      */
     public function getErrors(): array
     {

@@ -37,7 +37,7 @@ class AnnotationReader extends BaseAnnotationReader
      * @param string $class
      * @param string $annotation
      *
-     * @return array
+     * @return mixed[]
      *
      * @throws \ReflectionException Inherited, if class or property does not exist
      */
@@ -62,9 +62,9 @@ class AnnotationReader extends BaseAnnotationReader
      * Get values for annotations within a class recursively as [<property> => [<annotation>, <annotation>, ...]]
      *
      * @param string $class
-     * @param array $annotations
+     * @param mixed[] $annotations
      *
-     * @return array
+     * @return mixed[]
      *
      * @throws \ReflectionException Inherited, if class or property does not exist
      */
@@ -80,7 +80,7 @@ class AnnotationReader extends BaseAnnotationReader
 
                 // Only keep annotation if it has a value
                 if ($value) {
-                    if (!isset($results[$property->name])) {
+                    if (isset($results[$property->name]) === false) {
                         $results[$property->name] = [];
                     }
 
@@ -97,7 +97,7 @@ class AnnotationReader extends BaseAnnotationReader
      *
      * @param string $baseClass The class to get properties for
      *
-     * @return array
+     * @return mixed[]
      *
      * @throws \ReflectionException Inherited, if class or property does not exist
      */
@@ -123,7 +123,7 @@ class AnnotationReader extends BaseAnnotationReader
      *
      * @param string $baseClass The class to recursively get traits for
      *
-     * @return array
+     * @return mixed[]
      */
     private function getClassTraitsRecursive(string $baseClass): array
     {
@@ -144,7 +144,7 @@ class AnnotationReader extends BaseAnnotationReader
      *
      * @param string $baseTrait The trait to get traits for
      *
-     * @return array
+     * @return mixed[]
      */
     private function getTraitTraitsRecursive(string $baseTrait): array
     {

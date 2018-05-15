@@ -17,7 +17,7 @@ class XmlConverterTest extends TestCase
     /**
      * Array of test data to create an XML from, without attributes
      *
-     * @var array
+     * @var mixed[]
      */
     private static $array = [
         'customers' => [
@@ -42,7 +42,7 @@ class XmlConverterTest extends TestCase
     /**
      * Array of test data to create an XML from, with attributes
      *
-     * @var array
+     * @var mixed[]
      */
     private static $attributeArray = [
         'customers' => [

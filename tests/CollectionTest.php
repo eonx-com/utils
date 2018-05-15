@@ -18,7 +18,7 @@ class CollectionTest extends TestCase
     /**
      * Generic associative array for testing
      *
-     * @var array
+     * @var mixed[]
      */
     private static $associative = [
         'a' => [
@@ -34,7 +34,7 @@ class CollectionTest extends TestCase
     /**
      * Generic non-associative array for testing
      *
-     * @var array
+     * @var mixed[]
      */
     private static $numeric = [[1], [2]];
 

@@ -24,7 +24,7 @@ interface HasherInterface
      * Transform a string into a one-way hash
      *
      * @param string $string
-     * @param integer $cost
+     * @param int $cost
      *
      * @return string
      */

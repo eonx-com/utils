@@ -10,7 +10,7 @@ class Permissions implements PermissionsInterface
     /**
      * Calculate total value for given permissions.
      *
-     * @param array $permissions
+     * @param mixed[] $permissions
      *
      * @return int
      */
