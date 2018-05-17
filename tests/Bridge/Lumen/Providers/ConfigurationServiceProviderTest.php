@@ -14,7 +14,7 @@ use Tests\EoneoPay\Utils\TestCase;
 class ConfigurationServiceProviderTest extends TestCase
 {
     /**
-     * @var array
+     * @var string[]
      */
     private static $configFiles = [
         'config-one',
@@ -57,7 +57,7 @@ class ConfigurationServiceProviderTest extends TestCase
         $app = Mockery::mock(Application::class);
         $app->shouldReceive('basePath')->once()->withNoArgs()->andReturn(null);
 
-        /** @var Application $app */
+        /** @var \Illuminate\Contracts\Foundation\Application $app */
         (new ConfigurationServiceProvider($app))->register();
 
         self::assertTrue(true);

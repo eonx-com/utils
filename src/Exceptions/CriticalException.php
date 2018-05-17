@@ -10,5 +10,5 @@ use Exception;
  */
 abstract class CriticalException extends Exception
 {
-    //
+
 }

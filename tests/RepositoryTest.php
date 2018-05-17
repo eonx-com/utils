@@ -16,7 +16,7 @@ class RepositoryTest extends TestCase
     /**
      * The array to use for testing
      *
-     * @var array
+     * @var mixed[]
      */
     private $array = [
         'a' => [
@@ -47,6 +47,19 @@ class RepositoryTest extends TestCase
     }
 
     /**
+     * Test clear empties repository completely
+     *
+     * @return void
+     */
+    public function testClearRemovesAllContentsFromRepository(): void
+    {
+        self::assertSame($this->array, $this->repository->toArray());
+
+        $this->repository->clear();
+        self::assertEmpty($this->repository->toArray());
+    }
+
+    /**
      * Test constructor populates repository
      *
      * @return void
@@ -61,16 +74,13 @@ class RepositoryTest extends TestCase
     }
 
     /**
-     * Test clear empties repository completely
+     * Test get with default value is returned if key is invalid
      *
      * @return void
      */
-    public function testClearRemovesAllContentsFromRepository(): void
+    public function testGetWithDefaultValueReturnedIfKeyIsInvalid(): void
     {
-        self::assertSame($this->array, $this->repository->toArray());
-
-        $this->repository->clear();
-        self::assertEmpty($this->repository->toArray());
+        self::assertSame('default value', $this->repository->get('invalid.key', 'default value'));
     }
 
     /**
@@ -81,16 +91,6 @@ class RepositoryTest extends TestCase
     public function testGetWithDotNotationRetrievesValue(): void
     {
         self::assertSame($this->array['a']['b'], $this->repository->get('a.b')->toArray());
-    }
-
-    /**
-     * Test get with default value is returned if key is invalid
-     *
-     * @return void
-     */
-    public function testGetWithDefaultValueReturnedIfKeyIsInvalid(): void
-    {
-        self::assertSame('default value', $this->repository->get('invalid.key', 'default value'));
     }
 
     /**
@@ -190,18 +190,6 @@ class RepositoryTest extends TestCase
     }
 
     /**
-     * Test the to xml function returns the repository contents as xml
-     *
-     * @return void
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidXmlTagException
-     */
-    public function testToXmlReturnsRepositoryContentsAsXml(): void
-    {
-        self::assertSame((new XmlConverter())->arrayToXml($this->array), $this->repository->toXml());
-    }
-
-    /**
      * Test the to xml function returns null if the repository contains invalid xml
      *
      * @return void
@@ -211,5 +199,17 @@ class RepositoryTest extends TestCase
         $repository = new Repository(['@invalid' => true]);
 
         self::assertNull($repository->toXml());
+    }
+
+    /**
+     * Test the to xml function returns the repository contents as xml
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidXmlTagException
+     */
+    public function testToXmlReturnsRepositoryContentsAsXml(): void
+    {
+        self::assertSame((new XmlConverter())->arrayToXml($this->array), $this->repository->toXml());
     }
 }

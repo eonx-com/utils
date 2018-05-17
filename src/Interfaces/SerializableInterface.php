@@ -10,7 +10,7 @@ interface SerializableInterface extends JsonSerializable
     /**
      * Get the contents of the repository as an array
      *
-     * @return array
+     * @return mixed[]
      */
     public function toArray(): array;
 

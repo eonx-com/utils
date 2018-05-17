@@ -29,7 +29,7 @@ class Str implements StrInterface
      */
     public function snake(string $value, ?string $delimiter = null): string
     {
-        if (!\ctype_lower($value)) {
+        if (\ctype_lower($value) === false) {
             $value = (string) \preg_replace('/\s+/u', '', \ucwords($value));
             $value = (string) \mb_strtolower(\preg_replace(
                 '/(.)(?=[A-Z])/u',

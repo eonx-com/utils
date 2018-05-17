@@ -5,5 +5,5 @@ namespace EoneoPay\Utils\Exceptions;
 
 class AnnotationCacheException extends CriticalException
 {
-    //
+
 }

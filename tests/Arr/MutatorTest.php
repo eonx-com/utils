@@ -16,7 +16,7 @@ class MutatorTest extends TestCase
     /**
      * The array to test on
      *
-     * @var array
+     * @var mixed[]
      */
     private $array = [
         'one' => [
@@ -29,40 +29,6 @@ class MutatorTest extends TestCase
         'six' => 'd',
         'seven' => null
     ];
-
-    /**
-     * Test has can use dot notation to determine if a key exists
-     *
-     * @return void
-     */
-    public function testHasWithDotNotation(): void
-    {
-        self::assertTrue((new Arr())->has($this->array, 'one.two.three'));
-        self::assertFalse((new Arr())->has($this->array, 'one.two.five'));
-    }
-
-    /**
-     * Test has bases the result on array keys rather than values
-     *
-     * @return void
-     */
-    public function testHasBasesResultOnKeyAndNotValue(): void
-    {
-        $arr = new Arr();
-
-        self::assertTrue($arr->has($this->array, 'seven'));
-        self::assertFalse($arr->has($this->array, 'eight'));
-    }
-
-    /**
-     * Test getting an item from the array with dot notation
-     *
-     * @return void
-     */
-    public function testGetWithDotNotation(): void
-    {
-        self::assertSame($this->array['one']['two']['three'], (new Arr())->get($this->array, 'one.two.three'));
-    }
 
     /**
      * Test get falls back to default if key doesn't exist
@@ -79,19 +45,37 @@ class MutatorTest extends TestCase
     }
 
     /**
-     * Test setting a value to an array using dot notation
+     * Test getting an item from the array with dot notation
      *
      * @return void
      */
-    public function testSetWithDotNotation(): void
+    public function testGetWithDotNotation(): void
+    {
+        self::assertSame($this->array['one']['two']['three'], (new Arr())->get($this->array, 'one.two.three'));
+    }
+
+    /**
+     * Test has bases the result on array keys rather than values
+     *
+     * @return void
+     */
+    public function testHasBasesResultOnKeyAndNotValue(): void
     {
         $arr = new Arr();
 
-        self::assertNull($arr->get($this->array, 'test.key'));
+        self::assertTrue($arr->has($this->array, 'seven'));
+        self::assertFalse($arr->has($this->array, 'eight'));
+    }
 
-        $arr->set($this->array, 'test.key', 'value');
-        self::assertSame('value', $arr->get($this->array, 'test.key'));
-        self::assertSame(['key' => 'value'], $arr->get($this->array, 'test'));
+    /**
+     * Test has can use dot notation to determine if a key exists
+     *
+     * @return void
+     */
+    public function testHasWithDotNotation(): void
+    {
+        self::assertTrue((new Arr())->has($this->array, 'one.two.three'));
+        self::assertFalse((new Arr())->has($this->array, 'one.two.five'));
     }
 
     /**
@@ -110,5 +94,21 @@ class MutatorTest extends TestCase
         self::assertSame($value['one'], $arr->get($this->array, 'test.one'));
         self::assertSame($value['three'], $arr->get($this->array, 'test.three'));
         self::assertSame($value['three']['four'], $arr->get($this->array, 'test.three.four'));
+    }
+
+    /**
+     * Test setting a value to an array using dot notation
+     *
+     * @return void
+     */
+    public function testSetWithDotNotation(): void
+    {
+        $arr = new Arr();
+
+        self::assertNull($arr->get($this->array, 'test.key'));
+
+        $arr->set($this->array, 'test.key', 'value');
+        self::assertSame('value', $arr->get($this->array, 'test.key'));
+        self::assertSame(['key' => 'value'], $arr->get($this->array, 'test'));
     }
 }

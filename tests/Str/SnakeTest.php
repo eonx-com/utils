@@ -9,7 +9,7 @@ use Tests\EoneoPay\Utils\TestCases\StrTestCase;
 class SnakeTest extends StrTestCase
 {
     /**
-     * @var array
+     * @var string[]
      */
     private static $snakeDashes = [
         'SnakeCase' => 'snake-case',
@@ -19,7 +19,7 @@ class SnakeTest extends StrTestCase
     ];
 
     /**
-     * @var array
+     * @var string[]
      */
     private static $snakeUnderscore = [
         'SnakeCase' => 'snake_case',

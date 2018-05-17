@@ -8,7 +8,7 @@ use Tests\EoneoPay\Utils\TestCases\StrTestCase;
 class StudlyTest extends StrTestCase
 {
     /**
-     * @var array
+     * @var string[]
      */
     private static $tests = [
         'studly_name' => 'StudlyName',

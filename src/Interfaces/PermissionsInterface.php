@@ -8,7 +8,7 @@ interface PermissionsInterface
     /**
      * Calculate total value for given permissions.
      *
-     * @param array $permissions
+     * @param int[] $permissions
      *
      * @return int
      */
