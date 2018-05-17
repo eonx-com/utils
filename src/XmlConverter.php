@@ -36,7 +36,7 @@ class XmlConverter implements XmlConverterInterface
     /**
      * Convert array to XML
      *
-     * @param array $array The array to convert
+     * @param mixed[] $array The array to convert
      * @param string|null $rootNode The name of the root node
      *
      * @return string
@@ -51,7 +51,7 @@ class XmlConverter implements XmlConverterInterface
         // Determine root node
         $rootNode = $rootNode ?? $array['@rootNode'] ?? 'data';
 
-        if (!$this->isValidXmlTag($rootNode)) {
+        if ($this->isValidXmlTag($rootNode) === false) {
             throw new InvalidXmlTagException(\sprintf('RootNode %s is not a valid xml tag', $rootNode));
         }
 
@@ -66,7 +66,7 @@ class XmlConverter implements XmlConverterInterface
      * @param string $xml The xml to convert
      * @param int|null $options Additional xml parsing options
      *
-     * @return array
+     * @return mixed[]
      *
      * @throws \EoneoPay\Utils\Exceptions\InvalidXmlException If the XML is invalid and can't be loaded
      */
@@ -117,7 +117,7 @@ class XmlConverter implements XmlConverterInterface
      *
      * @param \DOMElement $node The node to add the value to
      * @param string $name The node name to add
-     * @param array $values The value to attach to the node
+     * @param mixed[] $values The value to attach to the node
      *
      * @return \DOMElement
      *
@@ -177,7 +177,7 @@ class XmlConverter implements XmlConverterInterface
      * @param \DOMDocument $document The document to convert
      * @param int|null $options Additional xml parsing options
      *
-     * @return array
+     * @return mixed[]
      */
     private function documentToArray(DOMDocument $document, ?int $options = null): array
     {
@@ -192,7 +192,7 @@ class XmlConverter implements XmlConverterInterface
         $array = $this->postProcessDomElementArray($array, $options ?? self::XML_IGNORE_ATTRIBUTES);
 
         // Avoid ErrorException for illegal string offset when only one empty node is provided
-        if (!\is_array($array['element'])) {
+        if (\is_array($array['element']) === false) {
             $array['element'] = [];
         }
 
@@ -207,7 +207,7 @@ class XmlConverter implements XmlConverterInterface
      *
      * @param \DOMElement $element The element to convert
      *
-     * @return array
+     * @return mixed[]
      */
     private function domElementToArray(DOMElement $element): array
     {
@@ -218,14 +218,14 @@ class XmlConverter implements XmlConverterInterface
             // Convert node based on type
             switch ($childElement->nodeType) {
                 // For plain text, return string
-                case XML_CDATA_SECTION_NODE:
-                case XML_TEXT_NODE:
+                case \XML_CDATA_SECTION_NODE:
+                case \XML_TEXT_NODE:
                     if (\trim($childElement->textContent) !== '') {
                         $array['@value'] = $this->stringToX(\trim($childElement->textContent));
                     }
                     break;
 
-                case XML_ELEMENT_NODE:
+                case \XML_ELEMENT_NODE:
                     // Convert element to array recursively
                     $array[$childElement->tagName][] = $this->domElementToArray($childElement);
                     break;
@@ -270,21 +270,21 @@ class XmlConverter implements XmlConverterInterface
     /**
      * Post-process a converted DOMNode array and flatten based on options
      *
-     * @param array $array The array to process
+     * @param mixed[] $array The array to process
      * @param int $options Additional xml parsing options
      *
-     * @return array
+     * @return mixed[]
      */
     private function postProcessDomElementArray(array $array, int $options): array
     {
         foreach ($array as $key => $value) {
             // Skip non-array values
-            if (!\is_array($value)) {
+            if (\is_array($value) === false) {
                 continue;
             }
 
             // If value only contains 1 item, flatten
-            $value = \count($value) === 1 && array_key_exists(0, $value) ? $value[0] : $value;
+            $value = \count($value) === 1 && \array_key_exists(0, $value) ? $value[0] : $value;
 
             // If attributes are ignored, process value remove @attributes and further flatten @values tags
             if ($options === self::XML_IGNORE_ATTRIBUTES) {
@@ -304,7 +304,7 @@ class XmlConverter implements XmlConverterInterface
      *
      * @param \DOMElement $node The node to add attributes to
      * @param string $name The node name
-     * @param array $attributes The attributes to set on the node
+     * @param mixed[] $attributes The attributes to set on the node
      *
      * @return void
      *
@@ -314,7 +314,7 @@ class XmlConverter implements XmlConverterInterface
     {
         foreach ($attributes as $key => $value) {
             // Ensure the attribute key is valid
-            if (!$this->isValidXmlTag($key)) {
+            if ($this->isValidXmlTag($key) === false) {
                 $message = \sprintf('Attribute name is invalid for "%s" in node "%s"', $key, $name);
                 throw new InvalidXmlTagException($message);
             }
@@ -327,7 +327,7 @@ class XmlConverter implements XmlConverterInterface
      * Create an XML node from an array of node values
      *
      * @param string $name The node name
-     * @param array $values
+     * @param mixed[] $values
      *
      * @return \DOMElement
      *
@@ -362,7 +362,7 @@ class XmlConverter implements XmlConverterInterface
 
         foreach ($values as $key => $value) {
             // Ensure node name is valid
-            if (!$this->isValidXmlTag($key)) {
+            if ($this->isValidXmlTag($key) === false) {
                 throw new InvalidXmlTagException(\sprintf('Node name is invalid for "%s" in node "%s"', $key, $name));
             }
 
@@ -377,24 +377,6 @@ class XmlConverter implements XmlConverterInterface
 
         // Nothing further to process, return
         return $node;
-    }
-
-    /**
-     * Convert a value to a string
-     *
-     * @param mixed $value The value to convert
-     *
-     * @return string
-     */
-    private function xToString($value): string
-    {
-        // Convert booleans to string true/false as (string) converts to 1/0
-        if (\is_bool($value)) {
-            return $value ? 'true' : 'false';
-        }
-
-        // Cast to string
-        return (string)$value;
     }
 
     /**
@@ -413,5 +395,23 @@ class XmlConverter implements XmlConverterInterface
 
         // Leave as is
         return $value;
+    }
+
+    /**
+     * Convert a value to a string
+     *
+     * @param mixed $value The value to convert
+     *
+     * @return string
+     */
+    private function xToString($value): string
+    {
+        // Convert booleans to string true/false as (string) converts to 1/0
+        if (\is_bool($value)) {
+            return $value ? 'true' : 'false';
+        }
+
+        // Cast to string
+        return (string)$value;
     }
 }

@@ -13,7 +13,7 @@ class PermissionsTest extends TestCase
     private const PERMISSIONS_VALUE = 13;
 
     /**
-     * @var array
+     * @var int[]
      */
     private static $permissions = [1, 1, 4, 8];
 

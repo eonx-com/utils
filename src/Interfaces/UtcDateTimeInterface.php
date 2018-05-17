@@ -8,6 +8,13 @@ use DateTime;
 interface UtcDateTimeInterface
 {
     /**
+     * ISO 8601 date and time format with timezone.
+     *
+     * @var string
+     */
+    public const FORMAT_ZULU = 'Y-m-d\TH:i:s\Z';
+
+    /**
      * Get the datetime object.
      *
      * @return \DateTime

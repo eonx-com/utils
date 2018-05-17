@@ -15,7 +15,7 @@ class FlattenTest extends TestCase
     /**
      * The flattened array to test on
      *
-     * @var array
+     * @var mixed[]
      */
     private static $flattened = [
         'one.two.three' => 'a',
@@ -38,7 +38,7 @@ class FlattenTest extends TestCase
     /**
      * The unflattened version of the flattened array
      *
-     * @var array
+     * @var mixed[]
      */
     private static $unflattened = [
         'one' => [

@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Utils\Stubs\AnnotationReader;
 
 use Tests\EoneoPay\Utils\Stubs\AnnotationReader\Annotations\TestAnnotationStub;
-use Tests\EoneoPay\Utils\Stubs\AnnotationReader\Traits\AnnotationReaderTraitStub;
 use Tests\EoneoPay\Utils\Stubs\AnnotationReader\Annotations\TestMultipleAnnotationsStub;
+use Tests\EoneoPay\Utils\Stubs\AnnotationReader\Traits\AnnotationReaderTraitStub;
 
 class AnnotationReaderStub extends AnnotationReaderParentStub
 {

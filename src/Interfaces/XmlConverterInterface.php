@@ -8,7 +8,7 @@ interface XmlConverterInterface
     /**
      * Convert array to XML
      *
-     * @param array $array The array to convert
+     * @param mixed[] $array The array to convert
      * @param string|null $rootNode The name of the root node
      *
      * @return string|null Null if xml is invalid
@@ -20,7 +20,7 @@ interface XmlConverterInterface
      *
      * @param string $xml The xml to convert
      *
-     * @return array|null Null if xml is invalid
+     * @return mixed[]|null Null if xml is invalid
      */
     public function xmlToArray(string $xml): ?array;
 }

@@ -22,7 +22,7 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
     /**
      * Items in this collection
      *
-     * @var array
+     * @var mixed[]
      */
     private $items = [];
 
@@ -114,7 +114,7 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
      */
     public function filter(callable $callback): self
     {
-        $this->replace(\array_filter($this->toArray(), $callback, ARRAY_FILTER_USE_BOTH));
+        $this->replace(\array_filter($this->toArray(), $callback, \ARRAY_FILTER_USE_BOTH));
 
         return $this;
     }
@@ -147,7 +147,7 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
     /**
      * Get the items from the collection
      *
-     * @return array
+     * @return mixed[]
      */
     public function getItems(): array
     {
@@ -180,7 +180,7 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
      * Copy keys from one collection to this collection if keys exist in both
      *
      * @param \EoneoPay\Utils\Interfaces\SerializableInterface $source The source to check for the key in
-     * @param array $keys The destination/source key pairs to process
+     * @param string[] $keys The destination/source key pairs to process
      *
      * @return void
      */
@@ -192,7 +192,7 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
     /**
      * Get collection contents to pass to json_encode
      *
-     * @return array
+     * @return mixed[]
      */
     public function jsonSerialize(): array
     {
@@ -232,7 +232,7 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
     /**
      * Recursively merge an array into the collection
      *
-     * @param array $data The data to merge into the collection
+     * @param mixed[] $data The data to merge into the collection
      *
      * @return void
      */
@@ -295,6 +295,8 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
      * @param int $key The key to get
      *
      * @return mixed
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      */
     public function offsetGet($key)
     {
@@ -330,7 +332,7 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
     /**
      * Unset the item at a given offset
      *
-     * @param array|string $key The key(s) to unset
+     * @param mixed[]|string $key The key(s) to unset
      *
      * @return void
      */
@@ -368,7 +370,7 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
     /**
      * Recursively replace an array's values into the collection
      *
-     * @param array $data The data to replace in the collection
+     * @param mixed[] $data The data to replace in the collection
      *
      * @return void
      */
@@ -399,7 +401,7 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
     /**
      * Return collection items as an array
      *
-     * @return array
+     * @return mixed[]
      */
     public function toArray(): array
     {
@@ -446,7 +448,7 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
      *
      * @param mixed $items
      *
-     * @return array
+     * @return mixed[]
      */
     private function getArrayableItems($items): array
     {
@@ -484,6 +486,6 @@ class Collection implements ArrayAccess, CollectionInterface, Countable, Iterato
     {
         \json_decode($string);
 
-        return \json_last_error() === JSON_ERROR_NONE;
+        return \json_last_error() === \JSON_ERROR_NONE;
     }
 }

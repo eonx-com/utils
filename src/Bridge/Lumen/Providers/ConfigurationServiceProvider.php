@@ -31,7 +31,7 @@ class ConfigurationServiceProvider extends ServiceProvider
     {
         $configPath = \sprintf('%s/%s', $this->app->basePath(), self::CONFIG_FOLDER_NAME);
 
-        if (!\is_dir($configPath)) {
+        if (\is_dir($configPath) === false) {
             return;
         }
 

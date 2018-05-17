@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace Tests\EoneoPay\Utils\Stubs\Collection;
 
-use \JsonSerializable;
+use JsonSerializable;
 
 class JsonSerializableStub implements JsonSerializable
 {
     /**
      * Return contents for json_encode
      *
-     * @return array
+     * @return mixed[]
      */
     public function jsonSerialize(): array
     {

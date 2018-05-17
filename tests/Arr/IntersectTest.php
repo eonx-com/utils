@@ -14,7 +14,7 @@ class IntersectTest extends TestCase
     /**
      * The destination array to test with
      *
-     * @var array
+     * @var string[]
      */
     private static $destination = [
         'one' => 'x',
@@ -24,7 +24,7 @@ class IntersectTest extends TestCase
     /**
      * The source array to test with
      *
-     * @var array
+     * @var string[]
      */
     private static $source = [
         'one' => 'a',
