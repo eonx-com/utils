@@ -8,6 +8,25 @@ use EoneoPay\Utils\Interfaces\StrInterface;
 class Str implements StrInterface
 {
     /**
+     * Determine if a given string ends with a given substring.
+     *
+     * @param  string $haystack
+     * @param  string|string[] $needles
+     *
+     * @return bool
+     */
+    public function endsWith(string $haystack, $needles): bool
+    {
+        foreach ((array)$needles as $needle) {
+            if (\substr($haystack, -\strlen($needle)) === (string)$needle) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Convert a string to camel case.
      *
      * @param string $value
@@ -30,8 +49,8 @@ class Str implements StrInterface
     public function snake(string $value, ?string $delimiter = null): string
     {
         if (\ctype_lower($value) === false) {
-            $value = (string) \preg_replace('/\s+/u', '', \ucwords($value));
-            $value = (string) \mb_strtolower(\preg_replace(
+            $value = (string)\preg_replace('/\s+/u', '', \ucwords($value));
+            $value = (string)\mb_strtolower(\preg_replace(
                 '/(.)(?=[A-Z])/u',
                 '$1' . ($delimiter ?? '_'),
                 $value

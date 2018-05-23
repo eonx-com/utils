@@ -15,6 +15,16 @@ interface StrInterface
     public function camel(string $value): string;
 
     /**
+     * Determine if a given string ends with a given substring.
+     *
+     * @param  string $haystack
+     * @param  string|string[] $needles
+     *
+     * @return bool
+     */
+    public function endsWith(string $haystack, $needles): bool;
+
+    /**
      * Convert a string to snake case.
      *
      * @param string $value
