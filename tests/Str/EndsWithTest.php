@@ -14,7 +14,7 @@ class EndsWithTest extends StrTestCase
     private static $input = 'Namespace\\Of\\Objects\\';
 
     /**
-     * @var string[]
+     * @var mixed[]
      */
     private static $tests = [
         '\\' => true,
