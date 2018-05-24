@@ -15,6 +15,17 @@ interface StrInterface
     public function camel(string $value): string;
 
     /**
+     * Convert a string to EBCDIC
+     *
+     * @param string $value
+     *
+     * @return string
+     *
+     * @see https://en.wikipedia.org/wiki/EBCDIC
+     */
+    public function ebcdic(string $value): string;
+
+    /**
      * Determine if a given string ends with a given substring.
      *
      * @param  string $haystack
