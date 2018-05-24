@@ -8,6 +8,32 @@ use EoneoPay\Utils\Interfaces\StrInterface;
 class Str implements StrInterface
 {
     /**
+     * Convert a string to camel case.
+     *
+     * @param string $value
+     *
+     * @return string
+     */
+    public function camel(string $value): string
+    {
+        return \lcfirst($this->studly($value));
+    }
+
+    /**
+     * Convert a string to EBCDIC
+     *
+     * @param string $value
+     *
+     * @return string
+     *
+     * @see https://en.wikipedia.org/wiki/EBCDIC
+     */
+    public function ebcdic(string $value): string
+    {
+        return \preg_replace('/\s+/', ' ', \preg_replace("/[^\w\+@\s!\^\\$%&'\(\)\*\-:;=\?\.#,\[\]\/]/", '', $value));
+    }
+
+    /**
      * Determine if a given string ends with a given substring.
      *
      * @param  string $haystack
@@ -24,18 +50,6 @@ class Str implements StrInterface
         }
 
         return false;
-    }
-
-    /**
-     * Convert a string to camel case.
-     *
-     * @param string $value
-     *
-     * @return string
-     */
-    public function camel(string $value): string
-    {
-        return \lcfirst($this->studly($value));
     }
 
     /**
