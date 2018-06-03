@@ -23,13 +23,17 @@ abstract class ValidationException extends BaseException
      * @param string|null $message
      * @param int|null $code
      * @param \Throwable|null $previous
-     * @param mixed[] $errors
+     * @param mixed[]|null $errors
      */
-    public function __construct(?string $message = null, ?int $code = null, ?Throwable $previous = null, array $errors)
-    {
+    public function __construct(
+        ?string $message = null,
+        ?int $code = null,
+        ?Throwable $previous = null,
+        ?array $errors = null
+    ) {
         parent::__construct($message ?? '', $code ?? 0, $previous);
 
-        $this->errors = $errors;
+        $this->errors = $errors ?? [];
     }
 
     /**

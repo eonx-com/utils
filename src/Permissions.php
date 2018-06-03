@@ -35,6 +35,6 @@ class Permissions implements PermissionsInterface
      */
     public function hasPermission(int $permission, int $permissions): bool
     {
-        return ($permissions & $permission) !== 0;
+        return ($permissions & $permission) === $permission;
     }
 }

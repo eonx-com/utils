@@ -51,6 +51,7 @@ class Generator implements GeneratorInterface
         return \implode('', $random);
     }
 
+    /** @noinspection ExceptionsAnnotatingAndHandlingInspection Exception will be thrown on non-*nix systems */
     /**
      * Generate a truly random string
      *
