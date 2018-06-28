@@ -46,6 +46,16 @@ interface StrInterface
     public function snake(string $value, ?string $delimiter = null): string;
 
     /**
+     * Determine if a given string starts with a given substring.
+     *
+     * @param string $haystack
+     * @param string|string[] $needles
+     *
+     * @return bool
+     */
+    public function startsWith(string $haystack, $needles): bool;
+
+    /**
      * Convert a string to studly caps case.
      *
      * @param string $value
