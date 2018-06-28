@@ -17,6 +17,7 @@ class AnnotationReaderStub extends AnnotationReaderParentStub
      * @var null
      *
      * @TestAnnotationStub(name="base_property")
+     *
      * @TestMultipleAnnotationsStub(name="multiple_base_property")
      */
     protected $baseProperty;
