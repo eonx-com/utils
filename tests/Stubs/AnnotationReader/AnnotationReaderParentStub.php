@@ -14,6 +14,7 @@ class AnnotationReaderParentStub
      * @var null
      *
      * @TestAnnotationStub(name="parent_property", enabled=true)
+     *
      * @TestMultipleAnnotationsStub(name="multiple_parent_property")
      */
     protected $parent;
