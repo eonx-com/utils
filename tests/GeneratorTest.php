@@ -12,24 +12,23 @@ use Tests\EoneoPay\Utils\Stubs\GeneratorStub;
 class GeneratorTest extends TestCase
 {
     /**
-     * Test true random string generation
+     * Hello
      *
      * @return void
+     *
+     * @throws \Exception
      */
-    public function testTrueRandomStringGeneration(): void
+    public function testGenerateNonAmbiguousString(): void
     {
         $generator = new Generator();
 
-        $generated = [];
+        $value = $generator->generateNonAmbiguousString(20);
 
-        // Run 500 times and make sure strings are always different
-        for ($loop = 0; $loop < 500; $loop++) {
-            $string = $generator->randomString();
+        self::assertEquals(20, \mb_strlen($value));
 
-            self::assertArrayNotHasKey($string, $generated);
+        $value2 = $generator->generateNonAmbiguousString(20);
 
-            $generated[$string] = 1;
-        }
+        self::assertNotSame($value, $value2);
     }
 
     /**
@@ -48,5 +47,26 @@ class GeneratorTest extends TestCase
 
         self::assertSame(16, \mb_strlen($string));
         self::assertRegExp('/[\da-f]{16}/', $string);
+    }
+
+    /**
+     * Test true random string generation
+     *
+     * @return void
+     */
+    public function testTrueRandomStringGeneration(): void
+    {
+        $generator = new Generator();
+
+        $generated = [];
+
+        // Run 500 times and make sure strings are always different
+        for ($loop = 0; $loop < 500; $loop++) {
+            $string = $generator->randomString();
+
+            self::assertArrayNotHasKey($string, $generated);
+
+            $generated[$string] = 1;
+        }
     }
 }
