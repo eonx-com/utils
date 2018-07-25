@@ -8,17 +8,12 @@ use Exception;
 
 class GeneratorStub extends Generator
 {
-    /** @noinspection PhpMissingParentCallCommonInspection Parent method is private */
     /**
-     * Generate a truly random string
+     * @noinspection PhpMissingParentCallCommonInspection Parent method is private
      *
-     * @param int|null $length The length of the string to return, defaults to 16
-     *
-     * @return string
-     *
-     * @throws \Exception If not enough entropy can be gathered by \random_bytes or \random_int
+     * {@inheritdoc}
      */
-    protected function generateTrueRandomString(?int $length): string
+    protected function generateTrueRandomString(int $length, int $flags): string
     {
         /** @noinspection ThrowRawExceptionInspection This is what \random_bytes and \random_int return */
         throw new Exception('Entropy generation failure');
