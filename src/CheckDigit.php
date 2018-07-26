@@ -8,26 +8,40 @@ use EoneoPay\Utils\Interfaces\CheckDigitInterface;
 class CheckDigit implements CheckDigitInterface
 {
     /**
-     * Calculate a check digit.
+     * Calculate a check digit based on the Luhn algorithm.
      *
-     * @param string $value
+     * @param string $string
      *
      * @return int
      */
-    public function calculate(string $value): int
+    public function calculate(string $string): int
     {
-        $weights = [1, 3, 1, 7, 3, 9];
-        $sum = 0;
+        // Reverse the exploded
+        $characters = \array_reverse(\str_split($string));
+        $values = [];
 
-        // Iterate whichever is smaller, size of $weights array, or length of argument string
-        $maxIterations = \mb_strlen($value) < \count($weights) ? \mb_strlen($value) : \count($weights);
+        foreach ($characters as $index => $character) {
+            // Convert character to ASCII code
+            $value = \ord($character);
 
-        // Apply weight to each character in the string
-        for ($iteration = 0; $iteration < $maxIterations; $iteration++) {
-            $sum += $weights[$iteration] * \intval($value[$iteration], 36);
+            // Iterate value until it's greater than 10
+            while ($value > 10) {
+                $value = (int)\array_sum(\str_split((string)$value));
+            }
+
+            // First, or every second character is * 2, and ensured value is below 10
+            if ($index === 0 || $index % 2 === 0) {
+                $value *= 2;
+                $value = $value > 9 ? $value - 9 : $value;
+            }
+
+            $values[] = $value;
         }
 
-        return (10 - $sum % 10) % 10;
+        $total = (int)\array_sum($values);
+
+        // Last digit is the check digit.
+        return $total % 10;
     }
 
     /**
