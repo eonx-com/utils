@@ -11,6 +11,30 @@ use EoneoPay\Utils\CheckDigit;
 class CheckDigitTest extends TestCase
 {
     /**
+     * Calculate the check digit is correct even if one character is different.
+     *
+     * @return void
+     */
+    public function testCheckDigitCalculatesCorrectly(): void
+    {
+        $checkDigitClass = new CheckDigit();
+
+        $first = $checkDigitClass->calculate('AAAAAAAAAA');
+        $second = $checkDigitClass->calculate('AAAAAAAAAB');
+        $third = $checkDigitClass->calculate('1234567890');
+        $fourth = $checkDigitClass->calculate('----5----');
+        $fifth = $checkDigitClass->calculate('oooooooooo');
+
+        self::assertNotSame($first, $second);
+
+        self::assertSame(0, $first);
+        self::assertSame(2, $second);
+        self::assertSame(6, $third);
+        self::assertSame(9, $fourth);
+        self::assertSame(5, $fifth);
+    }
+
+    /**
      * Test the check digit generator is consistent, and works as expected.
      *
      * @return void
