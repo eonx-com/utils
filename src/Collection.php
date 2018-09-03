@@ -3,13 +3,10 @@ declare(strict_types=1);
 
 namespace EoneoPay\Utils;
 
-use ArrayAccess;
 use ArrayIterator;
-use Countable;
 use EoneoPay\Utils\Exceptions\InvalidXmlTagException;
 use EoneoPay\Utils\Interfaces\CollectionInterface;
 use EoneoPay\Utils\Interfaces\SerializableInterface;
-use IteratorAggregate;
 use JsonSerializable;
 use Traversable;
 
@@ -17,7 +14,7 @@ use Traversable;
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity) Collection is massive and requires all functionality
  * @SuppressWarnings(PHPMD.TooManyPublicMethods) Collection requires many public methods to work
  */
-class Collection implements ArrayAccess, CollectionInterface, Countable, IteratorAggregate
+class Collection implements CollectionInterface
 {
     /**
      * Items in this collection
