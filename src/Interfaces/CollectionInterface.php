@@ -3,7 +3,11 @@ declare(strict_types=1);
 
 namespace EoneoPay\Utils\Interfaces;
 
-interface CollectionInterface extends SerializableInterface
+use ArrayAccess;
+use Countable;
+use IteratorAggregate;
+
+interface CollectionInterface extends ArrayAccess, Countable, IteratorAggregate, SerializableInterface
 {
     /**
      * Convert collection to string
