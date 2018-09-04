@@ -24,6 +24,8 @@ class ConfigurationServiceProviderTest extends TestCase
     /**
      * Service provider should call configure on application for all php config files and ignore others.
      *
+     * @return void
+     *
      * @SuppressWarnings(PHPMD.StaticAccess) Mockery is working this way
      */
     public function testRegisterCallsConfigureForFilesInConfig(): void
@@ -49,6 +51,8 @@ class ConfigurationServiceProviderTest extends TestCase
 
     /**
      * Service provider should return null if config path isn't a directory.
+     *
+     * @return void
      *
      * @SuppressWarnings(PHPMD.StaticAccess) Mockery is working this way
      */

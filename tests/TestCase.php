@@ -17,6 +17,8 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      * @param int $errorCode
      * @param int $errorSubCode
      * @param int $statusCode
+     *
+     * @return void
      */
     protected function processExceptionCodesTest(
         BaseExceptionInterface $exception,

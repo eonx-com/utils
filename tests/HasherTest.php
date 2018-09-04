@@ -27,6 +27,8 @@ class HasherTest extends TestCase
     /**
      * Verify should return true/false
      *
+     * @return void
+     *
      * @throws \EoneoPay\Utils\Exceptions\HashingFailedException
      */
     public function testHashedValueVerification(): void
@@ -52,6 +54,8 @@ class HasherTest extends TestCase
 
     /**
      * Hasher should not fail and ensure options are used.
+     *
+     * @return void
      *
      * @throws \EoneoPay\Utils\Exceptions\HashingFailedException
      */

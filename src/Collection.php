@@ -293,6 +293,7 @@ class Collection implements CollectionInterface
      *
      * @return mixed
      *
+     * @phpcsSuppress EoneoPay.Commenting.FunctionComment.ScalarTypeHintMissing
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
      */
     public function offsetGet($key)

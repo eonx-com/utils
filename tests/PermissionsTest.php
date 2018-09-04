@@ -19,6 +19,8 @@ class PermissionsTest extends TestCase
 
     /**
      * Permissions should return right value for given permissions array.
+     *
+     * @return void
      */
     public function testGetPermissionsValue(): void
     {
@@ -27,6 +29,8 @@ class PermissionsTest extends TestCase
 
     /**
      * Permissions should return true/false if given value is/isn't in $permissions.
+     *
+     * @return void
      */
     public function testHasPermissions(): void
     {

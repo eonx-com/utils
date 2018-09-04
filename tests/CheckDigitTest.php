@@ -68,9 +68,10 @@ class CheckDigitTest extends TestCase
                 // Check digit should not change from original result after any amount of iterations
                 self::assertEquals($checkDigit, $checkDigitClass->calculate($string));
             }
-
-            unset($checkDigit);
         }
+
+        // Unset to prevent overwriting after the loop is complete
+        unset($checkDigit);
 
         // Ensure check digit is varying amongst results
         self::assertGreaterThan(1, \count(\array_unique(\array_values($strings))));
