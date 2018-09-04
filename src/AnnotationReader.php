@@ -7,6 +7,7 @@ use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\AnnotationReader as BaseAnnotationReader;
 use EoneoPay\Utils\Exceptions\AnnotationCacheException;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionProperty;
 
 /**
@@ -38,15 +39,21 @@ class AnnotationReader extends BaseAnnotationReader
      * @param string $annotation
      *
      * @return mixed[]
-     *
-     * @throws \ReflectionException Inherited, if class or property does not exist
      */
     public function getClassPropertyAnnotation(string $class, string $annotation): array
     {
         // Read annotations for each property in the class
         $annotations = [];
         foreach ($this->getClassPropertiesRecursive($class) as $property) {
-            $reflector = new ReflectionProperty($property->class, $property->name);
+            try {
+                $reflector = new ReflectionProperty($property->class, $property->name);
+                // @codeCoverageIgnoreStart
+                // Exception can't be covered as an invalid class wouldn't return any properties
+            } /** @noinspection BadExceptionsProcessingInspection */ catch (ReflectionException $exception) {
+                continue;
+                // @codeCoverageIgnoreEnd
+            }
+
             $value = $this->getPropertyAnnotation($reflector, $annotation);
 
             // Only keep annotation if it has a value
@@ -65,15 +72,20 @@ class AnnotationReader extends BaseAnnotationReader
      * @param mixed[] $annotations
      *
      * @return mixed[]
-     *
-     * @throws \ReflectionException Inherited, if class or property does not exist
      */
     public function getClassPropertyAnnotations(string $class, array $annotations): array
     {
         $results = [];
 
         foreach ($this->getClassPropertiesRecursive($class) as $property) {
-            $reflector = new ReflectionProperty($property->class, $property->name);
+            try {
+                $reflector = new ReflectionProperty($property->class, $property->name);
+                // @codeCoverageIgnoreStart
+                // Exception can't be covered as an invalid class wouldn't return any properties
+            } /** @noinspection BadExceptionsProcessingInspection */ catch (ReflectionException $exception) {
+                continue;
+                // @codeCoverageIgnoreEnd
+            }
 
             foreach ($annotations as $annotation) {
                 $value = $this->getPropertyAnnotation($reflector, $annotation);
@@ -98,12 +110,15 @@ class AnnotationReader extends BaseAnnotationReader
      * @param string $baseClass The class to get properties for
      *
      * @return mixed[]
-     *
-     * @throws \ReflectionException Inherited, if class or property does not exist
      */
     private function getClassPropertiesRecursive(string $baseClass): array
     {
         $properties = [];
+
+        // If class is invalid, return
+        if (\class_exists($baseClass) === false) {
+            return $properties;
+        }
 
         $classes = \array_merge(
             $this->getClassTraitsRecursive($baseClass),
@@ -112,7 +127,14 @@ class AnnotationReader extends BaseAnnotationReader
         );
 
         foreach ($classes as $class) {
-            $properties[] = (new ReflectionClass($class))->getProperties();
+            try {
+                $properties[] = (new ReflectionClass($class))->getProperties();
+                // @codeCoverageIgnoreStart
+                // Exception can't be covered as an invalid class wouldn't return any properties
+            } /** @noinspection BadExceptionsProcessingInspection */ catch (ReflectionException $exception) {
+                continue;
+                // @codeCoverageIgnoreEnd
+            }
         }
 
         return \array_merge(...$properties);

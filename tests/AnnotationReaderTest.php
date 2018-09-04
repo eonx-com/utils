@@ -16,12 +16,23 @@ use Tests\EoneoPay\Utils\Stubs\AnnotationReader\Annotations\UnusedAnnotationStub
 class AnnotationReaderTest extends TestCase
 {
     /**
+     * Ensure exception isn't thrown if an invalid class is specified
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException If opcache is disabled
+     */
+    public function testAnnontationReadingInvalidPropertyOrClassDoesNotThrowException(): void
+    {
+        self::assertEmpty((new AnnotationReader())->getClassPropertyAnnotations('blah', ['test']));
+    }
+
+    /**
      * Ensure annotations can be fetched from a class which uses them
      *
      * @return void
      *
-     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
-     * @throws \ReflectionException
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException If opcache is disabled
      */
     public function testAnnotationsCanBeReadFromClass(): void
     {
@@ -42,8 +53,7 @@ class AnnotationReaderTest extends TestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
-     * @throws \ReflectionException
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException If opcache is disabled
      */
     public function testAnnotationsCanBeReadRecursivelyFromClass(): void
     {
@@ -64,8 +74,7 @@ class AnnotationReaderTest extends TestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
-     * @throws \ReflectionException
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException If opcache is disabled
      */
     public function testMultipleAnnotationsCanBeReadRecursivelyFromClass(): void
     {
@@ -94,8 +103,7 @@ class AnnotationReaderTest extends TestCase
      *
      * @return void
      *
-     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
-     * @throws \ReflectionException
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException If opcache is disabled
      */
     public function testUnusedAnnotationReturnsEmptyArray(): void
     {

@@ -9,7 +9,10 @@
   "license": "BSD-3-Clause",
   "type": "library",
   "require": {
-    "php": ">=7.1"
+    "php": ">=7.1",
+    "ext-dom": "*",
+    "ext-json": "*",
+    "ext-libxml": "*"
   },
   "require-dev": {
     "doctrine/annotations": "^1.6",

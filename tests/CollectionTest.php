@@ -173,7 +173,7 @@ class CollectionTest extends TestCase
     public function testFilterReturnsExpectedFilteredCollection(): void
     {
         $collection = (new Collection(static::$associative))->filter(function ($value, $key) {
-            return 'a' !== $key && null !== $value;
+            return $key !== 'a' && $value !== null;
         });
 
         self::assertSame(['f' => '4'], $collection->toArray());
