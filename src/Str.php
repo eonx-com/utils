@@ -20,6 +20,25 @@ class Str implements StrInterface
     }
 
     /**
+     * Determine if a given string contains a given substring.
+     *
+     * @param string $haystack
+     * @param string|string[] $needles
+     *
+     * @return bool
+     */
+    public function contains(string $haystack, $needles): bool
+    {
+        foreach ((array)$needles as $needle) {
+            if ($needle !== '' && \mb_strpos($haystack, $needle) !== false) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Convert a string to EBCDIC
      *
      * @param string $value
