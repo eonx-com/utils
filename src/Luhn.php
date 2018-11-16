@@ -15,12 +15,7 @@ class Luhn implements LuhnInterface
      */
     public function calculate(string $number): int
     {
-        // Strip whitespace from outside of the string
-        $number = \trim($number);
-
-        if (\preg_replace('/\D/', '', $number) !== $number) {
-            throw new InvalidNumericValue('Provided number is not numeric');
-        }
+        $number = $this->parseNumber($number);
 
         $numbers = \str_split(\strrev($number), 1);
         $sum = [];
@@ -55,8 +50,11 @@ class Luhn implements LuhnInterface
      */
     public function validate(string $number): bool
     {
+        $number = $this->parseNumber($number);
+
+        // Ensure number is at least 2 digits
         if (\mb_strlen($number) <= 1) {
-            return false;
+            throw new InvalidNumericValue('Number must contain check digit');
         }
 
         $valueWithoutCheck = \substr($number, 0, -1);
@@ -74,5 +72,26 @@ class Luhn implements LuhnInterface
     private function isEven(int $number): bool
     {
         return $number % 2 === 0;
+    }
+
+    /**
+     * Format and validate the provided number
+     *
+     * @param string $number
+     *
+     * @return string
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidNumericValue
+     */
+    private function parseNumber(string $number): string
+    {
+        // Strip whitespace from outside of the string
+        $number = \trim($number);
+
+        if (\preg_replace('/\D/', '', $number) !== $number) {
+            throw new InvalidNumericValue('Number must only contain integers');
+        }
+
+        return $number;
     }
 }

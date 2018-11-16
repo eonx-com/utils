@@ -70,7 +70,7 @@ class LuhnTest extends TestCase
     public function testLuhnCalculateThrowsExceptionIfInputNotNumeric(): void
     {
         $this->expectException(InvalidNumericValue::class);
-        $this->expectExceptionMessage('Provided number is not numeric');
+        $this->expectExceptionMessage('Number must only contain integers');
 
         $luhn = new Luhn();
         $luhn->calculate('aString');
@@ -92,9 +92,34 @@ class LuhnTest extends TestCase
             self::assertTrue($luhn->validate($number));
         }
 
+
+        $this->expectException(InvalidNumericValue::class);
+        $this->expectExceptionMessage('Number must contain check digit');
+
         // 1 digit or less should return false because it's impossible to contain a check digit
         self::assertFalse($luhn->validate(''));
-        self::assertFalse($luhn->validate('9'));
+    }
+
+    /**
+     * Ensure number validation and parsing is functional
+     *
+     * @return void
+     *
+     * @throws \ReflectionException
+     */
+    public function testNumberParser(): void
+    {
+        $luhn = new Luhn();
+
+        $method = new ReflectionMethod(Luhn::class, 'parseNumber');
+        $method->setAccessible(true);
+
+        self::assertSame('123456789', $method->invoke($luhn, ' 123456789 '));
+
+        $this->expectException(InvalidNumericValue::class);
+        $this->expectExceptionMessage('Number must only contain integers');
+
+        $method->invoke($luhn, '1.6275E+005');
     }
 
     /**
