@@ -15,10 +15,10 @@ class Luhn implements LuhnInterface
      */
     public function calculate(string $number): int
     {
-        // Strip all non-numeric characters from the number string
-        $number = \preg_replace('/\D/', '', $number);
+        // Strip whitespace from outside of the string
+        $number = \trim($number);
 
-        if (\is_numeric($number) === false) {
+        if (\preg_replace('/\D/', '', $number) !== $number) {
             throw new InvalidNumericValue('Provided number is not numeric');
         }
 
@@ -26,17 +26,17 @@ class Luhn implements LuhnInterface
         $sum = [];
 
         foreach ($numbers as $index => $value) {
-            // If it's an even number, skip
-            if ($index % 2 === 1) {
+            // If index is an odd number, skip
+            if ($this->isEven($index) === false) {
                 $sum[] = $value;
 
                 continue;
             }
 
-            // Odd numbers are doubled
+            // Even numbers are doubled
             $value *= 2;
 
-            // If the multiplied number is greater than 9, subtract nine
+            // If the multiplied number is greater than 9, subtract 9
             if ($value > 9) {
                 $value -= 9;
             }
@@ -62,5 +62,17 @@ class Luhn implements LuhnInterface
         $valueWithoutCheck = \substr($number, 0, -1);
 
         return \sprintf('%s%d', $valueWithoutCheck, $this->calculate($valueWithoutCheck)) === $number;
+    }
+
+    /**
+     * Determine if a number provided is even
+     *
+     * @param int $number
+     *
+     * @return bool
+     */
+    private function isEven(int $number): bool
+    {
+        return $number % 2 === 0;
     }
 }

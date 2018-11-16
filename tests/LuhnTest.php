@@ -5,12 +5,39 @@ namespace Tests\EoneoPay\Utils;
 
 use EoneoPay\Utils\Exceptions\InvalidNumericValue;
 use EoneoPay\Utils\Luhn;
+use ReflectionMethod;
 
 /**
  * @covers \EoneoPay\Utils\Luhn
  */
 class LuhnTest extends TestCase
 {
+    /**
+     * Ensure isEven method is accurate
+     *
+     * @return void
+     *
+     * @throws \ReflectionException
+     */
+    public function testIsEvenMethod(): void
+    {
+        $luhn = new Luhn();
+
+        $method = new ReflectionMethod(Luhn::class, 'isEven');
+        $method->setAccessible(true);
+
+        self::assertTrue($method->invoke($luhn, 0));
+        self::assertTrue($method->invoke($luhn, 2));
+        self::assertTrue($method->invoke($luhn, 4));
+        self::assertTrue($method->invoke($luhn, 6));
+        self::assertTrue($method->invoke($luhn, 8));
+        self::assertTrue($method->invoke($luhn, 10));
+        self::assertTrue($method->invoke($luhn, 622 * 2));
+
+        self::assertFalse($method->invoke($luhn, 1));
+        self::assertFalse($method->invoke($luhn, 67289));
+    }
+
     /**
      * Test the check luhn calculator determines the correct check digit
      *
