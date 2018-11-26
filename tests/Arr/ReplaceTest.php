@@ -62,6 +62,22 @@ class ReplaceTest extends TestCase
     }
 
     /**
+     * Test replacing dot notation and non-dot notation arrays together works correctly
+     *
+     * @return void
+     */
+    public function testReplaceWithDotAndNonDotNotationArraysWorks(): void
+    {
+        $array1 = ['one.two' => 'a', 'one.three' => 'b', 'two' => 'z'];
+        $array2 = ['one' => ['four' => 'c']];
+
+        $arrayReplace = \array_replace_recursive($array2, ['two' => 'z']);
+        $arrReplace = (new Arr())->replace($array1, $array2);
+
+        self::assertSame($arrayReplace, $arrReplace);
+    }
+
+    /**
      * Test replacing dot notation arrays together in the same way as normal arrays
      *
      * @return void
@@ -74,22 +90,6 @@ class ReplaceTest extends TestCase
 
         $arrayReplace = \array_replace_recursive($array2, $array3);
         $arrReplace = (new Arr())->replace($array1, $array3);
-
-        self::assertSame($arrayReplace, $arrReplace);
-    }
-
-    /**
-     * Test replacing dot notation and non-dot notation arrays together works correctly
-     *
-     * @return void
-     */
-    public function testReplaceWithDotAndNonDotNotationArraysWorks(): void
-    {
-        $array1 = ['one.two' => 'a', 'one.three' => 'b', 'two' => 'z'];
-        $array2 = ['one' => ['four' => 'c']];
-
-        $arrayReplace = \array_replace_recursive($array2, ['two' => 'z']);
-        $arrReplace = (new Arr())->replace($array1, $array2);
 
         self::assertSame($arrayReplace, $arrReplace);
     }

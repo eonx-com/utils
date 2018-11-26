@@ -57,6 +57,8 @@ interface ArrInterface
     public function intersect(array $destination, array $source, array $keys): array;
 
     /**
+     * @noinspection PhpDocSignatureInspection Arguments match but phpstorm can't understand it
+     *
      * Recursively merge two or more arrays together allowing dot notation
      *
      * @param mixed[] $array The array to merge the additional arrays into
@@ -64,7 +66,7 @@ interface ArrInterface
      *
      * @return mixed[]
      */
-    public function merge(array $array, array ...$arrays): array;
+    public function merge(array $array, array ... $arrays): array;
 
     /**
      * Remove one or many array items from a given array using "dot" notation
@@ -77,6 +79,8 @@ interface ArrInterface
     public function remove(array &$array, $keys): void;
 
     /**
+     * @noinspection PhpDocSignatureInspection Arguments match but phpstorm can't understand it
+     *
      * Recursively replace values from two or more arrays together allowing dot notation
      *
      * @param mixed[] $array The array to replace the additional array values into
@@ -84,7 +88,7 @@ interface ArrInterface
      *
      * @return mixed[]
      */
-    public function replace(array $array, array ...$arrays): array;
+    public function replace(array $array, array ... $arrays): array;
 
     /**
      * Look for a value in an array without punctuation or case sensitivity, this will allow USERID, userId

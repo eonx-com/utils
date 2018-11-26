@@ -8,6 +8,12 @@ use Tests\EoneoPay\Utils\Stubs\AnnotationReader\Annotations\TestAnnotationStub;
 trait AnnotationReaderParentTraitStub
 {
     /**
+     * Test trait parent property without annotation
+     *
+     * @var null
+     */
+    protected $noAnnotation;
+    /**
      * Test trait parent annotation
      *
      * @var null
@@ -15,11 +21,4 @@ trait AnnotationReaderParentTraitStub
      * @TestAnnotationStub(name="parent_trait_property")
      */
     protected $parentTrait;
-
-    /**
-     * Test trait parent property without annotation
-     *
-     * @var null
-     */
-    protected $noAnnotation;
 }

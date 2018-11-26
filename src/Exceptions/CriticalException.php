@@ -16,7 +16,7 @@ abstract class CriticalException extends BaseException
     abstract public function getErrorMessage(): string;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getStatusCode(): int
     {

@@ -8,11 +8,7 @@ use EoneoPay\Utils\Interfaces\PermissionsInterface;
 class Permissions implements PermissionsInterface
 {
     /**
-     * Calculate total value for given permissions.
-     *
-     * @param mixed[] $permissions
-     *
-     * @return int
+     * @inheritdoc
      */
     public function getPermissionsValue(array $permissions): int
     {
@@ -26,12 +22,7 @@ class Permissions implements PermissionsInterface
     }
 
     /**
-     * Check if given permission is present in given permissions.
-     *
-     * @param int $permission Current permission value
-     * @param int $permissions Total value of permissions
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function hasPermission(int $permission, int $permissions): bool
     {

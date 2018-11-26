@@ -6,6 +6,7 @@ namespace EoneoPay\Utils;
 use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\AnnotationReader as BaseAnnotationReader;
 use EoneoPay\Utils\Exceptions\AnnotationCacheException;
+use EoneoPay\Utils\Interfaces\AnnotationReaderInterface;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionProperty;
@@ -13,7 +14,7 @@ use ReflectionProperty;
 /**
  * The annotation helper assists with reading annotations from a class or property
  */
-class AnnotationReader extends BaseAnnotationReader
+class AnnotationReader extends BaseAnnotationReader implements AnnotationReaderInterface
 {
     /**
      * Create a new annotation reader instance
@@ -33,12 +34,7 @@ class AnnotationReader extends BaseAnnotationReader
     }
 
     /**
-     * Get values for a specific annotation within a class recursively as [<property> => <annotation>]
-     *
-     * @param string $class
-     * @param string $annotation
-     *
-     * @return mixed[]
+     * @inheritdoc
      */
     public function getClassPropertyAnnotation(string $class, string $annotation): array
     {
@@ -66,12 +62,7 @@ class AnnotationReader extends BaseAnnotationReader
     }
 
     /**
-     * Get values for annotations within a class recursively as [<property> => [<annotation>, <annotation>, ...]]
-     *
-     * @param string $class
-     * @param mixed[] $annotations
-     *
-     * @return mixed[]
+     * @inheritdoc
      */
     public function getClassPropertyAnnotations(string $class, array $annotations): array
     {

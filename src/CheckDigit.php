@@ -8,11 +8,7 @@ use EoneoPay\Utils\Interfaces\CheckDigitInterface;
 class CheckDigit implements CheckDigitInterface
 {
     /**
-     * Calculate a check digit based on the Luhn algorithm.
-     *
-     * @param string $string
-     *
-     * @return int
+     * @inheritdoc
      */
     public function calculate(string $string): int
     {
@@ -45,11 +41,7 @@ class CheckDigit implements CheckDigitInterface
     }
 
     /**
-     * Validate the value provided has a valid check digit suffixed.
-     *
-     * @param string $value
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function validate(string $value): bool
     {

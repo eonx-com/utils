@@ -12,6 +12,19 @@ use Tests\EoneoPay\Utils\TestCase;
 class SearchTest extends TestCase
 {
     /**
+     * Test search ignores non-strings
+     *
+     * @return void
+     */
+    public function testSearchIgnoresNonStringValues(): void
+    {
+        $arr = new Arr();
+        $array = [['invalid'], true, 'test'];
+
+        self::assertSame($array[2], $arr->search($array, 'test'));
+    }
+
+    /**
      * Test searching for a value in an array works as expected
      *
      * @return void
@@ -39,18 +52,5 @@ class SearchTest extends TestCase
         self::assertSame($array[0], $arr->search($array, 'TEST'));
         self::assertSame($array[1], $arr->search($array, 'UserId'));
         self::assertSame($array[2], $arr->search($array, 'parameter_two'));
-    }
-
-    /**
-     * Test search ignores non-strings
-     *
-     * @return void
-     */
-    public function testSearchIgnoresNonStringValues(): void
-    {
-        $arr = new Arr();
-        $array = [['invalid'], true, 'test'];
-
-        self::assertSame($array[2], $arr->search($array, 'test'));
     }
 }

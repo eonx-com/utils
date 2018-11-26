@@ -62,6 +62,20 @@ class MergeTest extends TestCase
     }
 
     /**
+     * Test merging dot notation and non-dot notation arrays together works correctly
+     *
+     * @return void
+     */
+    public function testMergeWithDotAndNonDotNotationArraysWorks(): void
+    {
+        $array1 = ['one.two' => 'a', 'one.three' => 'b'];
+        $array2 = ['one' => ['four' => 'c']];
+        $expected = ['one' => ['two' => 'a', 'three' => 'b', 'four' => 'c']];
+
+        self::assertSame($expected, (new Arr())->merge($array1, $array2));
+    }
+
+    /**
      * Test merging dot notation arrays together in the same way as normal arrays
      *
      * @return void
@@ -76,19 +90,5 @@ class MergeTest extends TestCase
         $arrMerge = (new Arr())->merge($array1, $array3);
 
         self::assertSame($arrayMerge, $arrMerge);
-    }
-
-    /**
-     * Test merging dot notation and non-dot notation arrays together works correctly
-     *
-     * @return void
-     */
-    public function testMergeWithDotAndNonDotNotationArraysWorks(): void
-    {
-        $array1 = ['one.two' => 'a', 'one.three' => 'b'];
-        $array2 = ['one' => ['four' => 'c']];
-        $expected = ['one' => ['two' => 'a', 'three' => 'b', 'four' => 'c']];
-
-        self::assertSame($expected, (new Arr())->merge($array1, $array2));
     }
 }

@@ -48,6 +48,16 @@ interface GeneratorInterface
     public const RANDOM_INCLUDE_SYMBOLS = 8;
 
     /**
+     * Generate a rendom integer
+     *
+     * @param int|null $minimum The smallest allowable number, defaults to 0
+     * @param int|null $maximum The largest allowable number, defaults to PHP_INT_MAX
+     *
+     * @return int
+     */
+    public function randomInteger(?int $minimum = null, ?int $maximum = null): int;
+
+    /**
      * Generate a random string
      *
      * @param int|null $length The length of the string to return, defaults to 16

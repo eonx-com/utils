@@ -9,12 +9,7 @@ use EoneoPay\Utils\Interfaces\HasherInterface;
 class Hasher implements HasherInterface
 {
     /**
-     * Hash a string using configured options
-     *
-     * @param string $string
-     * @param null|int $cost
-     *
-     * @return string
+     * @inheritdoc
      *
      * @throws \EoneoPay\Utils\Exceptions\HashingFailedException
      */
@@ -27,10 +22,8 @@ class Hasher implements HasherInterface
             return $hash;
         }
 
-        // @codeCoverageIgnoreStart
         // Ignored due to difficulty of replication without system or library corruption
-        throw new HashingFailedException('Value was not able to be hashed');
-        // @codeCoverageIgnoreEnd
+        throw new HashingFailedException('Value was not able to be hashed'); // @codeCoverageIgnore
     }
 
     /**
