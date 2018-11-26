@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace EoneoPay\Utils\Interfaces;
 
-use DateTime;
+use EoneoPay\Utils\DateTime;
 
 interface UtcDateTimeInterface
 {
@@ -17,7 +17,7 @@ interface UtcDateTimeInterface
     /**
      * Get the datetime object.
      *
-     * @return \DateTime
+     * @return \EoneoPay\Utils\DateTime
      */
     public function getObject(): DateTime;
 

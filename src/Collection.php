@@ -42,9 +42,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Convert collection to string
-     *
-     * @return string
+     * @inheritdoc
      */
     public function __toString(): string
     {
@@ -52,11 +50,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Add an item to the collection
-     *
-     * @param mixed $item The item to add to the collection
-     *
-     * @return static
+     * @inheritdoc
      */
     public function add($item): self
     {
@@ -67,9 +61,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Clear all items from a collection
-     *
-     * @return static
+     * @inheritdoc
      */
     public function clear(): self
     {
@@ -80,9 +72,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Collapse the collection of items into a single array
-     *
-     * @return static
+     * @inheritdoc
      */
     public function collapse(): self
     {
@@ -93,9 +83,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Get the number of items in the collection
-     *
-     * @return int
+     * @inheritdoc
      */
     public function count(): int
     {
@@ -103,11 +91,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Run a filter over each of the items
-     *
-     * @param callable $callback A callback to process against the items
-     *
-     * @return static
+     * @inheritdoc
      */
     public function filter(callable $callback): self
     {
@@ -117,9 +101,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Get the first item in the collection
-     *
-     * @return mixed The first item
+     * @inheritdoc
      */
     public function first()
     {
@@ -129,12 +111,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Get item by key
-     *
-     * @param mixed $key The item to get
-     * @param mixed $default The value to return if key isn't found
-     *
-     * @return mixed
+     * @inheritdoc
      */
     public function get($key, $default = null)
     {
@@ -142,9 +119,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Get the items from the collection
-     *
-     * @return mixed[]
+     * @inheritdoc
      */
     public function getItems(): array
     {
@@ -152,9 +127,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Get iterator for collection
-     *
-     * @return \ArrayIterator
+     * @inheritdoc
      */
     public function getIterator(): ArrayIterator
     {
@@ -162,11 +135,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Determine if the collection has a specific key
-     *
-     * @param string $key The key to search for, can use dot notation
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function has(string $key): bool
     {
@@ -174,12 +143,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Copy keys from one collection to this collection if keys exist in both
-     *
-     * @param \EoneoPay\Utils\Interfaces\SerializableInterface $source The source to check for the key in
-     * @param string[] $keys The destination/source key pairs to process
-     *
-     * @return void
+     * @inheritdoc
      */
     public function intersect(SerializableInterface $source, array $keys): void
     {
@@ -187,9 +151,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Get collection contents to pass to json_encode
-     *
-     * @return mixed[]
+     * @inheritdoc
      */
     public function jsonSerialize(): array
     {
@@ -197,9 +159,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Get the last item in the collection
-     *
-     * @return mixed
+     * @inheritdoc
      */
     public function last()
     {
@@ -209,11 +169,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Run a map over each of the items
-     *
-     * @param callable $callback A callback to process against the items
-     *
-     * @return static
+     * @inheritdoc
      */
     public function map(callable $callback): self
     {
@@ -227,11 +183,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Recursively merge an array into the collection
-     *
-     * @param mixed[] $data The data to merge into the collection
-     *
-     * @return void
+     * @inheritdoc
      */
     public function merge(array $data): void
     {
@@ -247,11 +199,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Get nth item from the items
-     *
-     * @param int $nth The item to get
-     *
-     * @return mixed
+     * @inheritdoc
      */
     public function nth(int $nth)
     {
@@ -275,11 +223,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Determine if an item exists at an offset
-     *
-     * @param mixed $key The key to check
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function offsetExists($key): bool
     {
@@ -287,14 +231,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Get an item at a given offset
-     *
-     * @param int $key The key to get
-     *
-     * @return mixed
-     *
-     * @phpcsSuppress EoneoPay.Commenting.FunctionComment.ScalarTypeHintMissing
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+     * @inheritdoc
      */
     public function offsetGet($key)
     {
@@ -305,12 +242,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Set the item at a given offset
-     *
-     * @param int|string|null $key The key to set
-     * @param mixed $value The value to set
-     *
-     * @return void
+     * @inheritdoc
      */
     public function offsetSet($key, $value): void
     {
@@ -328,11 +260,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Unset the item at a given offset
-     *
-     * @param mixed[]|string $key The key(s) to unset
-     *
-     * @return void
+     * @inheritdoc
      */
     public function offsetUnset($key): void
     {
@@ -340,11 +268,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Remove an item from a collection
-     *
-     * @param mixed $item The item to remove
-     *
-     * @return static
+     * @inheritdoc
      */
     public function remove($item): self
     {
@@ -366,11 +290,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Recursively replace an array's values into the collection
-     *
-     * @param mixed[] $data The data to replace in the collection
-     *
-     * @return void
+     * @inheritdoc
      */
     public function replace(array $data): void
     {
@@ -384,12 +304,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Set a value to the collection
-     *
-     * @param string $key The key to set to the collection, can use dot notation
-     * @param mixed $value The value to set for this key
-     *
-     * @return void
+     * @inheritdoc
      */
     public function set(string $key, $value): void
     {
@@ -397,9 +312,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Return collection items as an array
-     *
-     * @return mixed[]
+     * @inheritdoc
      */
     public function toArray(): array
     {
@@ -416,9 +329,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Convert collection to json
-     *
-     * @return string
+     * @inheritdoc
      */
     public function toJson(): string
     {
@@ -426,11 +337,7 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Generate XML string from the collection
-     *
-     * @param string|null $rootNode The name of the root node
-     *
-     * @return string|null
+     * @inheritdoc
      */
     public function toXml(?string $rootNode = null): ?string
     {

@@ -5,7 +5,6 @@ namespace Tests\EoneoPay\Utils;
 
 use EoneoPay\Utils\Generator;
 use EoneoPay\Utils\Interfaces\GeneratorInterface;
-use Tests\EoneoPay\Utils\Stubs\GeneratorStub;
 
 /**
  * @covers \EoneoPay\Utils\Generator
@@ -62,21 +61,18 @@ class GeneratorTest extends TestCase
     }
 
     /**
-     * Test string generation falls back correctly if an exception is thrown by the true generation function
+     * Test random number generation
      *
      * @return void
-     *
-     * @throws \Exception Makes generateTrueRandomString emulate not enough entropy
      */
-    public function testPseudoRandomStringGeneration(): void
+    public function testRandomIntegerGeneration(): void
     {
-        $generator = new GeneratorStub();
+        $generator = new Generator();
 
-        /** @var \EoneoPay\Utils\Generator $generator */
-        $string = $generator->randomString();
+        $integer = $generator->randomInteger();
 
-        self::assertSame(16, \mb_strlen($string));
-        self::assertRegExp('/^[\da-z]{16}$/', $string);
+        self::assertGreaterThanOrEqual(0, $integer);
+        self::assertLessThanOrEqual(\PHP_INT_MAX, $integer);
     }
 
     /**

@@ -47,7 +47,7 @@ abstract class ValidationException extends BaseException
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getStatusCode(): int
     {

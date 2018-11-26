@@ -13,16 +13,15 @@ use Doctrine\Common\Annotations\Annotation;
 final class UnusedAnnotationStub extends Annotation
 {
     /**
-     * The property name
-     *
-     * @var string
-     */
-    public $name;
-
-    /**
      * Whether the property is enabled or not
      *
      * @var string
      */
     public $enabled;
+    /**
+     * The property name
+     *
+     * @var string
+     */
+    public $name;
 }

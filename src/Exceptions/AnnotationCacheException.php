@@ -6,15 +6,7 @@ namespace EoneoPay\Utils\Exceptions;
 class AnnotationCacheException extends CriticalException
 {
     /**
-     * {@inheritdoc}
-     */
-    public function getErrorMessage(): string
-    {
-        return 'Opcode caching is not available, unable to use annotations';
-    }
-
-    /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getErrorCode(): int
     {
@@ -22,7 +14,15 @@ class AnnotationCacheException extends CriticalException
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
+     */
+    public function getErrorMessage(): string
+    {
+        return 'Opcode caching is not available, unable to use annotations';
+    }
+
+    /**
+     * @inheritdoc
      */
     public function getErrorSubCode(): int
     {

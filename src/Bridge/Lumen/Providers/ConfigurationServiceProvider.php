@@ -9,18 +9,17 @@ use Illuminate\Support\ServiceProvider;
 class ConfigurationServiceProvider extends ServiceProvider
 {
     /**
-     * The config folder name.
-     *
-     * @var string
-     */
-    private const CONFIG_FOLDER_NAME = 'config';
-
-    /**
      * The config file pattern.
      *
      * @var string
      */
     private const CONFIG_FILE_PATTERN = '*.php';
+    /**
+     * The config folder name.
+     *
+     * @var string
+     */
+    private const CONFIG_FOLDER_NAME = 'config';
 
     /**
      * Register all the application config files.

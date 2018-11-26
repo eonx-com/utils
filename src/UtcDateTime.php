@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace EoneoPay\Utils;
 
-use DateTime;
 use DateTimeZone;
 use EoneoPay\Utils\Exceptions\InvalidDateTimeStringException;
 use EoneoPay\Utils\Interfaces\UtcDateTimeInterface;
@@ -14,7 +13,7 @@ class UtcDateTime implements UtcDateTimeInterface
     /**
      * Instantiated DateTime instance
      *
-     * @var \DateTime
+     * @var \EoneoPay\Utils\DateTime
      */
     private $datetime;
 
@@ -40,9 +39,7 @@ class UtcDateTime implements UtcDateTimeInterface
     }
 
     /**
-     * Get the datetime object.
-     *
-     * @return \DateTime
+     * @inheritdoc
      */
     public function getObject(): DateTime
     {
@@ -50,9 +47,7 @@ class UtcDateTime implements UtcDateTimeInterface
     }
 
     /**
-     * Set the zulu format for the datetime object.
-     *
-     * @return string
+     * @inheritdoc
      */
     public function getZulu(): string
     {

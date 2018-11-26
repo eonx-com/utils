@@ -44,6 +44,8 @@ class RepositoryTest extends TestCase
     public function setUp(): void
     {
         $this->repository = new Repository($this->array);
+
+        parent::setUp();
     }
 
     /**

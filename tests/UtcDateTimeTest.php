@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Tests\EoneoPay\Utils;
 
-use DateTime;
 use DateTimeZone;
+use EoneoPay\Utils\DateTime;
 use EoneoPay\Utils\Exceptions\InvalidDateTimeStringException;
 use EoneoPay\Utils\UtcDateTime;
 

@@ -34,12 +34,7 @@ class XmlConverter implements XmlConverterInterface
     private $xml;
 
     /**
-     * Convert array to XML
-     *
-     * @param mixed[] $array The array to convert
-     * @param string|null $rootNode The name of the root node
-     *
-     * @return string
+     * @inheritdoc
      *
      * @throws \EoneoPay\Utils\Exceptions\InvalidXmlTagException Inherited, if xml contains an invalid tag
      */
@@ -61,12 +56,7 @@ class XmlConverter implements XmlConverterInterface
     }
 
     /**
-     * Convert xml to an array with attributes
-     *
-     * @param string $xml The xml to convert
-     * @param int|null $options Additional xml parsing options
-     *
-     * @return mixed[]
+     * @inheritdoc
      *
      * @throws \EoneoPay\Utils\Exceptions\InvalidXmlException If the XML is invalid and can't be loaded
      */

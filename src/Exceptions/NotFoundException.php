@@ -9,7 +9,7 @@ namespace EoneoPay\Utils\Exceptions;
 abstract class NotFoundException extends BaseException
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getStatusCode(): int
     {
