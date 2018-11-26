@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Tests\EoneoPay\Utils;
 
-use EoneoPay\Utils\DateTime;
 use DateTime as BaseDateTime;
+use EoneoPay\Utils\DateTime;
 use EoneoPay\Utils\Exceptions\InvalidDateTimeStringException;
 
 /**

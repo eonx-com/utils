@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Tests\EoneoPay\Utils;
 
-use EoneoPay\Utils\DateInterval;
 use DateInterval as BaseDateInterval;
+use EoneoPay\Utils\DateInterval;
 use EoneoPay\Utils\Exceptions\InvalidDateTimeIntervalException;
 
 /**
