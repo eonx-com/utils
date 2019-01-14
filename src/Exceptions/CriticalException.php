@@ -3,18 +3,13 @@ declare(strict_types=1);
 
 namespace EoneoPay\Utils\Exceptions;
 
+use EoneoPay\Utils\Interfaces\Exceptions\CriticalExceptionInterface;
+
 /**
  * Exception thrown if an error which is critical and requires human intervention to resolve occurs.
  */
-abstract class CriticalException extends BaseException
+abstract class CriticalException extends BaseException implements CriticalExceptionInterface
 {
-    /**
-     * Display a friendly exception message
-     *
-     * @return string
-     */
-    abstract public function getErrorMessage(): string;
-
     /**
      * @inheritdoc
      */

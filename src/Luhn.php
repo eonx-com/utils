@@ -17,7 +17,7 @@ class Luhn implements LuhnInterface
     {
         $number = $this->parseNumber($number);
 
-        $numbers = \str_split(\strrev($number), 1);
+        $numbers = \str_split(\strrev($number));
         $sum = [];
 
         foreach ($numbers as $index => $value) {

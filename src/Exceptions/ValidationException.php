@@ -3,12 +3,13 @@ declare(strict_types=1);
 
 namespace EoneoPay\Utils\Exceptions;
 
+use EoneoPay\Utils\Interfaces\Exceptions\ValidationExceptionInterface;
 use Throwable;
 
 /**
  * Exception thrown if an error related to bad input data occurs.
  */
-abstract class ValidationException extends BaseException
+abstract class ValidationException extends BaseException implements ValidationExceptionInterface
 {
     /**
      * Validation errors.
@@ -18,7 +19,7 @@ abstract class ValidationException extends BaseException
     private $errors;
 
     /**
-     * EntityValidationException constructor.
+     * Create validation exception
      *
      * @param string|null $message
      * @param int|null $code
@@ -37,9 +38,7 @@ abstract class ValidationException extends BaseException
     }
 
     /**
-     * Get validation errors.
-     *
-     * @return mixed[]
+     * @inheritdoc
      */
     public function getErrors(): array
     {
