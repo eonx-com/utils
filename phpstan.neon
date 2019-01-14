@@ -1,5 +1,6 @@
 parameters:
     ignoreErrors:
-        - '#Call to an undefined method Illuminate\\Contracts\\Foundation\\Application::configure().#'
+        - '#Call to method basePath\(\) on an unknown class Illuminate\\Foundation\\Application.#'
+        - '#Call to method configure\(\) on an unknown class Illuminate\\Foundation\\Application.#'
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
-        - '#Parameter \#1 \$app of class EoneoPay\\Utils\\Bridge\\Lumen\\Providers\\ConfigurationServiceProvider constructor expects Illuminate\\Contracts\\Foundation\\Application, Mockery\\MockInterface given.#'
+        - '#Parameter \#1 \$app of class EoneoPay\\Utils\\Bridge\\Lumen\\Providers\\ConfigurationServiceProvider constructor expects Illuminate\\Contracts\\Foundation\\Application\|Illuminate\\Foundation\\Application, Mockery\\MockInterface given.#'
