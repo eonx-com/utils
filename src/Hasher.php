@@ -9,13 +9,37 @@ use EoneoPay\Utils\Interfaces\HasherInterface;
 class Hasher implements HasherInterface
 {
     /**
+     * Algorithm constant value compatible with PHP's password hashing function
+     *
+     * @var int
+     */
+    private $algorithm;
+
+    /**
+     * @var mixed[]
+     */
+    private $options;
+
+    /**
+     * Hasher constructor.
+     *
+     * @param int|null $algorithm
+     * @param mixed[]|null $options
+     */
+    public function __construct(?int $algorithm = null, ?array $options = null)
+    {
+        $this->algorithm = $algorithm ?? self::DEFAULT_ALGORITHM;
+        $this->options = $options ?? [];
+    }
+
+    /**
      * @inheritdoc
      *
      * @throws \EoneoPay\Utils\Exceptions\HashingFailedException
      */
-    public function hash(string $string, ?int $cost = null): string
+    public function hash(string $string): string
     {
-        $hash = \password_hash($string, self::ALGORITHM, ['cost' => $cost ?? self::DEFAULT_COST]);
+        $hash = \password_hash($string, $this->algorithm, $this->options);
 
         // False is mainly associated with *nix/system crypt library faults or poor configuration
         if ($hash !== false) {

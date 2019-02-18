@@ -10,25 +10,16 @@ interface HasherInterface
      *
      * @var int
      */
-    public const ALGORITHM = \PASSWORD_BCRYPT;
-
-    /**
-     * Default cost if none is supplied when hashing.
-     * This value is purposed for the blowfish algorithm
-     *
-     * @var int
-     */
-    public const DEFAULT_COST = 10;
+    public const DEFAULT_ALGORITHM = \PASSWORD_BCRYPT;
 
     /**
      * Transform a string into a one-way hash
      *
      * @param string $string
-     * @param int|null $cost
      *
      * @return string
      */
-    public function hash(string $string, ?int $cost = null): string;
+    public function hash(string $string): string;
 
     /**
      * Compare provided string with a hash to see if the value is correct

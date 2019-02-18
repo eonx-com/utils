@@ -33,7 +33,7 @@ class HasherTest extends TestCase
      */
     public function testHashedValueVerification(): void
     {
-        $hasher = new Hasher();
+        $hasher = new Hasher(\PASSWORD_BCRYPT, ['cost' => self::$cost]);
 
         // Hash value without a cost specified
         $hash = $hasher->hash(self::$data);
@@ -44,7 +44,7 @@ class HasherTest extends TestCase
         self::assertFalse($hasher->verify('incorrectValue', $hash));
 
         // Hash value with specified cost
-        $hashWithCost = $hasher->hash(self::$data, self::$cost);
+        $hashWithCost = $hasher->hash(self::$data);
         self::assertNotFalse($hashWithCost);
 
         // Ensure hashed value with higher cost is based off the same original value
@@ -61,14 +61,14 @@ class HasherTest extends TestCase
      */
     public function testHashingFunction(): void
     {
-        $hasher = new Hasher();
+        $hasher = new Hasher(\PASSWORD_BCRYPT, ['cost' => self::$cost]);
 
         // Test without setting cost
         $string = $hasher->hash(self::$data);
         self::assertNotFalse($string);
 
         // Test with cost higher than algorithm default (10)
-        $string = $hasher->hash(self::$data, self::$cost);
+        $string = $hasher->hash(self::$data);
         self::assertNotFalse($string);
 
         $hashInfo = \password_get_info($string);
