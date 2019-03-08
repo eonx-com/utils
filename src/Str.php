@@ -20,6 +20,18 @@ class Str implements StrInterface
     }
 
     /**
+     * Convert a value to studly caps case.
+     *
+     * @param string $value
+     *
+     * @return string
+     */
+    public function studly(string $value): string
+    {
+        return \str_replace(' ', '', \ucwords(\str_replace(['-', '_'], ' ', $value)));
+    }
+
+    /**
      * Determine if a given string contains a given substring.
      *
      * @param string $haystack
@@ -49,7 +61,11 @@ class Str implements StrInterface
      */
     public function ebcdic(string $value): string
     {
-        return \preg_replace('/\s+/', ' ', \preg_replace("/[^\w\+@\s!\^\\$%&'\(\)\*\-:;=\?\.#,\[\]\/]/", '', $value));
+        return \preg_replace(
+            '/\s+/',
+            ' ',
+            \preg_replace("/[^\w\+@\s!\^\\$%&'\(\)\*\-:;=\?\.#,\[\]\/]/", '', $value) ?? ''
+        ) ?? '';
     }
 
     /**
@@ -87,7 +103,7 @@ class Str implements StrInterface
                 '/(.)(?=[A-Z])/u',
                 '$1' . ($delimiter ?? '_'),
                 $value
-            ));
+            ) ?? '');
         }
 
         return $value;
@@ -110,17 +126,5 @@ class Str implements StrInterface
         }
 
         return false;
-    }
-
-    /**
-     * Convert a value to studly caps case.
-     *
-     * @param string $value
-     *
-     * @return string
-     */
-    public function studly(string $value): string
-    {
-        return \str_replace(' ', '', \ucwords(\str_replace(['-', '_'], ' ', $value)));
     }
 }

@@ -174,7 +174,7 @@ class Arr implements ArrInterface
     public function search(array $array, string $search): ?string
     {
         // Clean up search term by lower casing and removing anything exception alphanumeric characters
-        $clean = \mb_strtolower(\preg_replace('/[^\da-zA-Z]/', '', $search));
+        $clean = \mb_strtolower(\preg_replace('/[^\da-zA-Z]/', '', $search) ?? '');
 
         // Loop through array and compare values with the same cleansing as the search term
         foreach ($array as $value) {
@@ -183,7 +183,7 @@ class Arr implements ArrInterface
                 continue;
             }
 
-            if ($clean === \mb_strtolower(\preg_replace('/[^\da-zA-Z]/', '', $value))) {
+            if ($clean === \mb_strtolower(\preg_replace('/[^\da-zA-Z]/', '', $value) ?? '')) {
                 return $value;
             }
         }

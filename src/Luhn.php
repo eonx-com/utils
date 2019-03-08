@@ -21,6 +21,8 @@ class Luhn implements LuhnInterface
         $sum = [];
 
         foreach ($numbers as $index => $value) {
+            $value = (int) $value;
+
             // If index is an odd number, skip
             if ($this->isEven($index) === false) {
                 $sum[] = $value;
