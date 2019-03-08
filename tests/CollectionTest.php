@@ -90,7 +90,7 @@ class CollectionTest extends TestCase
         $collection = new Collection(self::$numeric);
 
         foreach ($collection as $index => $item) {
-            self::assertSame($collection->nth($index + 1), $item);
+            self::assertSame($collection->nth((int) $index + 1), $item);
         }
     }
 

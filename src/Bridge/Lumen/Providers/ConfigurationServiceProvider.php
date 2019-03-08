@@ -34,6 +34,7 @@ class ConfigurationServiceProvider extends ServiceProvider
             return;
         }
 
+        /** @var \SplFileInfo[] $globIterator */
         $globIterator = new GlobIterator(\sprintf('%s/%s', $configPath, self::CONFIG_FILE_PATTERN));
 
         foreach ($globIterator as $configFile) {
