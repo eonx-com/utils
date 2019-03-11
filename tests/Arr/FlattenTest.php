@@ -9,6 +9,8 @@ use Tests\EoneoPay\Utils\TestCase;
 /**
  * @covers \EoneoPay\Utils\Arr::flatten
  * @covers \EoneoPay\Utils\Arr::unflatten
+ *
+ * @uses \EoneoPay\Utils\Arr::set
  */
 class FlattenTest extends TestCase
 {

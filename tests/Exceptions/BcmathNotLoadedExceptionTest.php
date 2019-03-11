@@ -8,6 +8,9 @@ use Tests\EoneoPay\Utils\TestCase;
 
 /**
  * @covers \EoneoPay\Utils\Exceptions\BcmathNotLoadedException
+ *
+ * @uses \EoneoPay\Utils\Exceptions\BaseException
+ * @uses \EoneoPay\Utils\Exceptions\RuntimeException
  */
 class BcmathNotLoadedExceptionTest extends TestCase
 {

@@ -6,6 +6,12 @@ namespace Tests\EoneoPay\Utils\Exceptions;
 use EoneoPay\Utils\Exceptions\InvalidDateTimeIntervalException;
 use Tests\EoneoPay\Utils\TestCase;
 
+/**
+ * @covers \EoneoPay\Utils\Exceptions\InvalidDateTimeIntervalException
+ *
+ * @uses \EoneoPay\Utils\Exceptions\BaseException
+ * @uses \EoneoPay\Utils\Exceptions\RuntimeException
+ */
 class InvalidDatetimeIntervalExceptionTest extends TestCase
 {
     /**

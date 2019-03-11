@@ -2,7 +2,12 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="vendor/autoload.php"
-         verbose="true">
+         verbose="true"
+         beStrictAboutCoversAnnotation="true"
+         beStrictAboutOutputDuringTests="true"
+         beStrictAboutChangesToGlobalState="true"
+         beStrictAboutResourceUsageDuringSmallTests="true"
+         beStrictAboutTestsThatDoNotTestAnything="true">
     <testsuites>
         <testsuite name="Utils Test Suite">
             <directory>./tests</directory>

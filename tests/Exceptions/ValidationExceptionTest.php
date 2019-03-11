@@ -6,6 +6,11 @@ namespace Tests\EoneoPay\Utils\Exceptions;
 use Tests\EoneoPay\Utils\Stubs\Exceptions\ValidationExceptionStub;
 use Tests\EoneoPay\Utils\TestCase;
 
+/**
+ * @covers \EoneoPay\Utils\Exceptions\ValidationException
+ *
+ * @uses \EoneoPay\Utils\Exceptions\BaseException
+ */
 class ValidationExceptionTest extends TestCase
 {
     /**

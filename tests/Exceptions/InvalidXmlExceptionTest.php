@@ -6,6 +6,12 @@ namespace Tests\EoneoPay\Utils\Exceptions;
 use EoneoPay\Utils\Exceptions\InvalidXmlException;
 use Tests\EoneoPay\Utils\TestCase;
 
+/**
+ * @covers \EoneoPay\Utils\Exceptions\InvalidXmlException
+ *
+ * @uses \EoneoPay\Utils\Exceptions\BaseException
+ * @uses \EoneoPay\Utils\Exceptions\RuntimeException
+ */
 class InvalidXmlExceptionTest extends TestCase
 {
     /**

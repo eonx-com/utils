@@ -11,6 +11,10 @@ use Tests\EoneoPay\Utils\Stubs\Collection\TraversableStub;
 /**
  * @covers \EoneoPay\Utils\Collection
  *
+ * @uses \EoneoPay\Utils\Arr
+ * @uses \EoneoPay\Utils\Exceptions\BaseException
+ * @uses \EoneoPay\Utils\XmlConverter
+ *
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class CollectionTest extends TestCase

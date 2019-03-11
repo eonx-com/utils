@@ -6,6 +6,11 @@ namespace Tests\EoneoPay\Utils\Exceptions;
 use Tests\EoneoPay\Utils\Stubs\Exceptions\NotFoundExceptionStub;
 use Tests\EoneoPay\Utils\TestCase;
 
+/**
+ * @covers \EoneoPay\Utils\Exceptions\NotFoundException
+ *
+ * @uses \EoneoPay\Utils\Exceptions\BaseException
+ */
 class NotFoundExceptionTest extends TestCase
 {
     /**

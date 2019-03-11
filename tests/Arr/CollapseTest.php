@@ -9,6 +9,9 @@ use Tests\EoneoPay\Utils\TestCase;
 
 /**
  * @covers \EoneoPay\Utils\Arr::collapse
+ *
+ * @uses \EoneoPay\Utils\Arr
+ * @uses \EoneoPay\Utils\Collection
  */
 class CollapseTest extends TestCase
 {

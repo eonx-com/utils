@@ -10,6 +10,8 @@ use Tests\EoneoPay\Utils\TestCase;
  * @covers \EoneoPay\Utils\Arr::has
  * @covers \EoneoPay\Utils\Arr::get
  * @covers \EoneoPay\Utils\Arr::set
+ *
+ * @uses \EoneoPay\Utils\Arr::flatten
  */
 class MutatorTest extends TestCase
 {

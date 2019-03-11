@@ -9,6 +9,11 @@ use EoneoPay\Utils\XmlConverter;
 /**
  * @covers \EoneoPay\Utils\Repository
  *
+ * @uses \EoneoPay\Utils\Arr
+ * @uses \EoneoPay\Utils\Collection
+ * @uses \EoneoPay\Utils\Exceptions\BaseException
+ * @uses \EoneoPay\Utils\XmlConverter
+ *
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class RepositoryTest extends TestCase

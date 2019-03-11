@@ -10,6 +10,8 @@ use EoneoPay\Utils\XmlConverter;
 /**
  * @covers \EoneoPay\Utils\XmlConverter
  *
+ * @uses \EoneoPay\Utils\Exceptions\BaseException
+ *
  * @SuppressWarnings(PHPMD.TooManyPublicMethods) All test methods must be public
  */
 class XmlConverterTest extends TestCase

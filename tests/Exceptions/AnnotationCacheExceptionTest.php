@@ -8,7 +8,9 @@ use Tests\EoneoPay\Utils\TestCase;
 
 /**
  * @covers \EoneoPay\Utils\Exceptions\AnnotationCacheException
- * @covers \EoneoPay\Utils\Exceptions\CriticalException
+ *
+ * @uses \EoneoPay\Utils\Exceptions\BaseException
+ * @uses \EoneoPay\Utils\Exceptions\CriticalException
  */
 class AnnotationCacheExceptionTest extends TestCase
 {

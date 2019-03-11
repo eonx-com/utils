@@ -5,6 +5,9 @@ namespace Tests\EoneoPay\Utils;
 
 use EoneoPay\Utils\Permissions;
 
+/**
+ * @covers \EoneoPay\Utils\Permissions
+ */
 class PermissionsTest extends TestCase
 {
     /**

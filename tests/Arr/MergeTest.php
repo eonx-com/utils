@@ -8,6 +8,9 @@ use Tests\EoneoPay\Utils\TestCase;
 
 /**
  * @covers \EoneoPay\Utils\Arr::merge
+ *
+ * @uses \EoneoPay\Utils\Arr::set
+ * @uses \EoneoPay\Utils\Arr::unflatten
  */
 class MergeTest extends TestCase
 {

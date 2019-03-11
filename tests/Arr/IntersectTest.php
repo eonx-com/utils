@@ -8,6 +8,8 @@ use Tests\EoneoPay\Utils\TestCase;
 
 /**
  * @covers \EoneoPay\Utils\Arr::intersect
+ *
+ * @uses \EoneoPay\Utils\Arr::set
  */
 class IntersectTest extends TestCase
 {

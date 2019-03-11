@@ -9,6 +9,8 @@ use EoneoPay\Utils\Exceptions\InvalidDateTimeStringException;
 
 /**
  * @covers \EoneoPay\Utils\DateTime
+ *
+ * @uses \EoneoPay\Utils\Exceptions\BaseException
  */
 class DateTimeTest extends TestCase
 {

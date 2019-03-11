@@ -9,6 +9,9 @@ use ReflectionMethod;
 
 /**
  * @covers \EoneoPay\Utils\Luhn
+ *
+ * @uses \EoneoPay\Utils\Exceptions\BaseException
+ * @uses \EoneoPay\Utils\Exceptions\ValidationException
  */
 class LuhnTest extends TestCase
 {

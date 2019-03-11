@@ -6,6 +6,12 @@ namespace Tests\EoneoPay\Utils\Exceptions;
 use EoneoPay\Utils\Exceptions\HashingFailedException;
 use Tests\EoneoPay\Utils\TestCase;
 
+/**
+ * @covers \EoneoPay\Utils\Exceptions\HashingFailedException
+ *
+ * @uses \EoneoPay\Utils\Exceptions\BaseException
+ * @uses \EoneoPay\Utils\Exceptions\RuntimeException
+ */
 class HashingFailedExceptionTest extends TestCase
 {
     /**

@@ -6,6 +6,12 @@ namespace Tests\EoneoPay\Utils\Exceptions;
 use EoneoPay\Utils\Exceptions\InvalidXmlTagException;
 use Tests\EoneoPay\Utils\TestCase;
 
+/**
+ * @covers \EoneoPay\Utils\Exceptions\InvalidXmlTagException
+ *
+ * @uses \EoneoPay\Utils\Exceptions\BaseException
+ * @uses \EoneoPay\Utils\Exceptions\RuntimeException
+ */
 class InvalidXmlTagExceptionTest extends TestCase
 {
     /**

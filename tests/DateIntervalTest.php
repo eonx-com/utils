@@ -9,6 +9,8 @@ use EoneoPay\Utils\Exceptions\InvalidDateTimeIntervalException;
 
 /**
  * @covers \EoneoPay\Utils\DateInterval
+ *
+ * @uses \EoneoPay\Utils\Exceptions\BaseException
  */
 class DateIntervalTest extends TestCase
 {

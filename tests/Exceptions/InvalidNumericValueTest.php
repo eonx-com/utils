@@ -8,6 +8,9 @@ use Tests\EoneoPay\Utils\TestCase;
 
 /**
  * @covers \EoneoPay\Utils\Exceptions\InvalidNumericValue
+ *
+ * @uses \EoneoPay\Utils\Exceptions\BaseException
+ * @uses \EoneoPay\Utils\Exceptions\ValidationException
  */
 class InvalidNumericValueTest extends TestCase
 {

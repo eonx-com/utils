@@ -8,6 +8,12 @@ use EoneoPay\Utils\DateTime;
 use EoneoPay\Utils\Exceptions\InvalidDateTimeStringException;
 use EoneoPay\Utils\UtcDateTime;
 
+/**
+ * @covers \EoneoPay\Utils\UtcDateTime
+ *
+ * @uses \EoneoPay\Utils\DateTime
+ * @uses \EoneoPay\Utils\Exceptions\BaseException
+ */
 class UtcDateTimeTest extends TestCase
 {
     /**

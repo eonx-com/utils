@@ -8,6 +8,10 @@ use Tests\EoneoPay\Utils\TestCase;
 
 /**
  * @covers \EoneoPay\Utils\Arr::replace
+ *
+ * @uses \EoneoPay\Utils\Arr::flatten
+ * @uses \EoneoPay\Utils\Arr::set
+ * @uses \EoneoPay\Utils\Arr::unflatten
  */
 class ReplaceTest extends TestCase
 {
