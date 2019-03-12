@@ -13,28 +13,28 @@ use IteratorAggregate;
 class DatePeriod implements IteratorAggregate
 {
     /**
-     * @var \EoneoPay\Utils\DateTime
+     * @var \DateTime
      */
     private $start;
 
     /**
-     * @var \EoneoPay\Utils\DateInterval
+     * @var \DateInterval
      */
     private $interval;
 
     /**
-     * @var \EoneoPay\Utils\DateTime
+     * @var \DateTime
      */
     private $end;
 
     /**
      * DatePeriod constructor
      *
-     * @param \EoneoPay\Utils\DateTime $start
-     * @param \EoneoPay\Utils\DateInterval $interval
-     * @param \EoneoPay\Utils\DateTime $end
+     * @param \DateTime $start
+     * @param \DateInterval $interval
+     * @param \DateTime $end
      */
-    public function __construct(DateTime $start, DateInterval $interval, DateTime $end)
+    public function __construct(\DateTime $start, \DateInterval $interval, \DateTime $end)
     {
         $this->start = $start;
         $this->interval = $interval;
