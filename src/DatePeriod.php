@@ -54,7 +54,11 @@ class DatePeriod implements IteratorAggregate
      */
     public function getIterator(): iterable
     {
-        $periods = new BaseDatePeriod($this->start, $this->interval, $this->end);
+        // Clone $end 1 further period to catch the PHP bug
+        $end = clone $this->end;
+        $end->add($this->interval);
+
+        $periods = new BaseDatePeriod($this->start, $this->interval, $end);
         $predictableDays = $this->hasPredictableDayIteration();
         $firstPeriod = null;
 
@@ -78,6 +82,12 @@ class DatePeriod implements IteratorAggregate
 
             if ($predictableDays) {
                 $this->fixPeriod($period, $firstPeriod);
+            }
+
+            if ($period > $this->end) {
+                // We got further than the user provided $end
+
+                return null;
             }
 
             yield new DateTime(

@@ -142,6 +142,17 @@ class DatePeriodTest extends TestCase
                     new DateTime('2019-01-04T00:00:00+0000'),
                     new DateTime('2019-01-05T00:00:00+0000')
                 ]
+            ]],
+
+            'caught in the middle of the php bug' => [[
+                'start' => new DateTime('2018-12-30T00:00:00+0000'),
+                'interval' => new DateInterval('P1M'),
+                'end' => new DateTime('2019-03-01T00:00:00+0000'),
+                'expected' => [
+                    new DateTime('2018-12-30T00:00:00+0000'),
+                    new DateTime('2019-01-30T00:00:00+0000'),
+                    new DateTime('2019-02-28T00:00:00+0000')
+                ]
             ]]
         ];
     }
