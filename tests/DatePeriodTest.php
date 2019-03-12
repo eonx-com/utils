@@ -6,7 +6,6 @@ namespace Tests\EoneoPay\Utils;
 use EoneoPay\Utils\DateInterval;
 use EoneoPay\Utils\DatePeriod;
 use EoneoPay\Utils\DateTime;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \EoneoPay\Utils\DatePeriod

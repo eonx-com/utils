@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace EoneoPay\Utils;
 
+use DateInterval;
+use DatePeriod as BaseDatePeriod;
+use DateTime as BaseDateTime;
+use EoneoPay\Utils\Exceptions\UnexpectedTypeException;
 use IteratorAggregate;
 
 /**
@@ -34,7 +38,7 @@ class DatePeriod implements IteratorAggregate
      * @param \DateInterval $interval
      * @param \DateTime $end
      */
-    public function __construct(\DateTime $start, \DateInterval $interval, \DateTime $end)
+    public function __construct(BaseDateTime $start, DateInterval $interval, BaseDateTime $end)
     {
         $this->start = $start;
         $this->interval = $interval;
@@ -46,16 +50,28 @@ class DatePeriod implements IteratorAggregate
      *
      * @return \EoneoPay\Utils\DateTime[]
      *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
+     * @throws \Exception
      */
     public function getIterator(): iterable
     {
-        /** @var \DateTime[] $periods */
-        $periods = new \DatePeriod($this->start, $this->interval, $this->end);
+        $periods = new BaseDatePeriod($this->start, $this->interval, $this->end);
         $predictableDays = $this->hasPredictableDayIteration();
         $firstPeriod = null;
 
         foreach ($periods as $period) {
+            /**
+             * @var \DateTime $period
+             *
+             * @see https://youtrack.jetbrains.com/issue/WI-37859 - required until PhpStorm recognises === check
+             */
+            if (($period instanceof BaseDateTime) === false) {
+                // @codeCoverageIgnoreStart
+                // This exception will never be thrown in real life - DatePeriod will
+                // only ever return DateTime objects
+                throw new UnexpectedTypeException($period, BaseDateTime::class);
+                // @codeCoverageIgnoreEnd
+            }
+
             if ($firstPeriod === null) {
                 $firstPeriod = $period;
             }
@@ -65,7 +81,7 @@ class DatePeriod implements IteratorAggregate
             }
 
             yield new DateTime(
-                $period->format(DateTime::RFC3339),
+                $period->format(BaseDateTime::RFC3339),
                 $period->getTimezone()
             );
         }
@@ -97,7 +113,7 @@ class DatePeriod implements IteratorAggregate
      *
      * @return void
      */
-    private function fixPeriod(\DateTime $period, \DateTime $firstPeriod): void
+    private function fixPeriod(BaseDateTime $period, BaseDateTime $firstPeriod): void
     {
         if ($period->format('d') === $firstPeriod->format('d')) {
             return;
