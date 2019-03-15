@@ -177,7 +177,7 @@ class Collection implements CollectionInterface
         $items = \array_map($callback, $this->toArray(), $keys);
 
         // Replace collection contents
-        $this->replace(\array_combine($keys, $items));
+        $this->replace(\array_combine($keys, $items) ?: []);
 
         return $this;
     }
@@ -333,7 +333,7 @@ class Collection implements CollectionInterface
      */
     public function toJson(): string
     {
-        return \json_encode($this->toArray());
+        return \json_encode($this->toArray()) ?: '';
     }
 
     /**

@@ -352,14 +352,14 @@ class XmlConverter implements XmlConverterInterface
 
         foreach ($values as $key => $value) {
             // Ensure node name is valid
-            if ($this->isValidXmlTag($key) === false) {
+            if ($this->isValidXmlTag((string) $key) === false) {
                 throw new InvalidXmlTagException(\sprintf('Node name is invalid for "%s" in node "%s"', $key, $name));
             }
 
             // Process node
             $node = \is_array($value) && \is_numeric(\key($value)) ?
-                $this->appendXmlAttributeArray($node, $key, $value) :
-                $this->appendXmlAttribute($node, $key, $value);
+                $this->appendXmlAttributeArray($node, (string) $key, $value) :
+                $this->appendXmlAttribute($node, (string) $key, $value);
 
             // Remove array key to prevent double processing
             unset($values[$key]);

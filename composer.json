@@ -17,11 +17,12 @@
   "require-dev": {
     "doctrine/annotations": "^1.6",
     "eoneopay/standards": "dev-master",
+    "ext-bcmath": "*",
     "illuminate/support": "^5.5",
     "indigophp/doctrine-annotation-autoload": "^0.1.0",
     "mockery/mockery": "^1.0",
     "phpmd/phpmd": "^2.6",
-    "phpstan/phpstan": "^0.9",
+    "phpstan/phpstan": "^0.11",
     "phpunit/phpunit": "^7.0",
     "roave/security-advisories": "dev-master",
     "sebastian/phpcpd": "^4.0",
@@ -39,6 +40,7 @@
   },
   "suggest": {
     "doctrine/annotations": "Required to use the annotation reader",
+    "ext-bcmath": "To use the Math service",
     "indigophp/doctrine-annotation-autoload": "Recommended to autoload custom doctrine annotations",
     "illuminate/support": "Required to use the configuration service provider in Lumen"
   },
