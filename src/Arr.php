@@ -29,7 +29,7 @@ class Arr implements ArrInterface
             $results[] = $values;
         }
 
-        return \array_merge(...$results);
+        return \count($results) ? \array_merge(...$results) : [];
     }
 
     /**
