@@ -6,6 +6,7 @@ namespace Tests\EoneoPay\Utils;
 use EoneoPay\Utils\DateInterval;
 use EoneoPay\Utils\DatePeriod;
 use EoneoPay\Utils\DateTime;
+use EoneoPay\Utils\Exceptions\InvalidAnchorException;
 
 /**
  * @covers \EoneoPay\Utils\DatePeriod
@@ -153,6 +154,20 @@ class DatePeriodTest extends TestCase
                     new DateTime('2019-01-30T00:00:00+0000'),
                     new DateTime('2019-02-28T00:00:00+0000')
                 ]
+            ]],
+
+            'anchored monthly' => [[
+                'start' => new DateTime('2019-01-15T15:43:33+0000'),
+                'anchor' => new DateTime('2019-02-01T00:00:00+0000'),
+                'interval' => new DateInterval('P1M'),
+                'end' => new DateTime('2019-05-30T23:59:59+0000'),
+                'expected' => [
+                    new DateTime('2019-01-15T15:43:33+0000'),
+                    new DateTime('2019-02-01T00:00:00+0000'),
+                    new DateTime('2019-03-01T00:00:00+0000'),
+                    new DateTime('2019-04-01T00:00:00+0000'),
+                    new DateTime('2019-05-01T00:00:00+0000')
+                ]
             ]]
         ];
     }
@@ -165,11 +180,60 @@ class DatePeriodTest extends TestCase
      * @param mixed[] $data
      *
      * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidAnchorException
      */
     public function testOutput(array $data): void
     {
-        $period = new DatePeriod($data['start'], $data['interval'], $data['end']);
+        $period = new DatePeriod(
+            $data['start'],
+            $data['interval'],
+            $data['end'],
+            $data['anchor'] ?? null
+        );
 
         static::assertEquals($data['expected'], \iterator_to_array($period));
+    }
+
+    /**
+     * Tests invalid inputs
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeIntervalException
+     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
+     * @throws \EoneoPay\Utils\Exceptions\InvalidAnchorException
+     */
+    public function testThrowsWhenAnchorBeyondOneInterval(): void
+    {
+        $this->expectException(InvalidAnchorException::class);
+
+        new DatePeriod(
+            new DateTime('2019-01-01T00:00:00+0000'),
+            new DateInterval('P1M'),
+            new DateTime('2019-01-31T00:00:00+0000'),
+            new DateTime('2019-02-02T00:00:00')
+        );
+    }
+
+    /**
+     * Tests invalid inputs
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeIntervalException
+     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
+     * @throws \EoneoPay\Utils\Exceptions\InvalidAnchorException
+     */
+    public function testThrowsWhenAnchorBeforeStart(): void
+    {
+        $this->expectException(InvalidAnchorException::class);
+
+        new DatePeriod(
+            new DateTime('2019-01-01T00:00:00+0000'),
+            new DateInterval('P1M'),
+            new DateTime('2019-01-31T00:00:00+0000'),
+            new DateTime('2018-12-15T00:00:00')
+        );
     }
 }
