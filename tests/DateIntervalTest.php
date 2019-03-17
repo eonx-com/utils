@@ -37,4 +37,19 @@ class DateIntervalTest extends TestCase
 
         new DateInterval('INVALID');
     }
+
+    /**
+     * Tests predictable day iteration method
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeIntervalException
+     */
+    public function testPredictableDayIteration(): void
+    {
+        static::assertTrue((new DateInterval('P1M'))->hasPredictableDayIteration());
+        static::assertTrue((new DateInterval('P1Y'))->hasPredictableDayIteration());
+        static::assertFalse((new DateInterval('P1MT1S'))->hasPredictableDayIteration());
+        static::assertFalse((new DateInterval('P1M1D'))->hasPredictableDayIteration());
+    }
 }
