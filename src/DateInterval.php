@@ -25,4 +25,23 @@ class DateInterval extends BaseDateInterval
             throw new InvalidDateTimeIntervalException('The date/time interval is invalid', null, $exception);
         }
     }
+
+    /**
+     * Detects if the day will change when using this Interval. It will
+     * return true when there are only Years or Months present, any other
+     * values will not result in stable day iteration.
+     *
+     * @return bool
+     */
+    public function hasPredictableDayIteration(): bool
+    {
+        $hasYearly = $this->y > 0;
+        $hasMonthly = $this->m > 0;
+        $hasOthers = $this->d > 0 ||
+            $this->h > 0 ||
+            $this->i > 0 ||
+            $this->s > 0;
+
+        return $hasOthers === false && ($hasYearly || $hasMonthly);
+    }
 }

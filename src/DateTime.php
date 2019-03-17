@@ -27,4 +27,27 @@ class DateTime extends BaseDateTime
             throw new InvalidDateTimeStringException('The date/time provided is invalid', null, $exception);
         }
     }
+
+    /**
+     * Adds an interval to a supplied DateTime
+     *
+     * @param \EoneoPay\Utils\DateInterval $interval
+     *
+     * @return \EoneoPay\Utils\DateTime
+     */
+    public function addWithoutOverflow(DateInterval $interval): DateTime
+    {
+        $clone = clone $this;
+        $this->add($interval);
+
+        if ($interval->hasPredictableDayIteration() &&
+            $this->format('d') !== $clone->format('d')
+        ) {
+            // We've overflowed months, wind it back.
+
+            $this->modify('last day of last month');
+        }
+
+        return $this;
+    }
 }
