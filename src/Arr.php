@@ -3,9 +3,13 @@ declare(strict_types=1);
 
 namespace EoneoPay\Utils;
 
+use Closure;
 use EoneoPay\Utils\Interfaces\ArrInterface;
 use EoneoPay\Utils\Interfaces\SerializableInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods) Arr requires many public methods to work
+ */
 class Arr implements ArrInterface
 {
     /**
@@ -61,6 +65,28 @@ class Arr implements ArrInterface
         $flattened = $this->flatten($array);
 
         return $flattened[$key] ?? $default;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function groupBy(array $array, $groupBy, $default = null): array
+    {
+        $ret = [];
+
+        foreach ($array as $key => $value) {
+            $groupByValue = ($groupBy instanceof Closure)
+                ? $groupBy($value)
+                : $this->get($value, $groupBy, $default);
+
+            if (\array_key_exists($groupByValue, $ret) === false) {
+                $ret[$groupByValue] = [];
+            }
+
+            $ret[$groupByValue][$key] = $value;
+        }
+
+        return $ret;
     }
 
     /**
