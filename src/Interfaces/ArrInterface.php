@@ -36,6 +36,18 @@ interface ArrInterface
     public function get(array $array, $key, $default = null);
 
     /**
+     * Groups a multi dimensional array into groups based on the
+     * value at the specified key.
+     *
+     * @param mixed[] $array
+     * @param mixed|callable $groupBy
+     * @param mixed|null $default
+     *
+     * @return mixed[]
+     */
+    public function groupBy(array $array, $groupBy, $default = null): array;
+
+    /**
      * Determine if the repository has a specific key
      *
      * @param mixed[] $array The array to search in
