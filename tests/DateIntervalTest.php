@@ -25,6 +25,21 @@ class DateIntervalTest extends TestCase
     }
 
     /**
+     * Test date interval accepts \DateInterval through the constructor
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeIntervalException
+     */
+    public function testConstructorAcceptsDateInterval(): void
+    {
+        self::assertSame(
+            \DateInterval::createFromDateString('+1 day 12 hours')->format('%Y-%M-%D %H:%I:%S'),
+            (new DateInterval(new \DateInterval('P1DT12H')))->format('%Y-%M-%D %H:%I:%S')
+        );
+    }
+
+    /**
      * Test exception is thrown if interval is invalid
      *
      * @return void

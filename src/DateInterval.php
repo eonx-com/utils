@@ -12,15 +12,19 @@ class DateInterval extends BaseDateInterval
     /**
      * Create a DateInterval object from string and throw exception if invalid interval provided
      *
-     * @param string $interval Interval spec string
+     * @param \DateInterval|string $interval Interval spec string
      *
      * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeIntervalException
      */
-    public function __construct(string $interval)
+    public function __construct($interval)
     {
         try {
             // Create parent object
-            parent::__construct($interval);
+            parent::__construct(
+                ($interval instanceof \DateInterval) ?
+                    $interval->format('P%yY%mM%dDT%hH%mM%sS') :
+                    $interval
+            );
         } catch (Exception $exception) {
             throw new InvalidDateTimeIntervalException('The date/time interval is invalid', null, $exception);
         }

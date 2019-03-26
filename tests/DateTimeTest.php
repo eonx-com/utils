@@ -26,6 +26,21 @@ class DateTimeTest extends TestCase
     }
 
     /**
+     * Test DateTime accepts \DateTime through the constructor
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
+     */
+    public function testConstructorAcceptsDateTime(): void
+    {
+        self::assertSame(
+            (new \DateTime('now'))->format(\DateTime::RFC3339),
+            (new DateTime(new \DateTime('now')))->format(\DateTime::RFC3339)
+        );
+    }
+
+    /**
      * Test exception is thrown if string is invalid
      *
      * @return void
