@@ -9,28 +9,11 @@ use EoneoPay\Utils\Interfaces\MathInterface;
 class Math implements MathInterface
 {
     /**
-     * The precision to use for calculations
-     *
-     * @var int
-     */
-    private $precision;
-
-    /**
-     * How to round results
-     *
-     * @var int
-     */
-    private $roundingMode;
-
-    /**
      * Create math instance
-     *
-     * @param int|null $precision The precision to use for calculations
-     * @param int|null $roundingMode How to round results
      *
      * @throws \EoneoPay\Utils\Exceptions\BcmathNotLoadedException
      */
-    public function __construct(?int $precision = null, ?int $roundingMode = null)
+    public function __construct()
     {
         if (\extension_loaded('bcmath') === false) {
             // @codeCoverageIgnoreStart
@@ -41,60 +24,62 @@ class Math implements MathInterface
             ));
             // @codeCoverageIgnoreEnd
         }
-
-        $this->precision = $precision ?? self::DEFAULT_PRECISION;
-        $this->roundingMode = $roundingMode ?? \PHP_ROUND_HALF_UP;
     }
 
     /**
      * @inheritdoc
      */
-    public function add(string $start, string ... $additions): string
+    public function add(string $start, string $addition, ?int $precision = null, ?int $roundingMode = null): string
     {
-        foreach ($additions as $addition) {
-            $result = \bcadd($result ?? $start, $addition, 99);
-        }
+        return $this->round(\bcadd($start, $addition, 99), $precision, $roundingMode);
+    }
 
-        return $this->round($result ?? $start);
+    /**
+     * @inheritdoc
+     */
+    public function divide(string $dividend, string $divisor, ?int $precision = null, ?int $roundingMode = null): string
+    {
+        return $this->round(\bcdiv($dividend, $divisor, 99), $precision, $roundingMode);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function multiply(
+        string $multiplicand,
+        string $multiplier,
+        ?int $precision = null,
+        ?int $roundingMode = null
+    ): string {
+        return $this->round(\bcmul($multiplicand, $multiplier, 99), $precision, $roundingMode);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function subtract(
+        string $start,
+        string $subtraction,
+        ?int $precision = null,
+        ?int $roundingMode = null
+    ): string {
+        return $this->round(\bcsub($start, $subtraction, 99), $precision, $roundingMode);
     }
 
     /**
      * Round result to precision, will zero pad if required
      *
      * @param string $value The value to round
+     * @param int|null $precision The precision to use for calculations
+     * @param int|null $roundingMode How to round results
      *
      * @return string
      */
-    private function round(string $value): string
+    private function round(string $value, ?int $precision = null, ?int $roundingMode = null): string
     {
-        return \number_format(\round((float)$value, $this->precision, $this->roundingMode), $this->precision, '.', '');
-    }
+        $precision = $precision ?? self::DEFAULT_PRECISION;
+        $roundingMode = $roundingMode ?? \PHP_ROUND_HALF_UP;
 
-    /**
-     * @inheritdoc
-     */
-    public function divide(string $dividend, string $divisor): string
-    {
-        return $this->round(\bcdiv($dividend, $divisor, 99));
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function multiply(string $multiplicand, string $multiplier): string
-    {
-        return $this->round(\bcmul($multiplicand, $multiplier, 99));
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function subtract(string $start, string ... $subtractions): string
-    {
-        foreach ($subtractions as $subtraction) {
-            $result = \bcsub($result ?? $start, $subtraction, 99);
-        }
-
-        return $this->round($result ?? $start);
+        return \number_format(\round((float)$value, $precision, $roundingMode), $precision, '.', '');
     }
 }

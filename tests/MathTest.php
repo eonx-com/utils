@@ -19,12 +19,12 @@ class MathTest extends TestCase
      */
     public function testFunctionality(): void
     {
-        $math = new Math(5);
+        $math = new Math();
 
-        self::assertSame('6.01927', $math->add('4', '0.89492040209492040238482', '1.1243525'));
-        self::assertSame('4.46967', $math->divide('4', '0.89492040209492040238482'));
-        self::assertSame('3.57968', $math->multiply('4', '0.89492040209492040238482'));
-        self::assertSame('1.98073', $math->subtract('4', '0.89492040209492040238482', '1.1243525'));
+        self::assertSame('4.8949', $math->add('4', '0.89492040209492040238482', 4));
+        self::assertSame('4.46967', $math->divide('4', '0.89492040209492040238482', 5));
+        self::assertSame('3.57968', $math->multiply('4', '0.89492040209492040238482', 5));
+        self::assertSame('3.10508', $math->subtract('4', '0.89492040209492040238482', 5));
     }
 
     /**
@@ -36,11 +36,11 @@ class MathTest extends TestCase
      */
     public function testPrecision(): void
     {
-        self::assertSame('5', (new Math(0))->add('2', '3'));
-        self::assertSame('5.00000', (new Math(5))->add('2', '3'));
+        self::assertSame('5', (new Math())->add('2', '3', 0));
+        self::assertSame('5.00000', (new Math())->add('2', '3', 5));
         self::assertSame(
             '5.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
-            (new Math(100))->add('2', '3')
+            (new Math())->add('2', '3', 100)
         );
     }
 
@@ -53,9 +53,9 @@ class MathTest extends TestCase
      */
     public function testRoundingMode(): void
     {
-        self::assertSame('5.0', (new Math(1, \PHP_ROUND_HALF_DOWN))->add('2.51', '2.54'));
-        self::assertSame('5.0', (new Math(1, \PHP_ROUND_HALF_EVEN))->add('2.51', '2.54'));
-        self::assertSame('5.1', (new Math(1, \PHP_ROUND_HALF_UP))->add('2.51', '2.54'));
-        self::assertSame('5.1', (new Math(1, \PHP_ROUND_HALF_ODD))->add('2.51', '2.54'));
+        self::assertSame('5.0', (new Math())->add('2.51', '2.54', 1, \PHP_ROUND_HALF_DOWN));
+        self::assertSame('5.0', (new Math())->add('2.51', '2.54', 1, \PHP_ROUND_HALF_EVEN));
+        self::assertSame('5.1', (new Math())->add('2.51', '2.54', 1, \PHP_ROUND_HALF_UP));
+        self::assertSame('5.1', (new Math())->add('2.51', '2.54', 1, \PHP_ROUND_HALF_ODD));
     }
 }
