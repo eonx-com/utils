@@ -37,7 +37,11 @@ class MathTest extends TestCase
     public function testPrecision(): void
     {
         self::assertSame('5', (new Math())->add('2', '3', 0));
-        self::assertSame('5.00000', (new Math())->add('2', '3', 5));
+        self::assertSame('5.00000', (new Math(5))->add('2', '3'));
+
+        // test if precision set in the method takes priority over the one set in constructor
+        self::assertSame('5.0000', (new Math(6))->add('2', '3', 4));
+
         self::assertSame(
             '5.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
             (new Math())->add('2', '3', 100)

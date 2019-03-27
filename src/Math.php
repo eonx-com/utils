@@ -9,11 +9,35 @@ use EoneoPay\Utils\Interfaces\MathInterface;
 class Math implements MathInterface
 {
     /**
+     * The precision to use for calculations
+     *
+     * @var int
+     *
+     * @deprecated This should be set in the math functions itself
+     */
+    private $precision;
+
+    /**
+     * How to round results
+     *
+     * @var int
+     *
+     * @deprecated This should be set in the math functions itself
+     */
+    private $roundingMode;
+
+    /**
      * Create math instance
      *
+     * @param int|null $precision The precision to use for calculations
+     * @param int|null $roundingMode How to round results
+     *
      * @throws \EoneoPay\Utils\Exceptions\BcmathNotLoadedException
+     *
+     * @deprecated The use of constructor to set precision and roundingMode has been deprecated.
+     * Precision and Rounding mode should be added into the math functions as a parameter.
      */
-    public function __construct()
+    public function __construct(?int $precision = null, ?int $roundingMode = null)
     {
         if (\extension_loaded('bcmath') === false) {
             // @codeCoverageIgnoreStart
@@ -24,6 +48,9 @@ class Math implements MathInterface
             ));
             // @codeCoverageIgnoreEnd
         }
+
+        $this->precision = $precision ?? self::DEFAULT_PRECISION;
+        $this->roundingMode = $roundingMode ?? \PHP_ROUND_HALF_UP;
     }
 
     /**
@@ -77,8 +104,8 @@ class Math implements MathInterface
      */
     private function round(string $value, ?int $precision = null, ?int $roundingMode = null): string
     {
-        $precision = $precision ?? self::DEFAULT_PRECISION;
-        $roundingMode = $roundingMode ?? \PHP_ROUND_HALF_UP;
+        $precision = $precision ?? $this->precision;
+        $roundingMode = $roundingMode ?? $this->roundingMode;
 
         return \number_format(\round((float)$value, $precision, $roundingMode), $precision, '.', '');
     }
