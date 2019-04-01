@@ -22,6 +22,19 @@ class ValidationExceptionTest extends TestCase
     }
 
     /**
+     * A test to get coverage
+     *
+     * TODO: Once PYMT-569 has been decided upon, move this to a more logical place
+     *
+     * @return void
+     */
+    public function testGetMessageParameters(): void
+    {
+        $exception = new ValidationExceptionStub(null, null, null, []);
+        self::assertIsArray($exception->getMessageParameters());
+    }
+
+    /**
      * Exception should return valid codes.
      *
      * @return void
