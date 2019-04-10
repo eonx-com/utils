@@ -32,7 +32,7 @@ abstract class ValidationException extends BaseException implements ValidationEx
         ?Throwable $previous = null,
         ?array $errors = null
     ) {
-        parent::__construct($message ?? '', $code ?? 0, $previous);
+        parent::__construct($message ?? '', null, $code ?? 0, $previous);
 
         $this->errors = $errors ?? [];
     }

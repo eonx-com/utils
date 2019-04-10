@@ -18,15 +18,15 @@ abstract class BaseException extends Exception implements BaseExceptionInterface
      * BaseException constructor.
      *
      * @param null|string $message
+     * @param mixed[]|null $messageParameters Parameters for $message
      * @param int|null $code
      * @param \Throwable|null $previous
-     * @param mixed[]|null $messageParameters Parameters for $message
      */
     public function __construct(
         ?string $message = null,
+        ?array $messageParameters = null,
         ?int $code = null,
-        ?Throwable $previous = null,
-        ?array $messageParameters = null
+        ?Throwable $previous = null
     ) {
         parent::__construct($message ?? '', $code ?? 0, $previous);
         $this->messageParams = $messageParameters ?? [];
