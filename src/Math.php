@@ -12,6 +12,8 @@ class Math implements MathInterface
      * The precision to use for calculations
      *
      * @var int
+     *
+     * @deprecated This should be set in the math functions itself
      */
     private $precision;
 
@@ -19,6 +21,8 @@ class Math implements MathInterface
      * How to round results
      *
      * @var int
+     *
+     * @deprecated This should be set in the math functions itself
      */
     private $roundingMode;
 
@@ -29,6 +33,9 @@ class Math implements MathInterface
      * @param int|null $roundingMode How to round results
      *
      * @throws \EoneoPay\Utils\Exceptions\BcmathNotLoadedException
+     *
+     * @deprecated The use of constructor to set precision and roundingMode has been deprecated.
+     * Precision and Rounding mode should be added into the math functions as a parameter.
      */
     public function __construct(?int $precision = null, ?int $roundingMode = null)
     {
@@ -49,52 +56,57 @@ class Math implements MathInterface
     /**
      * @inheritdoc
      */
-    public function add(string $start, string ... $additions): string
+    public function add(string $start, string $addition, ?int $precision = null, ?int $roundingMode = null): string
     {
-        foreach ($additions as $addition) {
-            $result = \bcadd($result ?? $start, $addition, 99);
-        }
+        return $this->round(\bcadd($start, $addition, 99), $precision, $roundingMode);
+    }
 
-        return $this->round($result ?? $start);
+    /**
+     * @inheritdoc
+     */
+    public function divide(string $dividend, string $divisor, ?int $precision = null, ?int $roundingMode = null): string
+    {
+        return $this->round(\bcdiv($dividend, $divisor, 99), $precision, $roundingMode);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function multiply(
+        string $multiplicand,
+        string $multiplier,
+        ?int $precision = null,
+        ?int $roundingMode = null
+    ): string {
+        return $this->round(\bcmul($multiplicand, $multiplier, 99), $precision, $roundingMode);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function subtract(
+        string $start,
+        string $subtraction,
+        ?int $precision = null,
+        ?int $roundingMode = null
+    ): string {
+        return $this->round(\bcsub($start, $subtraction, 99), $precision, $roundingMode);
     }
 
     /**
      * Round result to precision, will zero pad if required
      *
      * @param string $value The value to round
+     * @param int|null $precision The precision to use for calculations
+     * @param int|null $roundingMode How to round results
      *
      * @return string
      */
-    private function round(string $value): string
+    private function round(string $value, ?int $precision = null, ?int $roundingMode = null): string
     {
-        return \number_format(\round((float)$value, $this->precision, $this->roundingMode), $this->precision, '.', '');
-    }
+        $precision = $precision ?? $this->precision;
+        $roundingMode = $roundingMode ?? $this->roundingMode;
 
-    /**
-     * @inheritdoc
-     */
-    public function divide(string $dividend, string $divisor): string
-    {
-        return $this->round(\bcdiv($dividend, $divisor, 99));
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function multiply(string $multiplicand, string $multiplier): string
-    {
-        return $this->round(\bcmul($multiplicand, $multiplier, 99));
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function subtract(string $start, string ... $subtractions): string
-    {
-        foreach ($subtractions as $subtraction) {
-            $result = \bcsub($result ?? $start, $subtraction, 99);
-        }
-
-        return $this->round($result ?? $start);
+        return \number_format(\round((float)$value, $precision, $roundingMode), $precision, '.', '');
     }
 }

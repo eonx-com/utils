@@ -15,6 +15,13 @@ interface BaseExceptionInterface extends ExceptionInterface
     public const DEFAULT_ERROR_CODE_CRITICAL = 9000;
 
     /**
+     * Default error code for conflict
+     *
+     * @const int
+     */
+    public const DEFAULT_ERROR_CODE_CONFLICT = 1500;
+
+    /**
      * Default error code for not found.
      *
      * @const int
@@ -69,4 +76,11 @@ interface BaseExceptionInterface extends ExceptionInterface
      * @const int
      */
     public const DEFAULT_STATUS_CODE_VALIDATION = 400;
+
+    /**
+     * Default status code for conflict.
+     *
+     * @const int
+     */
+    public const DEFAULT_STATUS_CODE_CONFLICT = 409;
 }
