@@ -20,11 +20,11 @@ class UtcDateTime implements UtcDateTimeInterface
     /**
      * Create a utc datetime object from string and throw exception if invalid datetime string provided.
      *
-     * @param string $timestamp A timestamp parseable by strtotime
+     * @param \DateTime|string|null $timestamp A timestamp parsable by strtotime()
      *
      * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
      */
-    public function __construct(string $timestamp)
+    public function __construct($timestamp = null)
     {
         try {
             $datetime = new DateTime($timestamp);
