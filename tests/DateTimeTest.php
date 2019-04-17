@@ -26,6 +26,21 @@ class DateTimeTest extends TestCase
     }
 
     /**
+     * Test DateTime accepts \DateTime through the constructor
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
+     */
+    public function testConstructorAcceptsDateTime(): void
+    {
+        $expected = new DateTime('now');
+        $actual = new DateTime($expected);
+
+        self::assertEquals($expected, $actual);
+    }
+
+    /**
      * Test exception is thrown if string is invalid
      *
      * @return void
@@ -37,6 +52,35 @@ class DateTimeTest extends TestCase
         $this->expectException(InvalidDateTimeStringException::class);
 
         new DateTime('INVALID');
+    }
+
+    /**
+     * Test exception is thrown when integer passed
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
+     */
+    public function testExceptionThrownInteger(): void
+    {
+        $this->expectException(InvalidDateTimeStringException::class);
+
+        new DateTime(5);
+    }
+
+    /**
+     * Test exception is thrown when object passed
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
+     */
+    public function testExceptionThrownObject(): void
+    {
+        $this->expectException(InvalidDateTimeStringException::class);
+
+        new DateTime(new class {
+        });
     }
 
     /**

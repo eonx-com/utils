@@ -13,16 +13,28 @@ class DateTime extends BaseDateTime
     /**
      * Create a datetime object from string and throw exception if invalid datetime string provided
      *
-     * @param string|null $timestamp A timestamp parseable by strtotime
+     * @param \DateTime|string|null $timestamp A timestamp parsable by strtotime()
      * @param \DateTimeZone|null $timezone The timezone to use with the timestamp
      *
      * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
      */
-    public function __construct(?string $timestamp = null, ?DateTimeZone $timezone = null)
+    public function __construct($timestamp = null, ?DateTimeZone $timezone = null)
     {
+        if (($timestamp instanceof \DateTime) === true) {
+            $timestamp = $timestamp->format('Y-m-d\TH:i:s.uP');
+        }
+
+        if ($timestamp === null) {
+            $timestamp = 'now';
+        }
+
+        if (\is_string($timestamp) === false) {
+            throw new InvalidDateTimeStringException('The date/time provided is invalid');
+        }
+
         try {
             // Create parent object
-            parent::__construct($timestamp ?? 'now', $timezone);
+            parent::__construct($timestamp, $timezone);
         } catch (Exception $exception) {
             throw new InvalidDateTimeStringException('The date/time provided is invalid', null, $exception);
         }
@@ -44,7 +56,6 @@ class DateTime extends BaseDateTime
             $this->format('d') !== $clone->format('d')
         ) {
             // We've overflowed months, wind it back.
-
             $this->modify('last day of last month');
         }
 

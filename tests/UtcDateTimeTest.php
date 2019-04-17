@@ -25,6 +25,36 @@ class UtcDateTimeTest extends TestCase
     }
 
     /**
+     * Tests that the constructor accepts a DateTime object
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
+     */
+    public function testConstructorAcceptsDateTime(): void
+    {
+        self::assertInstanceOf(
+            UtcDateTime::class,
+            new UtcDateTime(new DateTime('now'))
+        );
+    }
+
+    /**
+     * Test that the create method returns a DateTime instance
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
+     */
+    public function testCreateMethod(): void
+    {
+        $expected = new DateTime('2019-01-01T00:00:00+00:00');
+        $actual = new UtcDateTime(new DateTime('2019-01-01T00:00:00+10:00'));
+
+        self::assertEquals($expected, $actual->getObject());
+    }
+
+    /**
      * Ensure datetime is always interpreted as UTC
      *
      * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
