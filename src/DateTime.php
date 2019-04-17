@@ -20,14 +20,21 @@ class DateTime extends BaseDateTime
      */
     public function __construct($timestamp = null, ?DateTimeZone $timezone = null)
     {
+        if (($timestamp instanceof \DateTime) === true) {
+            $timestamp = $timestamp->format('Y-m-d\TH:i:s.uP');
+        }
+
+        if ($timestamp === null) {
+            $timestamp = 'now';
+        }
+
+        if (\is_string($timestamp) === false) {
+            throw new InvalidDateTimeStringException('The date/time provided is invalid');
+        }
+
         try {
             // Create parent object
-            parent::__construct(
-                ($timestamp instanceof \DateTime) ?
-                    $timestamp->format(\DateTime::RFC3339) :
-                    $timestamp ?? 'now',
-                $timezone
-            );
+            parent::__construct($timestamp, $timezone);
         } catch (Exception $exception) {
             throw new InvalidDateTimeStringException('The date/time provided is invalid', null, $exception);
         }

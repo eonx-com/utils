@@ -3,3 +3,15 @@ parameters:
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
         - '#Call to an undefined method Illuminate\\Contracts\\Foundation\\Application::configure\(\)\.#'
         - '/Parameter #\d \$[a-z][\w]+ of class EoneoPay\\Utils\\[A-Z][\w\\]+ constructor expects [A-Z][\w\\]+, Mockery\\MockInterface given./'
+        -
+            message: '#Strict comparison using === between true and false will always evaluate to false\.#'
+            path: 'src/DateInterval.php'
+        -
+            message: '/Parameter #1 \$interval of class EoneoPay\\Utils\\DateInterval constructor expects DateInterval\|string, (.*) given\./'
+            path: 'tests/DateIntervalTest.php'
+        -
+            message: '#Strict comparison using === between true and false will always evaluate to false\.#'
+            path: 'src/DateTime.php'
+        -
+            message: '/Parameter #1 \$timestamp of class EoneoPay\\Utils\\DateTime constructor expects DateTime|string|null, (.*) given\./'
+            path: 'tests/DateTimeTest.php'

@@ -18,13 +18,17 @@ class DateInterval extends BaseDateInterval
      */
     public function __construct($interval)
     {
+        if (($interval instanceof \DateInterval) === true) {
+            $interval = $interval->format('P%yY%mM%dDT%hH%mM%sS');
+        }
+
+        if (\is_string($interval) === false) {
+            throw new InvalidDateTimeIntervalException('The date/time interval is invalid');
+        }
+
         try {
             // Create parent object
-            parent::__construct(
-                ($interval instanceof \DateInterval) ?
-                    $interval->format('P%yY%mM%dDT%hH%mM%sS') :
-                    $interval
-            );
+            parent::__construct($interval);
         } catch (Exception $exception) {
             throw new InvalidDateTimeIntervalException('The date/time interval is invalid', null, $exception);
         }

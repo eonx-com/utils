@@ -15,16 +15,6 @@ interface UtcDateTimeInterface
     public const FORMAT_ZULU = 'Y-m-d\TH:i:s\Z';
 
     /**
-     * Creates a DateTime instance from the specified timestamp and optional timezone.
-     *
-     * @param \DateTime|string $timestamp A timestamp parsable by strtotime()
-     * @param \DateTimeZone|null $timezone
-     *
-     * @return \EoneoPay\Utils\DateTime
-     */
-    public function create($timestamp, ?\DateTimeZone $timezone): DateTime;
-
-    /**
      * Get the datetime object.
      *
      * @return \EoneoPay\Utils\DateTime

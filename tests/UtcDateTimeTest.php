@@ -35,7 +35,7 @@ class UtcDateTimeTest extends TestCase
     {
         self::assertInstanceOf(
             UtcDateTime::class,
-            new UtcDateTime(new \DateTime('now'))
+            new UtcDateTime(new DateTime('now'))
         );
     }
 
@@ -48,24 +48,10 @@ class UtcDateTimeTest extends TestCase
      */
     public function testCreateMethod(): void
     {
-        self::assertSame(
-            (new DateTime('now'))->format(\DateTime::RFC3339),
-            (new UtcDateTime())->create('now')->format(\DateTime::RFC3339)
-        );
-    }
+        $expected = new DateTime('2019-01-01T00:00:00+00:00');
+        $actual = new UtcDateTime(new DateTime('2019-01-01T00:00:00+10:00'));
 
-    /**
-     * Tests that the create method throws an exception
-     *
-     * @return void
-     *
-     * @throws \EoneoPay\Utils\Exceptions\InvalidDateTimeStringException
-     */
-    public function testCreateMethodThrowsException(): void
-    {
-        $this->expectException(InvalidDateTimeStringException::class);
-
-        (new UtcDateTime())->create('abc123');
+        self::assertEquals($expected, $actual->getObject());
     }
 
     /**
