@@ -6,6 +6,10 @@ namespace Tests\EoneoPay\Utils\Exceptions;
 use Tests\EoneoPay\Utils\Stubs\Exceptions\ValidationExceptionStub;
 use Tests\EoneoPay\Utils\TestCase;
 
+/**
+ * @covers \EoneoPay\Utils\Exceptions\BaseException
+ * @covers \EoneoPay\Utils\Exceptions\ValidationException
+ */
 class ValidationExceptionTest extends TestCase
 {
     /**
@@ -23,8 +27,6 @@ class ValidationExceptionTest extends TestCase
 
     /**
      * A test to get coverage
-     *
-     * TODO: Once PYMT-569 has been decided upon, move this to a more logical place
      *
      * @return void
      */
