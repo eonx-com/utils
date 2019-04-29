@@ -30,7 +30,7 @@ class DateInterval extends BaseDateInterval
             // Create parent object
             parent::__construct($interval);
         } catch (Exception $exception) {
-            throw new InvalidDateTimeIntervalException('The date/time interval is invalid', null, $exception);
+            throw new InvalidDateTimeIntervalException('The date/time interval is invalid', null, null, $exception);
         }
     }
 

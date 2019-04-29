@@ -29,7 +29,7 @@ class AnnotationReader extends BaseAnnotationReader implements AnnotationReaderI
             parent::__construct();
         } catch (AnnotationException $exception) {
             // Convert to AnnotationCacheException
-            throw new AnnotationCacheException($exception->getMessage(), $exception->getCode(), $exception);
+            throw new AnnotationCacheException($exception->getMessage(), null, $exception->getCode(), $exception);
         }
     }
 

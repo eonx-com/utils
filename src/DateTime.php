@@ -36,7 +36,7 @@ class DateTime extends BaseDateTime
             // Create parent object
             parent::__construct($timestamp, $timezone);
         } catch (Exception $exception) {
-            throw new InvalidDateTimeStringException('The date/time provided is invalid', null, $exception);
+            throw new InvalidDateTimeStringException('The date/time provided is invalid', null, null, $exception);
         }
     }
 
