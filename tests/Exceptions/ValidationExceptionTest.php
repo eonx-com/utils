@@ -6,6 +6,10 @@ namespace Tests\EoneoPay\Utils\Exceptions;
 use Tests\EoneoPay\Utils\Stubs\Exceptions\ValidationExceptionStub;
 use Tests\EoneoPay\Utils\TestCase;
 
+/**
+ * @covers \EoneoPay\Utils\Exceptions\BaseException
+ * @covers \EoneoPay\Utils\Exceptions\ValidationException
+ */
 class ValidationExceptionTest extends TestCase
 {
     /**
@@ -19,6 +23,17 @@ class ValidationExceptionTest extends TestCase
         $exception = new ValidationExceptionStub(null, null, null, $errors);
 
         self::assertEquals($errors, $exception->getErrors());
+    }
+
+    /**
+     * A test to get coverage
+     *
+     * @return void
+     */
+    public function testGetMessageParameters(): void
+    {
+        $exception = new ValidationExceptionStub(null, null, null, []);
+        self::assertIsArray($exception->getMessageParameters());
     }
 
     /**

@@ -34,7 +34,7 @@ class UtcDateTime implements UtcDateTimeInterface
             $this->datetime = (new DateTime($datetime->format('Y-m-d H:i:s'), new DateTimeZone('UTC')))
                 ->setTimezone(new DateTimeZone('UTC'));
         } catch (Exception $exception) {
-            throw new InvalidDateTimeStringException('The date/time provided is invalid', null, $exception);
+            throw new InvalidDateTimeStringException('The date/time provided is invalid', null, null, $exception);
         }
     }
 

@@ -21,7 +21,7 @@ class UnexpectedTypeException extends RuntimeException
             $expectedType
         );
 
-        parent::__construct($message, $code, $previous);
+        parent::__construct($message, null, $code, $previous);
     }
 
     /**

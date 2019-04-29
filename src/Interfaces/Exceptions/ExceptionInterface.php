@@ -22,6 +22,13 @@ interface ExceptionInterface extends Throwable
     public function getErrorSubCode(): int;
 
     /**
+     * Get message parameters
+     *
+     * @return mixed[]
+     */
+    public function getMessageParameters(): array;
+
+    /**
      * Get Error Response status code.
      *
      * @return int
