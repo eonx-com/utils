@@ -5,6 +5,9 @@ namespace Tests\EoneoPay\Utils\Stubs\Exceptions;
 
 use EoneoPay\Utils\Exceptions\ValidationException;
 
+/**
+ * @coversNothing
+ */
 class ValidationExceptionStub extends ValidationException
 {
     /**
