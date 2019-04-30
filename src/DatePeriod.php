@@ -64,9 +64,11 @@ class DatePeriod implements IteratorAggregate
         $second->add($this->interval);
 
         if ($this->anchor && ($this->anchor > $second || $this->anchor < $this->start)) {
-            throw new InvalidAnchorException(
-                'The anchor must be less than one period ahead of the specified start date.'
-            );
+            throw new InvalidAnchorException(\sprintf(
+                'The anchor "%s" must be less than one period ahead of the specified start date "%s".',
+                $this->anchor->format(BaseDateTime::RFC3339),
+                $second->format(BaseDateTime::RFC3339)
+            ));
         }
     }
 

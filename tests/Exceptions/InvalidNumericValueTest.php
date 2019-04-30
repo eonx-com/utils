@@ -18,7 +18,7 @@ class InvalidNumericValueTest extends TestCase
      */
     public function testGettersFromBaseExceptionInterface(): void
     {
-        $exception = new InvalidNumericValue(null, null, null, []);
+        $exception = new InvalidNumericValue(null, null, null, null, []);
         $this->processExceptionCodesTest($exception, 1010, 1, 400);
     }
 }
