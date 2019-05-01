@@ -134,6 +134,14 @@ class Arr implements ArrInterface
     /**
      * @inheritdoc
      */
+    public function only($array, $keys): array
+    {
+        return array_intersect_key($array, array_flip((array) $keys));
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function remove(array &$array, $keys): void
     {
         $original = &$array;
