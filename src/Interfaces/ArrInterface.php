@@ -86,9 +86,9 @@ interface ArrInterface
      * @param mixed[] $array The array get only elements from
      * @param mixed[]|string $keys
      *
-     * @return array
+     * @return mixed[]
      */
-    public function only($array, $keys): array;
+    public function only(array $array, $keys): array;
 
     /**
      * Remove one or many array items from a given array using "dot" notation
