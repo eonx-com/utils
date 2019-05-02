@@ -81,6 +81,16 @@ interface ArrInterface
     public function merge(array $array, array ... $arrays): array;
 
     /**
+     * Get a subset of the items from the given array.
+     *
+     * @param mixed[] $array The array get only elements from
+     * @param mixed[]|string $keys
+     *
+     * @return mixed[]
+     */
+    public function only(array $array, $keys): array;
+
+    /**
      * Remove one or many array items from a given array using "dot" notation
      *
      * @param mixed[] $array The array to unset keys from
