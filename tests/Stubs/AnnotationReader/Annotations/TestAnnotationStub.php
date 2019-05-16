@@ -8,7 +8,7 @@ use Doctrine\Common\Annotations\Annotation;
 /**
  * @Annotation
  *
- * @Target("PROPERTY")
+ * @Target({"METHOD", "PROPERTY"})
  */
 final class TestAnnotationStub extends Annotation
 {

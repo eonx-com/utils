@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Utils;
 
 use EoneoPay\Utils\AnnotationReader;
+use ReflectionMethod;
 use Tests\EoneoPay\Utils\Stubs\AnnotationReader\AnnotationReaderParentStub;
 use Tests\EoneoPay\Utils\Stubs\AnnotationReader\AnnotationReaderStub;
 use Tests\EoneoPay\Utils\Stubs\AnnotationReader\Annotations\TestAnnotationStub;
@@ -46,6 +47,25 @@ class AnnotationReaderTest extends TestCase
         self::assertObjectHasAttribute('enabled', $annotations['parent']);
         self::assertSame('parent_property', $annotations['parent']->name);
         self::assertTrue($annotations['parent']->enabled);
+    }
+
+    /**
+     * Ensure method annotations are available
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException If opcache is disabled
+     * @throws \ReflectionException
+     */
+    public function testAnnotationsCanBeReadFromMethod(): void
+    {
+        $annotations = (new AnnotationReader())->getClassMethodAnnotations(
+            new ReflectionMethod(AnnotationReaderParentStub::class, 'method')
+        );
+
+        self::assertCount(1, $annotations);
+        self::assertContainsOnlyInstancesOf(TestAnnotationStub::class, $annotations);
+        self::assertSame('method', $annotations[0]->name);
     }
 
     /**

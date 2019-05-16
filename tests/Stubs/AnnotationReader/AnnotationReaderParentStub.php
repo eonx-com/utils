@@ -18,4 +18,15 @@ class AnnotationReaderParentStub
      * @TestMultipleAnnotationsStub(name="multiple_parent_property")
      */
     protected $parent;
+
+    /**
+     * Test method call
+     *
+     * @TestAnnotationStub(name="method")
+     *
+     * @return void
+     */
+    public function method(): void
+    {
+    }
 }

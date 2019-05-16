@@ -9,6 +9,7 @@ use EoneoPay\Utils\Exceptions\AnnotationCacheException;
 use EoneoPay\Utils\Interfaces\AnnotationReaderInterface;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionMethod;
 use ReflectionProperty;
 
 /**
@@ -31,6 +32,14 @@ class AnnotationReader extends BaseAnnotationReader implements AnnotationReaderI
             // Convert to AnnotationCacheException
             throw new AnnotationCacheException($exception->getMessage(), null, $exception->getCode(), $exception);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getClassMethodAnnotations(ReflectionMethod $method): array
+    {
+        return $this->getMethodAnnotations($method);
     }
 
     /**

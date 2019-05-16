@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace EoneoPay\Utils\Interfaces;
 
+use ReflectionMethod;
+
 interface AnnotationReaderInterface
 {
     /**
@@ -24,4 +26,13 @@ interface AnnotationReaderInterface
      * @return mixed[]
      */
     public function getClassPropertyAnnotations(string $class, array $annotations): array;
+
+    /**
+     * Gets the annotations applied to a method.
+     *
+     * @param \ReflectionMethod $method
+     *
+     * @return mixed[] An array of Annotations.
+     */
+    public function getClassMethodAnnotations(ReflectionMethod $method): array;
 }
