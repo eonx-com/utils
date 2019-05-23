@@ -25,6 +25,16 @@ interface MathInterface
     public function add(string $start, string $addition, ?int $precision = null, ?int $roundingMode = null): string;
 
     /**
+     * @param string $left_operand Left-hand operand
+     * @param string $right_operand Right-hand operand
+     * @param int|null $scale Number of digits after the decimal place to compare
+     *
+     * @return int
+     * 0 if the two operands are equal, 1 if the left_operand is larger than the right_operand, -1 otherwise.
+     */
+    public function comp(string $left_operand, string $right_operand, ?int $scale = null): int;
+
+    /**
      * Divide one number by another using bcmath
      *
      * @param string $dividend The number to divide

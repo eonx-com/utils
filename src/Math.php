@@ -94,6 +94,17 @@ class Math implements MathInterface
     }
 
     /**
+     * @inheritdoc
+     */
+    public function comp(
+        string $left_operand,
+        string $right_operand,
+        ?int $scale = null
+    ): int {
+        return \bccomp($left_operand, $right_operand, $scale ?? 0);
+    }
+
+    /**
      * Round result to precision, will zero pad if required
      *
      * @param string $value The value to round
