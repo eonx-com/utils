@@ -64,6 +64,17 @@ class Math implements MathInterface
     /**
      * @inheritdoc
      */
+    public function comp(
+        string $leftOperand,
+        string $rightOperand,
+        ?int $scale = null
+    ): int {
+        return \bccomp($leftOperand, $rightOperand, $scale ?? 0);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function divide(string $dividend, string $divisor, ?int $precision = null, ?int $roundingMode = null): string
     {
         return $this->round(\bcdiv($dividend, $divisor, 99), $precision, $roundingMode);
@@ -91,17 +102,6 @@ class Math implements MathInterface
         ?int $roundingMode = null
     ): string {
         return $this->round(\bcsub($start, $subtraction, 99), $precision, $roundingMode);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function comp(
-        string $left_operand,
-        string $right_operand,
-        ?int $scale = null
-    ): int {
-        return \bccomp($left_operand, $right_operand, $scale ?? 0);
     }
 
     /**
