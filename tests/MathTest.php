@@ -28,6 +28,25 @@ class MathTest extends TestCase
     }
 
     /**
+     * Test comp() which is wrapper of bccomp()
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\BcmathNotLoadedException
+     */
+    public function testComp(): void
+    {
+        $math = new Math();
+
+        self::assertSame(0, $math->comp('1.00001', '1.00001', 5));
+        self::assertSame(1, $math->comp('1.00002', '1.00001', 5));
+        self::assertSame(-1, $math->comp('1.00001', '1.00002', 5));
+
+        self::assertSame(0, $math->comp('1.00002', '1.00001', 4));
+        self::assertSame(0, $math->comp('1.1', '1.2'));
+    }
+
+    /**
      * Test precision
      *
      * @return void
