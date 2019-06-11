@@ -35,13 +35,7 @@ class AnnotationReader extends BaseAnnotationReader implements AnnotationReaderI
     }
 
     /**
-     * Resolve annotation values from a specific method
-     *
-     * @param string $class Class annotations should be read against
-     * @param string $method Method within the class annotations will be resolved
-     * @param string $annotation FQCN of the annotation class
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getClassMethodAnnotation(string $class, string $method, string $annotation)
     {
