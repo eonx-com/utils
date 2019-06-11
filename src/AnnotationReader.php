@@ -41,7 +41,7 @@ class AnnotationReader extends BaseAnnotationReader implements AnnotationReaderI
     {
         try {
             $reflector = new ReflectionMethod($class, $method);
-        } catch (ReflectionException $exception) {
+        } catch (/** @noinspection BadExceptionsProcessingInspection */ ReflectionException $exception) {
             // Returning null is inline with behaviour with other annotation methods
             return null;
         }
