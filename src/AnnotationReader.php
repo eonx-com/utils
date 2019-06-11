@@ -9,6 +9,7 @@ use EoneoPay\Utils\Exceptions\AnnotationCacheException;
 use EoneoPay\Utils\Interfaces\AnnotationReaderInterface;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionMethod;
 use ReflectionProperty;
 
 /**
@@ -31,6 +32,27 @@ class AnnotationReader extends BaseAnnotationReader implements AnnotationReaderI
             // Convert to AnnotationCacheException
             throw new AnnotationCacheException($exception->getMessage(), null, $exception->getCode(), $exception);
         }
+    }
+
+    /**
+     * Resolve annotation values from a specific method
+     *
+     * @param string $class Class annotations should be read against
+     * @param string $method Method within the class annotations will be resolved
+     * @param string $annotation FQCN of the annotation class
+     *
+     * @return mixed
+     */
+    public function getClassMethodAnnotation(string $class, string $method, string $annotation)
+    {
+        try {
+            $reflector = new ReflectionMethod($class, $method);
+        } catch (ReflectionException $exception) {
+            // Returning null is inline with behaviour with other annotation methods
+            return null;
+        }
+
+        return $this->getMethodAnnotation($reflector, $annotation);
     }
 
     /**

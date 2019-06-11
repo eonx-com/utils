@@ -6,6 +6,8 @@ namespace Tests\EoneoPay\Utils;
 use EoneoPay\Utils\AnnotationReader;
 use Tests\EoneoPay\Utils\Stubs\AnnotationReader\AnnotationReaderParentStub;
 use Tests\EoneoPay\Utils\Stubs\AnnotationReader\AnnotationReaderStub;
+use Tests\EoneoPay\Utils\Stubs\AnnotationReader\AnnotationReaderWithMethodStub;
+use Tests\EoneoPay\Utils\Stubs\AnnotationReader\Annotations\MethodAnnotationStub;
 use Tests\EoneoPay\Utils\Stubs\AnnotationReader\Annotations\TestAnnotationStub;
 use Tests\EoneoPay\Utils\Stubs\AnnotationReader\Annotations\TestMultipleAnnotationsStub;
 use Tests\EoneoPay\Utils\Stubs\AnnotationReader\Annotations\UnusedAnnotationStub;
@@ -25,6 +27,63 @@ class AnnotationReaderTest extends TestCase
     public function testAnnontationReadingInvalidPropertyOrClassDoesNotThrowException(): void
     {
         self::assertEmpty((new AnnotationReader())->getClassPropertyAnnotations('blah', ['test']));
+    }
+
+    /**
+     * Test the annotation reader resolving a method will respect the desired annotation
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
+     */
+    public function testAnnotationReaderResolvesMethodAnnotation(): void
+    {
+        $annotationReader = new AnnotationReader();
+        $annotation = $annotationReader->getClassMethodAnnotation(
+            AnnotationReaderWithMethodStub::class,
+            'aPublicMethod',
+            MethodAnnotationStub::class
+        );
+
+        self::assertEquals(new MethodAnnotationStub(['value' => 'yes']), $annotation);
+    }
+
+    /**
+     * Test the annotation reader will return null if annotation class does not exist against method
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
+     */
+    public function testAnnotationReaderResolvesNullIfNoAnnotation(): void
+    {
+        $annotationReader = new AnnotationReader();
+        $annotation = $annotationReader->getClassMethodAnnotation(
+            AnnotationReaderWithMethodStub::class,
+            'aPublicMethod',
+            'AnInvalidClass'
+        );
+
+        self::assertNull($annotation);
+    }
+
+    /**
+     * Test the annotation reader resolving will return null if the class does not exist
+     *
+     * @return void
+     *
+     * @throws \EoneoPay\Utils\Exceptions\AnnotationCacheException
+     */
+    public function testAnnotationReaderReturnsNullForIncorrectClass(): void
+    {
+        $annotationReader = new AnnotationReader();
+        $annotation = $annotationReader->getClassMethodAnnotation(
+            '\SomeClassThatDoesNotExist',
+            'aPublicMethod',
+            MethodAnnotationStub::class
+        );
+
+        self::assertNull($annotation);
     }
 
     /**
