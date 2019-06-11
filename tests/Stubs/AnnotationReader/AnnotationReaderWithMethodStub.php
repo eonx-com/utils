@@ -14,6 +14,7 @@ class AnnotationReaderWithMethodStub
      * A test method
      *
      * @MethodAnnotationStub("yes")
+     * @MethodAnnotationStub("maybe")
      *
      * @return void
      */

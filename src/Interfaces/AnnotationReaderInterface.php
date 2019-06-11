@@ -6,15 +6,15 @@ namespace EoneoPay\Utils\Interfaces;
 interface AnnotationReaderInterface
 {
     /**
-     * Resolve annotation values from a specific method
+     * Resolve annotations from a specific method
      *
      * @param string $class Class annotations should be read against
      * @param string $method Method within the class annotations will be resolved
      * @param string $annotation FQCN of the annotation class
      *
-     * @return mixed Returns instantiated annotation class based on the $annotation argument, or null
+     * @return mixed[] Returns all instantiated annotation classes based on the $annotation argument
      */
-    public function getClassMethodAnnotation(string $class, string $method, string $annotation);
+    public function getClassMethodAnnotations(string $class, string $method, string $annotation): array;
 
     /**
      * Get values for a specific annotation within a class recursively as [<property> => <annotation>]

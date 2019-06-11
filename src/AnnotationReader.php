@@ -37,16 +37,24 @@ class AnnotationReader extends BaseAnnotationReader implements AnnotationReaderI
     /**
      * {@inheritdoc}
      */
-    public function getClassMethodAnnotation(string $class, string $method, string $annotation)
+    public function getClassMethodAnnotations(string $class, string $method, string $annotation): array
     {
         try {
             $reflector = new ReflectionMethod($class, $method);
         } catch (/** @noinspection BadExceptionsProcessingInspection */ ReflectionException $exception) {
             // Returning null is inline with behaviour with other annotation methods
-            return null;
+            return [];
         }
 
-        return $this->getMethodAnnotation($reflector, $annotation);
+        $annotations = [];
+
+        foreach ($this->getMethodAnnotations($reflector) as $methodAnnotation) {
+            if (($methodAnnotation instanceof $annotation) === true) {
+                $annotations[] = $methodAnnotation;
+            }
+        }
+
+        return $annotations;
     }
 
     /**

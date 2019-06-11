@@ -39,13 +39,16 @@ class AnnotationReaderTest extends TestCase
     public function testAnnotationReaderResolvesMethodAnnotation(): void
     {
         $annotationReader = new AnnotationReader();
-        $annotation = $annotationReader->getClassMethodAnnotation(
+        $annotation = $annotationReader->getClassMethodAnnotations(
             AnnotationReaderWithMethodStub::class,
             'aPublicMethod',
             MethodAnnotationStub::class
         );
 
-        self::assertEquals(new MethodAnnotationStub(['value' => 'yes']), $annotation);
+        self::assertEquals([
+            new MethodAnnotationStub(['value' => 'yes']),
+            new MethodAnnotationStub(['value' => 'maybe'])
+        ], $annotation);
     }
 
     /**
@@ -58,13 +61,13 @@ class AnnotationReaderTest extends TestCase
     public function testAnnotationReaderResolvesNullIfNoAnnotation(): void
     {
         $annotationReader = new AnnotationReader();
-        $annotation = $annotationReader->getClassMethodAnnotation(
+        $annotation = $annotationReader->getClassMethodAnnotations(
             AnnotationReaderWithMethodStub::class,
             'aPublicMethod',
             'AnInvalidClass'
         );
 
-        self::assertNull($annotation);
+        self::assertEmpty($annotation);
     }
 
     /**
@@ -77,13 +80,13 @@ class AnnotationReaderTest extends TestCase
     public function testAnnotationReaderReturnsNullForIncorrectClass(): void
     {
         $annotationReader = new AnnotationReader();
-        $annotation = $annotationReader->getClassMethodAnnotation(
+        $annotation = $annotationReader->getClassMethodAnnotations(
             '\SomeClassThatDoesNotExist',
             'aPublicMethod',
             MethodAnnotationStub::class
         );
 
-        self::assertNull($annotation);
+        self::assertEmpty($annotation);
     }
 
     /**
