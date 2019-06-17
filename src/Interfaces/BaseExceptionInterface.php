@@ -15,11 +15,18 @@ interface BaseExceptionInterface extends ExceptionInterface
     public const DEFAULT_ERROR_CODE_CRITICAL = 9000;
 
     /**
-     * Default error code for conflict
+     * Default error code for conflict.
      *
      * @const int
      */
     public const DEFAULT_ERROR_CODE_CONFLICT = 1500;
+
+    /**
+     * Default error code for forbidden.
+     *
+     * @const int
+     */
+    public const DEFAULT_ERROR_CODE_FORBIDDEN = 1300;
 
     /**
      * Default error code for not found.
@@ -55,6 +62,13 @@ interface BaseExceptionInterface extends ExceptionInterface
      * @const int
      */
     public const DEFAULT_STATUS_CODE_CRITICAL = 500;
+
+    /**
+     * Default status code for forbidden.
+     *
+     * @const int
+     */
+    public const DEFAULT_STATUS_CODE_FORBIDDEN = 403;
 
     /**
      * Default status code for not found.
