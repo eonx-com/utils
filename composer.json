@@ -15,9 +15,11 @@
     "ext-libxml": "*"
   },
   "require-dev": {
+    "ext-bcmath": "*",
     "doctrine/annotations": "^1.6",
     "eoneopay/standards": "dev-master",
-    "ext-bcmath": "*",
+    "illuminate/http": "^5.8",
+    "illuminate/routing": "^5.8",
     "illuminate/support": "^5.5",
     "indigophp/doctrine-annotation-autoload": "^0.1.0",
     "mockery/mockery": "^1.0",
@@ -46,6 +48,7 @@
   },
   "minimum-stability": "stable",
   "config": {
-    "optimize-autoloader": true
+    "optimize-autoloader": true,
+    "sort-packages": true
   }
 }

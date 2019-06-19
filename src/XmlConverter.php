@@ -174,6 +174,11 @@ class XmlConverter implements XmlConverterInterface
         // Get document element
         $element = $document->documentElement;
 
+        // documentElement can be null on a newly created DOMDocument.
+        if ($element === null) {
+            return [];
+        }
+
         $array = ['element' => $this->domElementToArray($element)];
 
         // The DOMElement array will come back with @value and @attributes tags as well as every
