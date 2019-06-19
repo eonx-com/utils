@@ -134,7 +134,7 @@ class Arr implements ArrInterface
     /**
      * @inheritdoc
      */
-    public function only($array, $keys): array
+    public function only(array $array, $keys): array
     {
         return \array_intersect_key($array, \array_flip((array) $keys));
     }
