@@ -15,6 +15,8 @@ use EoneoPay\Utils\Interfaces\XmlConverterInterface;
  *
  * Array to XML based on http://www.lalit.org/lab/convert-php-array-to-xml-with-attributes/
  * and updated for PHP 7.1
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity) Xml conversion is complicated
  */
 class XmlConverter implements XmlConverterInterface
 {
@@ -173,6 +175,15 @@ class XmlConverter implements XmlConverterInterface
     {
         // Get document element
         $element = $document->documentElement;
+
+        // documentElement can be null on a newly created DOMDocument.
+        if ($element === null) {
+            // @codeCoverageIgnoreStart
+            // The element can only be null when a newly created DomDocument is loaded
+            // which cant happen here - the document is loaded.
+            return [];
+            // @codeCoverageIgnoreEnd
+        }
 
         $array = ['element' => $this->domElementToArray($element)];
 

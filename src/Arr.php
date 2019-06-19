@@ -199,7 +199,7 @@ class Arr implements ArrInterface
             $flattened[] = $this->flatten($replaceable);
         }
 
-        return $this->unflatten(\array_replace(...$flattened));
+        return $this->unflatten(\array_replace(...$flattened) ?? []);
     }
 
     /**
