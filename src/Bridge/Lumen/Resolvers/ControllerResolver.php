@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace EoneoPay\Utils\Bridge\Lumen\Resolvers;
 
+use EoneoPay\Utils\Bridge\Lumen\Interfaces\Resolvers\ControllerResolverInterface;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Routing\Route;
@@ -10,7 +11,7 @@ use Illuminate\Routing\Route;
 /**
  * Resolves a controller callable from a Route.
  */
-class ControllerResolver
+final class ControllerResolver implements ControllerResolverInterface
 {
     /**
      * @var \Illuminate\Contracts\Container\Container
@@ -28,11 +29,7 @@ class ControllerResolver
     }
 
     /**
-     * Tries to resolves a callable from the Lumen or Laravel route.
-     *
-     * @param mixed $route
-     *
-     * @return callable
+     * {@inheritdoc}
      */
     public function resolve($route): ?callable
     {
