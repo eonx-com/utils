@@ -85,6 +85,13 @@ interface BaseExceptionInterface extends ExceptionInterface
     public const DEFAULT_STATUS_CODE_RUNTIME = 500;
 
     /**
+     * Default status code for unauthorized.
+     *
+     * @const int
+     */
+    public const DEFAULT_STATUS_CODE_UNAUTHORIZED = 401;
+
+    /**
      * Default status code for validation.
      *
      * @const int
