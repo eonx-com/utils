@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace EoneoPay\Utils\Bridge\Lumen\Resolvers;
 
 use EoneoPay\Utils\Bridge\Lumen\Interfaces\Resolvers\ControllerResolverInterface;
-use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Routing\Route;
 
@@ -30,6 +29,8 @@ final class ControllerResolver implements ControllerResolverInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function resolve($route): ?callable
     {
@@ -40,12 +41,7 @@ final class ControllerResolver implements ControllerResolverInterface
             return null;
         }
 
-        try {
-            $controller = $this->container->make($split[0]);
-        } /** @noinspection BadExceptionsProcessingInspection */ catch (BindingResolutionException $exception) {
-            return null;
-        }
-
+        $controller = $this->container->make($split[0]);
         $callable = [$controller, $split[1]];
 
         if (\is_callable($callable) === false) {

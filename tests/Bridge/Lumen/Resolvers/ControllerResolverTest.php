@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tests\EoneoPay\Utils\Bridge\Lumen\Resolvers;
 
 use EoneoPay\Utils\Bridge\Lumen\Resolvers\ControllerResolver;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Routing\Route;
 use stdClass;
 use Tests\EoneoPay\Utils\Stubs\Vendor\Laravel\ContainerStub;
@@ -15,6 +16,8 @@ class ControllerResolverTest extends TestCase
      * Tests a route that references a controller not bound in the container.
      *
      * @return void
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function testBadlyConfiguredContainer(): void
     {
@@ -32,6 +35,8 @@ class ControllerResolverTest extends TestCase
      * Tests a laravel route that does not have a uses section.
      *
      * @return void
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function testMisconfiguredLaravelRoute(): void
     {
@@ -46,6 +51,8 @@ class ControllerResolverTest extends TestCase
      * Tests a laravel route with no method to call
      *
      * @return void
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function testMisconfiguredLaravelRouteNoMethod(): void
     {
@@ -60,6 +67,8 @@ class ControllerResolverTest extends TestCase
      * Tests a lumen route that does not have a uses section.
      *
      * @return void
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function testMisconfiguredLumenRoute(): void
     {
@@ -74,20 +83,25 @@ class ControllerResolverTest extends TestCase
      * Tests a route that references a controller not bound in the container.
      *
      * @return void
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function testMissingController(): void
     {
         $resolver = new ControllerResolver(new ContainerStub());
 
-        $result = $resolver->resolve(new Route('POST', '', ['uses' => 'NopeController@nope']));
+        $this->expectException(BindingResolutionException::class);
+        $this->expectExceptionCode(0);
 
-        static::assertNull($result);
+        $resolver->resolve(new Route('POST', '', ['uses' => 'NopeController@nope']));
     }
 
     /**
      * Tests that the controller resolver returns null when an unknown route is provided
      *
      * @return void
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function testResolveUnknownRoute(): void
     {
@@ -102,6 +116,8 @@ class ControllerResolverTest extends TestCase
      * Tests resolution
      *
      * @return void
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function testSuccess(): void
     {
