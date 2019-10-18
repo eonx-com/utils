@@ -2,7 +2,6 @@ parameters:
     ignoreErrors:
         - '#Call to an undefined method Mockery\\ExpectationInterface|Mockery\\HigherOrderMessage::once\(\).#'
         - '#Call to an undefined method Illuminate\\Contracts\\Foundation\\Application::configure\(\)\.#'
-        - '/Parameter #\d \$[a-z][\w]+ of class EoneoPay\\Utils\\[A-Z][\w\\]+ constructor expects [A-Z][\w\\]+, Mockery\\MockInterface given./'
         -
             message: '#Strict comparison using === between true and false will always evaluate to false\.#'
             path: 'src/DateInterval.php'
@@ -15,3 +14,9 @@ parameters:
         -
             message: '/Parameter #1 \$timestamp of class EoneoPay\\Utils\\DateTime constructor expects DateTime|string|null, (.*) given\./'
             path: 'tests/DateTimeTest.php'
+        -
+            message: '/Parameter #2 \$keys of method EoneoPay\\Utils\\Arr::remove\(\) expects array\|string, null given./'
+            path: 'tests/Arr/RemoveTest.php'
+        -
+            message: '/Parameter #1 \$app of class EoneoPay\\Utils\\Bridge\\Lumen\\Providers\\ConfigurationServiceProvider constructor expects Illuminate\\Contracts\\Foundation\\Application, Mockery\\LegacyMockInterface given./'
+            path: 'tests/Bridge/Lumen/Providers/ConfigurationServiceProviderTest.php'

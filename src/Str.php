@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EoneoPay\Utils;
 
 use EoneoPay\Utils\Interfaces\StrInterface;
+use JsonException;
 
 class Str implements StrInterface
 {
@@ -17,18 +18,6 @@ class Str implements StrInterface
     public function camel(string $value): string
     {
         return \lcfirst($this->studly($value));
-    }
-
-    /**
-     * Convert a value to studly caps case.
-     *
-     * @param string $value
-     *
-     * @return string
-     */
-    public function studly(string $value): string
-    {
-        return \str_replace(' ', '', \ucwords(\str_replace(['-', '_'], ' ', $value)));
     }
 
     /**
@@ -88,6 +77,39 @@ class Str implements StrInterface
     }
 
     /**
+     * Determine if a string is json
+     *
+     * @param string $string The string to check
+     *
+     * @return bool
+     */
+    public function isJson(string $string): bool
+    {
+        try {
+            \json_decode($string, false, 512, \JSON_THROW_ON_ERROR);
+        } /** @noinspection PhpUndefinedClassInspection */ catch (JsonException $exception) {
+            // If there was an exception, it's not JSON
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Determine if a string is xml
+     *
+     * @param string $string The string to check
+     *
+     * @return bool
+     */
+    public function isXml(string $string): bool
+    {
+        \libxml_use_internal_errors(true);
+
+        return \simplexml_load_string($string) !== false;
+    }
+
+    /**
      * Convert a string to snake case.
      *
      * @param string $value
@@ -126,5 +148,17 @@ class Str implements StrInterface
         }
 
         return false;
+    }
+
+    /**
+     * Convert a value to studly caps case.
+     *
+     * @param string $value
+     *
+     * @return string
+     */
+    public function studly(string $value): string
+    {
+        return \str_replace(' ', '', \ucwords(\str_replace(['-', '_'], ' ', $value)));
     }
 }

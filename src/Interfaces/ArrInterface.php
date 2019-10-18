@@ -78,7 +78,7 @@ interface ArrInterface
      *
      * @return mixed[]
      */
-    public function merge(array $array, array ... $arrays): array;
+    public function merge(array $array, array ...$arrays): array;
 
     /**
      * Get a subset of the items from the given array.
@@ -110,7 +110,7 @@ interface ArrInterface
      *
      * @return mixed[]
      */
-    public function replace(array $array, array ... $arrays): array;
+    public function replace(array $array, array ...$arrays): array;
 
     /**
      * Look for a value in an array without punctuation or case sensitivity, this will allow USERID, userId
