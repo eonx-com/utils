@@ -19,7 +19,7 @@ abstract class StrTestCase extends TestCase
     protected function processSimpleTests(string $method, array $tests): void
     {
         foreach ($tests as $input => $expected) {
-            self::assertEquals($expected, (new Str())->$method($input));
+            self::assertSame($expected, (new Str())->$method($input));
         }
     }
 }

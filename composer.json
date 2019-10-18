@@ -16,6 +16,7 @@
   },
   "require-dev": {
     "ext-bcmath": "*",
+    "ext-simplexml": "*",
     "doctrine/annotations": "^1.6",
     "eoneopay/standards": "dev-master",
     "illuminate/http": "^5.8",
@@ -43,6 +44,7 @@
   "suggest": {
     "doctrine/annotations": "Required to use the annotation reader",
     "ext-bcmath": "To use the Math service",
+    "ext-simplexml": "To test whether a string is xml",
     "indigophp/doctrine-annotation-autoload": "Recommended to autoload custom doctrine annotations",
     "illuminate/support": "Required to use the configuration service provider in Lumen"
   },

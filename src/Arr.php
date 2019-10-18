@@ -119,7 +119,7 @@ class Arr implements ArrInterface
     /**
      * @inheritdoc
      */
-    public function merge(array $array, array ... $arrays): array
+    public function merge(array $array, array ...$arrays): array
     {
         // Unflatten all arrays
         $unflattened[] = $this->unflatten($array);
@@ -190,7 +190,7 @@ class Arr implements ArrInterface
     /**
      * @inheritdoc
      */
-    public function replace(array $array, array ... $arrays): array
+    public function replace(array $array, array ...$arrays): array
     {
         // Flatten all arrays
         $flattened[] = $this->flatten($array);

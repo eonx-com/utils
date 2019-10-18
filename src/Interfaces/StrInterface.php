@@ -38,12 +38,30 @@ interface StrInterface
     /**
      * Determine if a given string ends with a given substring.
      *
-     * @param  string $haystack
-     * @param  string|string[] $needles
+     * @param string $haystack
+     * @param string|string[] $needles
      *
      * @return bool
      */
     public function endsWith(string $haystack, $needles): bool;
+
+    /**
+     * Determine if a string is json
+     *
+     * @param string $string The string to check
+     *
+     * @return bool
+     */
+    public function isJson(string $string): bool;
+
+    /**
+     * Determine if a string is xml
+     *
+     * @param string $string The string to check
+     *
+     * @return bool
+     */
+    public function isXml(string $string): bool;
 
     /**
      * Convert a string to snake case.
