@@ -11,35 +11,30 @@ interface GeneratorInterface
      * @const int
      */
     public const RANDOM_EXCLUDE_AMBIGIOUS = 16;
-
     /**
      * Exclude similar characters
      *
      * @const int
      */
     public const RANDOM_EXCLUDE_SIMILAR = 32;
-
     /**
      * Allow lowercase characters in random string
      *
      * @const int
      */
     public const RANDOM_INCLUDE_ALPHA_LOWERCASE = 1;
-
     /**
      * Allow uppercase characters in random string
      *
      * @const int
      */
     public const RANDOM_INCLUDE_ALPHA_UPPERCASE = 2;
-
     /**
      * Allow integers in random string
      *
      * @const int
      */
     public const RANDOM_INCLUDE_INTEGERS = 4;
-
     /**
      * Allow symbols in random string
      *
@@ -66,4 +61,11 @@ interface GeneratorInterface
      * @return string
      */
     public function randomString(?int $length = null, ?int $flags = null): string;
+
+    /**
+     * Generate a uuid.
+     *
+     * @return string
+     */
+    public function uuid4(): string;
 }

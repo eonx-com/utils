@@ -76,6 +76,22 @@ class GeneratorTest extends TestCase
     }
 
     /**
+     * Test uuid generation
+     *
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function testGenerateUuid(): void
+    {
+        $generator = new Generator();
+
+        $uuid = $generator->uuid4();
+
+        self::assertRegExp('/[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}/', $uuid);
+    }
+
+    /**
      * Test true random string generation
      *
      * @return void

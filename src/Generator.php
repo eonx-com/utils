@@ -5,6 +5,7 @@ namespace EoneoPay\Utils;
 
 use EoneoPay\Utils\Interfaces\GeneratorInterface;
 use Exception;
+use Ramsey\Uuid\Uuid;
 
 class Generator implements GeneratorInterface
 {
@@ -46,6 +47,18 @@ class Generator implements GeneratorInterface
         }
 
         return \implode('', $random);
+    }
+
+    /**
+     * Generate a uuid.
+     *
+     * @return string
+     *
+     * @throws \Exception Underlying library can throw exception if dependencies not met
+     */
+    public function uuid4(): string
+    {
+        return Uuid::uuid4()->toString();
     }
 
     /**
