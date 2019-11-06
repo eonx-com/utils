@@ -33,7 +33,10 @@ final class GeneratorTest extends TestCase
         );
 
         // Generate a string of integers only
-        self::assertRegExp('/^[\d]+$/', $generator->randomString(1000, GeneratorInterface::RANDOM_INCLUDE_INTEGERS));
+        self::assertRegExp(
+            '/^[\d]+$/',
+            $generator->randomString(1000, GeneratorInterface::RANDOM_INCLUDE_INTEGERS)
+        );
 
         // Generate a string of symbols only
         self::assertRegExp(
@@ -57,7 +60,9 @@ final class GeneratorTest extends TestCase
         $allCharacters = GeneratorInterface::RANDOM_INCLUDE_ALPHA_LOWERCASE |
             GeneratorInterface::RANDOM_INCLUDE_ALPHA_UPPERCASE |
             GeneratorInterface::RANDOM_INCLUDE_INTEGERS |
-            GeneratorInterface::RANDOM_INCLUDE_SYMBOLS;
+            GeneratorInterface::RANDOM_INCLUDE_SYMBOLS |
+            GeneratorInterface::RANDOM_INCLUDE_VOWELS_LOWERCASE |
+            GeneratorInterface::RANDOM_INCLUDE_VOWELS_UPPERCASE;
 
         // Test exclusion of similar characters
         self::assertRegExp(
