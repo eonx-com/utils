@@ -62,9 +62,7 @@ final class Generator implements GeneratorInterface
             self::RANDOM_INCLUDE_ALPHA_LOWERCASE => \str_split(self::INCLUDE_ALPHA_LOWERCASE),
             self::RANDOM_INCLUDE_ALPHA_UPPERCASE => \str_split(self::INCLUDE_ALPHA_UPPERCASE),
             self::RANDOM_INCLUDE_INTEGERS => \str_split(self::INCLUDE_INTEGERS),
-            self::RANDOM_INCLUDE_SYMBOLS => \str_split(self::INCLUDE_SYMBOLS),
-            self::RANDOM_INCLUDE_VOWELS_LOWERCASE => \str_split(self::INCLUDE_VOWEL_LOWERCASE),
-            self::RANDOM_INCLUDE_VOWELS_UPPERCASE => \str_split(self::INCLUDE_VOWEL_UPPERCASE)
+            self::RANDOM_INCLUDE_SYMBOLS => \str_split(self::INCLUDE_SYMBOLS)
         ];
 
         $characters = [];
@@ -81,7 +79,8 @@ final class Generator implements GeneratorInterface
         // Remove any excluded characters
         $excludes = [
             self::RANDOM_EXCLUDE_SIMILAR => \str_split(self::EXCLUDED_SIMILAR),
-            self::RANDOM_EXCLUDE_AMBIGIOUS => \str_split(self::EXCLUDED_AMBIGIOUS)
+            self::RANDOM_EXCLUDE_AMBIGIOUS => \str_split(self::EXCLUDED_AMBIGIOUS),
+            self::RANDOM_EXCLUDE_VOWELS => \str_split(self::EXCLUDED_VOWELS)
         ];
 
         foreach ($excludes as $key => $values) {

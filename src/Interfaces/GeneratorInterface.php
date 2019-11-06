@@ -8,6 +8,11 @@ interface GeneratorInterface
     /**
      * @var string
      */
+    public const EXCLUDED_VOWELS = 'aAeEiIoOuU';
+
+    /**
+     * @var string
+     */
     public const EXCLUDED_SIMILAR = 'iIlLoOqQsS015!$';
 
     /**
@@ -18,22 +23,12 @@ interface GeneratorInterface
     /**
      * @var string
      */
-    public const INCLUDE_ALPHA_LOWERCASE = 'bcdfghjklmnpqrstvwxyz';
+    public const INCLUDE_ALPHA_LOWERCASE = 'abcdefghijklmnopqrstuvwxyz';
 
     /**
      * @var string
      */
-    public const INCLUDE_ALPHA_UPPERCASE = 'BCDFGHJKLMNPQRSTVWXYZ';
-
-    /**
-     * @var string
-     */
-    public const INCLUDE_VOWEL_LOWERCASE = 'aeiou';
-
-    /**
-     * @var string
-     */
-    public const INCLUDE_VOWEL_UPPERCASE = 'AEIOU';
+    public const INCLUDE_ALPHA_UPPERCASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
     /**
      * @var string
@@ -90,12 +85,7 @@ interface GeneratorInterface
     /**
      * @var int
      */
-    public const RANDOM_INCLUDE_VOWELS_LOWERCASE = 64;
-
-    /**
-     * @var int
-     */
-    public const RANDOM_INCLUDE_VOWELS_UPPERCASE = 128;
+    public const RANDOM_EXCLUDE_VOWELS = 64;
 
     /**
      * Generate a random integer

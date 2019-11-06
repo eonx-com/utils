@@ -20,15 +20,15 @@ final class GeneratorTest extends TestCase
     {
         $generator = new Generator();
 
-        // Generate a string using lowercase consonants only
+        // Generate a string using lowercase letters only
         self::assertRegExp(
-            \sprintf('/^[%s]+$/', GeneratorInterface::INCLUDE_ALPHA_LOWERCASE),
+            '/^[a-z]+$/',
             $generator->randomString(1000, GeneratorInterface::RANDOM_INCLUDE_ALPHA_LOWERCASE)
         );
 
-        // Generate a string using uppercase consonants only
+        // Generate a string using uppercase letters only
         self::assertRegExp(
-            \sprintf('/^[%s]+$/', GeneratorInterface::INCLUDE_ALPHA_UPPERCASE),
+            '/^[A-Z]+$/',
             $generator->randomString(1000, GeneratorInterface::RANDOM_INCLUDE_ALPHA_UPPERCASE)
         );
 
@@ -44,25 +44,17 @@ final class GeneratorTest extends TestCase
             $generator->randomString(1000, GeneratorInterface::RANDOM_INCLUDE_SYMBOLS)
         );
 
-        // Generate a string using lowercase vowels only
+        // Generate a string using uppercase letters only
         self::assertRegExp(
-            \sprintf('/^[%s]+$/', GeneratorInterface::INCLUDE_VOWEL_LOWERCASE),
-            $generator->randomString(1000, GeneratorInterface::RANDOM_INCLUDE_VOWELS_LOWERCASE)
-        );
-
-        // Generate a string using uppercase vowels only
-        self::assertRegExp(
-            \sprintf('/^[%s]+$/', GeneratorInterface::INCLUDE_VOWEL_UPPERCASE),
-            $generator->randomString(1000, GeneratorInterface::RANDOM_INCLUDE_VOWELS_UPPERCASE)
+            '/^[A-Z]+$/',
+            $generator->randomString(1000, GeneratorInterface::RANDOM_INCLUDE_ALPHA_UPPERCASE)
         );
 
         // Test exclusion of certain characters
         $allCharacters = GeneratorInterface::RANDOM_INCLUDE_ALPHA_LOWERCASE |
             GeneratorInterface::RANDOM_INCLUDE_ALPHA_UPPERCASE |
             GeneratorInterface::RANDOM_INCLUDE_INTEGERS |
-            GeneratorInterface::RANDOM_INCLUDE_SYMBOLS |
-            GeneratorInterface::RANDOM_INCLUDE_VOWELS_LOWERCASE |
-            GeneratorInterface::RANDOM_INCLUDE_VOWELS_UPPERCASE;
+            GeneratorInterface::RANDOM_INCLUDE_SYMBOLS;
 
         // Test exclusion of similar characters
         self::assertRegExp(
@@ -74,6 +66,12 @@ final class GeneratorTest extends TestCase
         self::assertRegExp(
             \sprintf('/^[^%s]+$/', \preg_quote('-[]\\;\',./!()_{}:"<>?', '/')),
             $generator->randomString(1000, $allCharacters | GeneratorInterface::RANDOM_EXCLUDE_AMBIGIOUS)
+        );
+
+        // Test exclusion of vowels
+        self::assertRegExp(
+            '/^[^aAeEiIoOuU]/',
+            $generator->randomString(1000, $allCharacters | GeneratorInterface::RANDOM_EXCLUDE_VOWELS)
         );
     }
 
@@ -105,8 +103,6 @@ final class GeneratorTest extends TestCase
         for ($loop = 0; $loop < 500; $loop++) {
             $string = $generator->randomString();
 
-            // By default, vowels are not included.
-            self::assertRegExp('/^[^aAeEiIoOuU]/', $string);
             self::assertArrayNotHasKey($string, $generated);
 
             $generated[$string] = 1;
