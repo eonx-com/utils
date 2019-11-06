@@ -9,7 +9,7 @@ use EoneoPay\Utils\Interfaces\GeneratorInterface;
 /**
  * @covers \EoneoPay\Utils\Generator
  */
-class GeneratorTest extends TestCase
+final class GeneratorTest extends TestCase
 {
     /**
      * Test generation using flags works as expected
@@ -20,15 +20,15 @@ class GeneratorTest extends TestCase
     {
         $generator = new Generator();
 
-        // Generate a string using lowercase letters only
+        // Generate a string using lowercase consonants only
         self::assertRegExp(
-            '/^[a-z]+$/',
+            \sprintf('/^[%s]+$/', GeneratorInterface::INCLUDE_ALPHA_LOWERCASE),
             $generator->randomString(1000, GeneratorInterface::RANDOM_INCLUDE_ALPHA_LOWERCASE)
         );
 
-        // Generate a string using uppercase letters only
+        // Generate a string using uppercase consonants only
         self::assertRegExp(
-            '/^[A-Z]+$/',
+            \sprintf('/^[%s]+$/', GeneratorInterface::INCLUDE_ALPHA_UPPERCASE),
             $generator->randomString(1000, GeneratorInterface::RANDOM_INCLUDE_ALPHA_UPPERCASE)
         );
 
@@ -39,6 +39,18 @@ class GeneratorTest extends TestCase
         self::assertRegExp(
             \sprintf('/^[%s]+$/', \preg_quote('-=[]\\;\',./~!@#$%^&*()_+{}|:"<>?', '/')),
             $generator->randomString(1000, GeneratorInterface::RANDOM_INCLUDE_SYMBOLS)
+        );
+
+        // Generate a string using lowercase vowels only
+        self::assertRegExp(
+            \sprintf('/^[%s]+$/', GeneratorInterface::INCLUDE_VOWEL_LOWERCASE),
+            $generator->randomString(1000, GeneratorInterface::RANDOM_INCLUDE_VOWELS_LOWERCASE)
+        );
+
+        // Generate a string using uppercase vowels only
+        self::assertRegExp(
+            \sprintf('/^[%s]+$/', GeneratorInterface::INCLUDE_VOWEL_UPPERCASE),
+            $generator->randomString(1000, GeneratorInterface::RANDOM_INCLUDE_VOWELS_UPPERCASE)
         );
 
         // Test exclusion of certain characters
@@ -83,12 +95,13 @@ class GeneratorTest extends TestCase
     public function testTrueRandomStringGeneration(): void
     {
         $generator = new Generator();
-
         // Run 500 times and make sure strings are always different
         $generated = [];
         for ($loop = 0; $loop < 500; $loop++) {
             $string = $generator->randomString();
 
+            // By default, vowels are not included.
+            self::assertRegExp('/^[^aAeEiIoOuU]/', $string);
             self::assertArrayNotHasKey($string, $generated);
 
             $generated[$string] = 1;

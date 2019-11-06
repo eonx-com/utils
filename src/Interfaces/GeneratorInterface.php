@@ -6,6 +6,46 @@ namespace EoneoPay\Utils\Interfaces;
 interface GeneratorInterface
 {
     /**
+     * @var string
+     */
+    public const EXCLUDED_SIMILAR = 'iIlLoOqQsS015!$';
+
+    /**
+     * @var string
+     */
+    public const EXCLUDED_AMBIGIOUS = '-[]\\;\',./!()_{}:"<>?';
+
+    /**
+     * @var string
+     */
+    public const INCLUDE_ALPHA_LOWERCASE = 'bcdfghjklmnpqrstvwxyz';
+
+    /**
+     * @var string
+     */
+    public const INCLUDE_ALPHA_UPPERCASE = 'BCDFGHJKLMNPQRSTVWXYZ';
+
+    /**
+     * @var string
+     */
+    public const INCLUDE_VOWEL_LOWERCASE = 'aeiou';
+
+    /**
+     * @var string
+     */
+    public const INCLUDE_VOWEL_UPPERCASE = 'AEIOU';
+
+    /**
+     * @var string
+     */
+    public const INCLUDE_INTEGERS = '0123456789';
+
+    /**
+     * @var string
+     */
+    public const INCLUDE_SYMBOLS = '-=[]\\;\',./~!@#$%^&*()_+{}|:"<>?';
+
+    /**
      * Exclude ambiguous characters
      *
      * @const int
@@ -48,7 +88,17 @@ interface GeneratorInterface
     public const RANDOM_INCLUDE_SYMBOLS = 8;
 
     /**
-     * Generate a rendom integer
+     * @var int
+     */
+    public const RANDOM_INCLUDE_VOWELS_LOWERCASE = 64;
+
+    /**
+     * @var int
+     */
+    public const RANDOM_INCLUDE_VOWELS_UPPERCASE = 128;
+
+    /**
+     * Generate a random integer
      *
      * @param int|null $minimum The smallest allowable number, defaults to 0
      * @param int|null $maximum The largest allowable number, defaults to PHP_INT_MAX
