@@ -6,7 +6,7 @@ namespace EoneoPay\Utils;
 use EoneoPay\Utils\Interfaces\GeneratorInterface;
 use Exception;
 
-final class Generator implements GeneratorInterface
+class Generator implements GeneratorInterface
 {
     /**
      * @inheritdoc
