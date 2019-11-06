@@ -9,7 +9,7 @@ use EoneoPay\Utils\Interfaces\GeneratorInterface;
 /**
  * @covers \EoneoPay\Utils\Generator
  */
-class GeneratorTest extends TestCase
+final class GeneratorTest extends TestCase
 {
     /**
      * Test generation using flags works as expected
@@ -33,12 +33,21 @@ class GeneratorTest extends TestCase
         );
 
         // Generate a string of integers only
-        self::assertRegExp('/^[\d]+$/', $generator->randomString(1000, GeneratorInterface::RANDOM_INCLUDE_INTEGERS));
+        self::assertRegExp(
+            '/^[\d]+$/',
+            $generator->randomString(1000, GeneratorInterface::RANDOM_INCLUDE_INTEGERS)
+        );
 
         // Generate a string of symbols only
         self::assertRegExp(
             \sprintf('/^[%s]+$/', \preg_quote('-=[]\\;\',./~!@#$%^&*()_+{}|:"<>?', '/')),
             $generator->randomString(1000, GeneratorInterface::RANDOM_INCLUDE_SYMBOLS)
+        );
+
+        // Generate a string using uppercase letters only
+        self::assertRegExp(
+            '/^[A-Z]+$/',
+            $generator->randomString(1000, GeneratorInterface::RANDOM_INCLUDE_ALPHA_UPPERCASE)
         );
 
         // Test exclusion of certain characters
@@ -57,6 +66,12 @@ class GeneratorTest extends TestCase
         self::assertRegExp(
             \sprintf('/^[^%s]+$/', \preg_quote('-[]\\;\',./!()_{}:"<>?', '/')),
             $generator->randomString(1000, $allCharacters | GeneratorInterface::RANDOM_EXCLUDE_AMBIGIOUS)
+        );
+
+        // Test exclusion of vowels
+        self::assertRegExp(
+            '/^[^aAeEiIoOuU]/',
+            $generator->randomString(1000, $allCharacters | GeneratorInterface::RANDOM_EXCLUDE_VOWELS)
         );
     }
 
@@ -99,7 +114,6 @@ class GeneratorTest extends TestCase
     public function testTrueRandomStringGeneration(): void
     {
         $generator = new Generator();
-
         // Run 500 times and make sure strings are always different
         $generated = [];
         for ($loop = 0; $loop < 500; $loop++) {

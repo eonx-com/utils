@@ -72,10 +72,10 @@ class Generator implements GeneratorInterface
     {
         // Determine included characters
         $includes = [
-            self::RANDOM_INCLUDE_ALPHA_LOWERCASE => \str_split('abcdefghijklmnopqrstuvwxyz'),
-            self::RANDOM_INCLUDE_ALPHA_UPPERCASE => \str_split('ABCDEFGHIJKLMNOPQRSTUVWXYZ'),
-            self::RANDOM_INCLUDE_INTEGERS => \str_split('0123456789'),
-            self::RANDOM_INCLUDE_SYMBOLS => \str_split('-=[]\\;\',./~!@#$%^&*()_+{}|:"<>?')
+            self::RANDOM_INCLUDE_ALPHA_LOWERCASE => \str_split(self::INCLUDE_ALPHA_LOWERCASE),
+            self::RANDOM_INCLUDE_ALPHA_UPPERCASE => \str_split(self::INCLUDE_ALPHA_UPPERCASE),
+            self::RANDOM_INCLUDE_INTEGERS => \str_split(self::INCLUDE_INTEGERS),
+            self::RANDOM_INCLUDE_SYMBOLS => \str_split(self::INCLUDE_SYMBOLS)
         ];
 
         $characters = [];
@@ -91,8 +91,9 @@ class Generator implements GeneratorInterface
 
         // Remove any excluded characters
         $excludes = [
-            self::RANDOM_EXCLUDE_SIMILAR => \str_split('iIlLoOqQsS015!$'),
-            self::RANDOM_EXCLUDE_AMBIGIOUS => \str_split('-[]\\;\',./!()_{}:"<>?')
+            self::RANDOM_EXCLUDE_SIMILAR => \str_split(self::EXCLUDED_SIMILAR),
+            self::RANDOM_EXCLUDE_AMBIGIOUS => \str_split(self::EXCLUDED_AMBIGIOUS),
+            self::RANDOM_EXCLUDE_VOWELS => \str_split(self::EXCLUDED_VOWELS)
         ];
 
         foreach ($excludes as $key => $values) {

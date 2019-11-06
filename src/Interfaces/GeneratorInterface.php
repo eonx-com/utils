@@ -6,6 +6,41 @@ namespace EoneoPay\Utils\Interfaces;
 interface GeneratorInterface
 {
     /**
+     * @var string
+     */
+    public const EXCLUDED_VOWELS = 'aAeEiIoOuU';
+
+    /**
+     * @var string
+     */
+    public const EXCLUDED_SIMILAR = 'iIlLoOqQsS015!$';
+
+    /**
+     * @var string
+     */
+    public const EXCLUDED_AMBIGIOUS = '-[]\\;\',./!()_{}:"<>?';
+
+    /**
+     * @var string
+     */
+    public const INCLUDE_ALPHA_LOWERCASE = 'abcdefghijklmnopqrstuvwxyz';
+
+    /**
+     * @var string
+     */
+    public const INCLUDE_ALPHA_UPPERCASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+    /**
+     * @var string
+     */
+    public const INCLUDE_INTEGERS = '0123456789';
+
+    /**
+     * @var string
+     */
+    public const INCLUDE_SYMBOLS = '-=[]\\;\',./~!@#$%^&*()_+{}|:"<>?';
+
+    /**
      * Exclude ambiguous characters
      *
      * @const int
@@ -43,7 +78,12 @@ interface GeneratorInterface
     public const RANDOM_INCLUDE_SYMBOLS = 8;
 
     /**
-     * Generate a rendom integer
+     * @var int
+     */
+    public const RANDOM_EXCLUDE_VOWELS = 64;
+
+    /**
+     * Generate a random integer
      *
      * @param int|null $minimum The smallest allowable number, defaults to 0
      * @param int|null $maximum The largest allowable number, defaults to PHP_INT_MAX
