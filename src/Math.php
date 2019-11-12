@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EoneoPay\Utils;
 
 use EoneoPay\Utils\Exceptions\BcmathNotLoadedException;
+use EoneoPay\Utils\Exceptions\DivisionByZeroException;
 use EoneoPay\Utils\Interfaces\MathInterface;
 
 class Math implements MathInterface
@@ -77,6 +78,11 @@ class Math implements MathInterface
      */
     public function divide(string $dividend, string $divisor, ?int $precision = null, ?int $roundingMode = null): string
     {
+        // Check if divisor is zero
+        if (\bccomp($divisor, '0', 99) === 0) {
+            throw new DivisionByZeroException('Division by zero cannot be performed');
+        }
+
         return $this->round(\bcdiv($dividend, $divisor, 99), $precision, $roundingMode);
     }
 
