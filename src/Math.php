@@ -79,7 +79,7 @@ class Math implements MathInterface
     public function divide(string $dividend, string $divisor, ?int $precision = null, ?int $roundingMode = null): string
     {
         // Check if divisor is zero
-        if (\bccomp($divisor, '0', 99) === 0) {
+        if (\bccomp($divisor, '0', $precision ?? 99) === 0) {
             throw new DivisionByZeroException('Division by zero cannot be performed');
         }
 
