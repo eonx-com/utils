@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3cbb42c28d8e94623688529c51f58fff",
+    "content-hash": "515017dd18e6d28ed6c299659bc9bcdc",
     "packages": [],
     "packages-dev": [
         {
@@ -306,16 +306,16 @@
         },
         {
             "name": "eoneopay/standards",
-            "version": "dev-master",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/loyaltycorp/standards.git",
-                "reference": "89e8074ca028e9025cedb749971b74dd394b5ab5"
+                "reference": "a3467c0bdd27cc5b0c97e42e9510ae058e5adcc7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/loyaltycorp/standards/zipball/89e8074ca028e9025cedb749971b74dd394b5ab5",
-                "reference": "89e8074ca028e9025cedb749971b74dd394b5ab5",
+                "url": "https://api.github.com/repos/loyaltycorp/standards/zipball/a3467c0bdd27cc5b0c97e42e9510ae058e5adcc7",
+                "reference": "a3467c0bdd27cc5b0c97e42e9510ae058e5adcc7",
                 "shasum": ""
             },
             "require": {
@@ -356,7 +356,8 @@
                 "eoneopay",
                 "standards"
             ],
-            "time": "2019-10-15T23:12:47+00:00"
+            "abandoned": "eonx-com/standards",
+            "time": "2019-10-22T01:17:45+00:00"
         },
         {
             "name": "hamcrest/hamcrest-php",
@@ -5096,7 +5097,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "eoneopay/standards": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": false,
