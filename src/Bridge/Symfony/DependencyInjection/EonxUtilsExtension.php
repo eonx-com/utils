@@ -19,6 +19,7 @@ final class EonxUtilsExtension extends Extension
     {
         $fileLocator = new FileLocator(__DIR__ . '/../Resources/config');
 
-        (new XmlFileLoader($container, $fileLocator))->load('services.xml');
+        $loader = new XmlFileLoader($container, $fileLocator);
+        $loader->load('services.xml');
     }
 }
