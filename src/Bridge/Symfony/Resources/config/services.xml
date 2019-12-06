@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults autowire="true" autoconfigure="true" public="false"/>
+
+        <service id="EoneoPay\Utils\Interfaces\AnnotationReaderInterface" class="EoneoPay\Utils\AnnotationReader"/>
+        <service id="EoneoPay\Utils\Interfaces\ArrInterface" class="EoneoPay\Utils\Arr"/>
+        <service id="EoneoPay\Utils\Interfaces\CheckDigitInterface" class="EoneoPay\Utils\CheckDigit"/>
+        <service id="EoneoPay\Utils\Interfaces\CollectionInterface" class="EoneoPay\Utils\Collection"/>
+        <service id="EoneoPay\Utils\Interfaces\GeneratorInterface" class="EoneoPay\Utils\Generator"/>
+        <service id="EoneoPay\Utils\Interfaces\HasherInterface" class="EoneoPay\Utils\Hasher"/>
+        <service id="EoneoPay\Utils\Interfaces\LuhnInterface" class="EoneoPay\Utils\Luhn"/>
+        <service id="EoneoPay\Utils\Interfaces\MathInterface" class="EoneoPay\Utils\Math"/>
+        <service id="EoneoPay\Utils\Interfaces\PermissionsInterface" class="EoneoPay\Utils\Permissions"/>
+        <service id="EoneoPay\Utils\Interfaces\StrInterface" class="EoneoPay\Utils\Str"/>
+        <service id="EoneoPay\Utils\Interfaces\XmlConverterInterface" class="EoneoPay\Utils\XmlConverter"/>
+    </services>
+</container>
