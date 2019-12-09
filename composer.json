@@ -57,5 +57,8 @@
   "config": {
     "optimize-autoloader": true,
     "sort-packages": true
+  },
+  "replace": {
+    "eoneopay/utils": "^0.2"
   }
 }
