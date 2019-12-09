@@ -32,9 +32,6 @@
     "sebastian/phpcpd": "^4.0",
     "squizlabs/php_codesniffer": "3.*"
   },
-  "replace": {
-    "eoneopay/utils": "^0.2"
-  },
   "autoload": {
     "psr-4": {
       "EoneoPay\\Utils\\": "src/"
@@ -59,6 +56,6 @@
     "sort-packages": true
   },
   "replace": {
-    "eoneopay/utils": "^0.2"
+    "eoneopay/utils": "*"
   }
 }
