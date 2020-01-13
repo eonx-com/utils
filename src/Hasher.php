@@ -11,22 +11,22 @@ class Hasher implements HasherInterface
     /**
      * Algorithm constant value compatible with PHP's password hashing function
      *
-     * @var int
+     * @var string
      */
-    private $algorithm;
+    private string $algorithm;
 
     /**
      * @var mixed[]
      */
-    private $options;
+    private array $options;
 
     /**
      * Hasher constructor.
      *
-     * @param int|null $algorithm
+     * @param string|null $algorithm
      * @param mixed[]|null $options
      */
-    public function __construct(?int $algorithm = null, ?array $options = null)
+    public function __construct(?string $algorithm = null, ?array $options = null)
     {
         $this->algorithm = $algorithm ?? self::DEFAULT_ALGORITHM;
         $this->options = $options ?? [];
