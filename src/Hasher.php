@@ -13,12 +13,12 @@ class Hasher implements HasherInterface
      *
      * @var string|int
      */
-    private string $algorithm;
+    private $algorithm;
 
     /**
      * @var mixed[]
      */
-    private array $options;
+    private $options;
 
     /**
      * Hasher constructor.
