@@ -8,7 +8,7 @@ interface HasherInterface
     /**
      * Algorithm to be used for hashing
      *
-     * @var int
+     * @var string|int
      */
     public const DEFAULT_ALGORITHM = \PASSWORD_BCRYPT;
 

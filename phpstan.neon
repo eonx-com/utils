@@ -20,3 +20,6 @@ parameters:
         -
             message: '/Parameter #1 \$app of class EoneoPay\\Utils\\Bridge\\Lumen\\Providers\\ConfigurationServiceProvider constructor expects Illuminate\\Contracts\\Foundation\\Application, Mockery\\LegacyMockInterface given./'
             path: 'tests/Bridge/Lumen/Providers/ConfigurationServiceProviderTest.php'
+        -
+            message: '/Parameter #2 \$algo of function password_hash expects int, int\|string given\./'
+            path: 'src/Hasher.php'
