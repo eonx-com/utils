@@ -18,6 +18,7 @@
     "ext-bcmath": "*",
     "ext-simplexml": "*",
     "doctrine/annotations": "^1.6",
+    "eonx-com/easy-test": "^2.3",
     "eonx-com/standards": "^0.2",
     "illuminate/http": "^5.8",
     "illuminate/routing": "^5.8",
