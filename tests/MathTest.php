@@ -65,7 +65,7 @@ class MathTest extends TestCase
         self::assertSame(-1, $math->comp('1.00001', '1.00002', 5));
 
         self::assertSame(0, $math->comp('1.00002', '1.00001', 4));
-        self::assertSame(0, $math->comp('1.1', '1.2'));
+        self::assertSame(-1, $math->comp('1.1', '1.2'));
     }
 
     /**
