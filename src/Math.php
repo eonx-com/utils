@@ -70,7 +70,7 @@ class Math implements MathInterface
         string $rightOperand,
         ?int $scale = null
     ): int {
-        return \bccomp($leftOperand, $rightOperand, $scale ?? 0);
+        return \bccomp($leftOperand, $rightOperand, $scale ?? 99);
     }
 
     /**
